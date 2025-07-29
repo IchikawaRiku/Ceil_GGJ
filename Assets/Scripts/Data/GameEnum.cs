@@ -1,11 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+/*
+ *  @file   GameEnum.cs
+ *  @brief  列挙体制限
+ *  @author Seki
+ *  @date   2025/7/29
+ */
 
+/// <summary>
+/// ゲームパート列挙体
+/// </summary>
 public enum eGamePart {
     Invalid = -1,
     Stanby,
     Title,
     MainGame,
-    Ending
+    Ending,
+
+    Max
+}
+/// <summary>
+/// フェード状態列挙体
+/// </summary>
+public enum eFadeState {
+    Invalid = -1,
+    FadeIn,
+    FadeOut
 }
