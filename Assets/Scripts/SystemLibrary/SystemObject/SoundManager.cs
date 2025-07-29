@@ -51,6 +51,13 @@ public class SoundManager : SystemObject {
         _bgmAudioSource.Stop();
     }
     /// <summary>
+    /// BGMの音量設定
+    /// </summary>
+    /// <param name="setValue"></param>
+    public void SetBGMVolume(int setValue) {
+        _bgmAudioSource.volume = setValue / 1.0f;
+    }
+    /// <summary>
     /// SEの再生
     /// </summary>
     /// <param name="seID"></param>
@@ -60,15 +67,23 @@ public class SoundManager : SystemObject {
         if(!IsEnableIndex(_seAssign.seArray, seID)) return;
         //再生中でないオーディオソースを探してそれを再生
         for (int i = 0, max = _seAudioSource.Length; i < max; i++) {
-            AudioSource audioSource = _seAudioSource[i];
-            if(audioSource == null || audioSource.isPlaying) continue;
+            if(_seAudioSource[i] == null || _seAudioSource[i].isPlaying) continue;
             //再生中でないオーディオソースが見つかったら再生
-            audioSource.clip = _seAssign.seArray[seID];
-            audioSource.Play();
+            _seAudioSource[i].clip = _seAssign.seArray[seID];
+            _seAudioSource[i].Play();
             //SEの終了待ち
-            while(audioSource.isPlaying) await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
+            while(_seAudioSource[i].isPlaying) await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
 
             return;
+        }
+    }
+    /// <summary>
+    /// SEの音量設定
+    /// </summary>
+    /// <param name="setValue"></param>
+    public void SetSEVolume(int setValue) {
+        for (int i = 0, max = _seAudioSource.Length; i < max; i++) {
+            _seAudioSource[i].volume = setValue / 1.0f;
         }
     }
 }
