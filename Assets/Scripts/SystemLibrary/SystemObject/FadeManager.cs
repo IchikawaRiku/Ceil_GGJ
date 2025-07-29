@@ -10,7 +10,7 @@ public class FadeManager : SystemObject {
     [SerializeField]
     private Image _fadeImage = null;
 
-    private const float _DEFAULT_FADE_DURATION = 0.3f;
+    private const float _DEFAULT_FADE_DURATION = 1.0f;
     public override async UniTask Initialize() {
         instance = this;
         await UniTask.CompletedTask;
@@ -46,10 +46,10 @@ public class FadeManager : SystemObject {
             elapsedTime += Time.deltaTime;
             //補完した不透明度をフェード画像に設定
             float t = elapsedTime / duration;
-            targetColor.a = Mathf.Lerp(startAlpha, (int)fadeState, t);
+            targetColor.a = Mathf.Lerp(startAlpha, (float)fadeState, t);
             _fadeImage.color = targetColor;
             //1フレーム待つ
-            await UniTask.CompletedTask;
+            await UniTask.DelayFrame(1);
         }
         targetColor.a = (int)fadeState;
         _fadeImage.color = targetColor;

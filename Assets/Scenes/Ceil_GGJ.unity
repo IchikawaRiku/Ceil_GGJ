@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _systemObjectList:
+  - {fileID: 2322869377670757668, guid: e27a48ea40f81b447942322aaa93fa32, type: 3}
   - {fileID: 6738994163460107244, guid: 2ef7b995704372040940b51280989737, type: 3}
   - {fileID: 4627558037846142322, guid: f7052c54fe066df4f928d999f5c1ee37, type: 3}
 --- !u!4 &970289674
