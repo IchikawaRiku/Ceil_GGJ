@@ -11,6 +11,7 @@ using System.Threading;
 using UnityEngine;
 
 using static CommonModule;
+using static GameConst;
 
 public class SoundManager : SystemObject {
     public static SoundManager instance { get; private set; } = null;
@@ -58,7 +59,7 @@ public class SoundManager : SystemObject {
         if(setValue <= 0) {
             _bgmAudioSource.volume = 0;
         } else {
-            _bgmAudioSource.volume = setValue / 1.0f;
+            _bgmAudioSource.volume = setValue / _DEVIDE_TEN_VOLUME;
         }
     }
     /// <summary>
@@ -90,7 +91,7 @@ public class SoundManager : SystemObject {
             if(setValue <= 0) {
                 _seAudioSource[i].volume = 0;
             } else {
-                _seAudioSource[i].volume = setValue / 1.0f;
+                _seAudioSource[i].volume = setValue / _DEVIDE_TEN_VOLUME;
             }
         }
     }

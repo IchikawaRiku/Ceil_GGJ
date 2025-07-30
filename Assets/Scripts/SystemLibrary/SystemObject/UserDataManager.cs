@@ -21,14 +21,14 @@ public class UserDataManager : SystemObject {
 
     public override async UniTask Initialize() {
         instance = this;
-        //セーブデータのロード
-        userData = LoadDataFromFile();
         //StringBuilderの宣言
         StringBuilder fileNameBuilder = new StringBuilder();
         fileNameBuilder.Append(Application.persistentDataPath);
         fileNameBuilder.Append(_userFileName);
         //連結したファイルパスを渡す
         _filePath = fileNameBuilder.ToString();
+        //セーブデータのロード
+        LoadUserData();
         await UniTask.CompletedTask;
     }
     /// <summary>

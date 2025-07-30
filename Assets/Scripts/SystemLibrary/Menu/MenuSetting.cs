@@ -8,7 +8,10 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+
+using static GameConst;
 
 public class MenuSetting : MenuBase {
     //BGM音量のテキスト
@@ -24,9 +27,6 @@ public class MenuSetting : MenuBase {
     //SEの音量データ
     private float _seVolumeData = -1;
 
-    //10段階の音調調整用定数
-    private const float _DEVIDE_TEN_VOLUME = 0.1f;
-
     public override async UniTask Initialize() {
         await base.Initialize();
         _isClose = false;
@@ -35,8 +35,10 @@ public class MenuSetting : MenuBase {
 
     private void SetupData() {
         UserData userData = UserDataManager.userData;
-        _bgmVolumeData = userData.bgmVolume;
-        _seVolumeData = userData.seVolume;
+        SetBGMVolume(userData.bgmVolume);
+        SetSEVolume(userData.seVolume);
+        SetBGMVolumeData(_bgmVolumeData);
+        SetSEVolumeData(_seVolumeData);
     }
     public override async UniTask Open() {
         await base.Open();
@@ -60,29 +62,52 @@ public class MenuSetting : MenuBase {
         _isClose = true;
     }
     /// <summary>
+    /// BGM音量の設定
+    /// </summary>
+    /// <param name="setValue"></param>
+    public void SetBGMVolume(float setValue) {
+        _bgmVolumeData = Mathf.Clamp(setValue, 0, _DEVIDE_TEN_VOLUME);
+        //テキストの表示（10段階の整数にする）
+        _bgmVolumeText.text = (_bgmVolumeData).ToString();
+    }
+    /// <summary>
+    /// SE音量の設定
+    /// </summary>
+    /// <param name="setValue"></param>
+    public void SetSEVolume(float setValue) {
+        _seVolumeData = Mathf.Clamp(setValue, 0, _DEVIDE_TEN_VOLUME);
+        _seVolumeText.text = (_seVolumeData).ToString();
+    }
+    /// <summary>
     /// BGM音量を上げる
     /// </summary>
     public void AddBGMVolume() {
-        _bgmVolumeData += _DEVIDE_TEN_VOLUME;
+        _bgmVolumeData++;
+        SetBGMVolume(_bgmVolumeData);
         SetBGMVolumeData(_bgmVolumeData);
     }
     /// <summary>
     /// BGM音量を下げる
     /// </summary>
     public void SubBGMVolume() {
-        _bgmVolumeData -= _DEVIDE_TEN_VOLUME;
+        _bgmVolumeData--;
+        SetBGMVolume(_bgmVolumeData);
         SetBGMVolumeData(_bgmVolumeData);
     }
     /// <summary>
     /// SE音量を上げる
     /// </summary>
     public void AddSEVolume() {
-        _seVolumeData += _DEVIDE_TEN_VOLUME;
+        _seVolumeData++;
+        SetSEVolume(_seVolumeData);
         SetSEVolumeData(_seVolumeData);
     }
-
+    /// <summary>
+    /// SE音量を下げる
+    /// </summary>
     public void SubSEVolume() {
-        _seVolumeData -= _DEVIDE_TEN_VOLUME;
+        _seVolumeData--;
+        SetSEVolume(_seVolumeData);
         SetSEVolumeData(_seVolumeData);
     }
     /// <summary>

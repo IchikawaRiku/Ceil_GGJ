@@ -13,6 +13,7 @@ public class PartTitle : PartBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuTitle>("Prefab/Menu/CanvasTitle").Initialize();
+        await MenuManager.instance.Get<MenuSetting>("Prefab/Menu/CanvasSettings").Initialize();
     }
     public override async UniTask Execute() {
         //タイトルメニュー表示

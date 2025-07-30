@@ -9,5 +9,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameConst{
-    
+    //10ТiКKЙ╣Ч╩Т▓Ро
+    public static readonly float _DEVIDE_TEN_VOLUME = 10;
 }

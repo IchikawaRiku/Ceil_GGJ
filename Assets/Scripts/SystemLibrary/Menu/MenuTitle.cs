@@ -14,7 +14,7 @@ public class MenuTitle : MenuBase {
         await base.Open();
         await FadeManager.instance.FadeIn();
         while (true) {
-            if(Input.anyKeyDown) break;
+            if(Input.GetKeyDown(KeyCode.Space)) break;
 
             await UniTask.DelayFrame(1);
         }

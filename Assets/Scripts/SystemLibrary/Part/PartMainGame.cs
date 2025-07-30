@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class PartMainGame : PartBase {
     public override async UniTask Execute() {
-        //UniTask task = PartManager.instance.TransitionPart(eGamePart.Ending);
+        await MenuManager.instance.Get<MenuSetting>().Open();
         await UniTask.CompletedTask;
     }
 }
