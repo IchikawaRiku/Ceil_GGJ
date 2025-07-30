@@ -21,6 +21,8 @@ public class CharacterBase : MonoBehaviour {
 	protected Vector3 moveValue = Vector3.zero;
 	// 移動速度の最大
 	protected const float MOVE_SPEED_MAX = 5f;
+	// ステージギミックの弾のタグ
+	protected const string _BULLET_TAG = "bullet";
 
 	/// <summary>
 	/// 初期化
@@ -40,7 +42,7 @@ public class CharacterBase : MonoBehaviour {
 	/// 移動の入力
 	/// </summary>
 	/// <param name="context"></param>
-	public void OnMove(InputAction.CallbackContext context) {
+	protected void OnMove(InputAction.CallbackContext context) {
 		moveInput = context.ReadValue<Vector2>();
 	}
 
@@ -48,8 +50,9 @@ public class CharacterBase : MonoBehaviour {
 	/// 幽体離脱の入力
 	/// </summary>
 	/// <param name="context"></param>
-	public void OnChangeSpirit(InputAction.CallbackContext context) {
+	protected void OnChangeSpirit(InputAction.CallbackContext context) {
 		if (!context.performed) return;
 		CharacterManager.instance.ChangeControlCharacter();
 	}
+
 }

@@ -82,6 +82,9 @@ public class SpiritCharacter : CharacterBase {
 		if (other.CompareTag(_SWITCH_TAG)) {
 			canOnSwitch = true;
 		}
+		if (other.CompareTag(_BULLET_TAG)) {
+			Debug.Log("Ž€‚ñ‚¾");
+		}
 	}
 
 	/// <summary>

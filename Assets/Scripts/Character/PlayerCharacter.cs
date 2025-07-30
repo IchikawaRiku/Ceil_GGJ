@@ -33,4 +33,14 @@ public class PlayerCharacter : CharacterBase {
 		CameraManager.instance.SetPosition(transform.position);
 	}
 
+	/// <summary>
+	/// “–‚½‚Á‚Ä‚¢‚é‚Æ‚«
+	/// </summary>
+	/// <param name="other"></param>
+	private void OnTriggerEnter(Collider other) {
+		if (other.CompareTag(_BULLET_TAG)) {
+			Debug.Log("Ž€‚ñ‚¾");
+		}
+	}
+
 }
