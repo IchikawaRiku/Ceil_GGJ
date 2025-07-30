@@ -1,3 +1,10 @@
+/*
+ *  @file   PlayerCharacter.cs
+ *  @brief  プレイヤーのキャラクター
+ *  @author Riku
+ *  @date   2025/7/29
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +28,7 @@ public class PlayerCharacter : CharacterBase {
 		Vector3 movePos = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.Translate(movePos);
 		// カメラの位置をセット
-		CameraManager.instance.SetPosition(transform.position);
+		//CameraManager.instance.SetPosition(transform.position);
 	}
 
 }
