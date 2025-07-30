@@ -10,8 +10,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartMainGame : PartBase {
-    public override async UniTask Execute() {
+    [SerializeField]
+    private CharacterManager _characterManager = null;
 
+    public override async UniTask Execute() {
+        _characterManager.Initialize();
         await UniTask.CompletedTask;
     }
 }
