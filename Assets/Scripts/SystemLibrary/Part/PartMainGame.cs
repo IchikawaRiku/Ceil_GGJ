@@ -16,6 +16,7 @@ public class PartMainGame : PartBase {
     private AcceptMenu _acceptMenu = null;
     public override async UniTask Initialize() {
         await base.Initialize();
+        await MenuManager.instance.Get<MenuInGameMenu>("Prefab/Menu/CanvasInGameMenu").Initialize();
         _acceptMenu = new AcceptMenu();
     }
 
