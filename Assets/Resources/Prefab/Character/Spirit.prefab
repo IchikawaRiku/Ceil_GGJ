@@ -180,6 +180,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: a3fc54cb-d23d-459b-b115-25ea202a8f0f
     m_ActionName: UI/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 004fcade-e642-4c4b-af60-449c72b9ddf2
+    m_ActionName: Player/SwitchOn[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

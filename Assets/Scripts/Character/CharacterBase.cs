@@ -17,6 +17,8 @@ public class CharacterBase : MonoBehaviour {
 	protected float speedDownLate = 0.5f;
 	// ˆÚ“®“ü—Í
 	protected Vector2 moveInput = Vector2.zero;
+	// ÅI“I‚ÈˆÚ“®—Ê
+	protected Vector3 moveValue = Vector3.zero;
 	// ˆÚ“®‘¬“x‚ÌÅ‘å
 	protected const float MOVE_SPEED_MAX = 5f;
 
