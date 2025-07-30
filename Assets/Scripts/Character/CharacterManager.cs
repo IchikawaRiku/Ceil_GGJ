@@ -27,11 +27,15 @@ public class CharacterManager : MonoBehaviour {
 		controlCharacter = _player;
 		// —H‘Ì‚Ì“ü—Í‚Í‚Æ‚ç‚È‚¢
 		_spirit.GetComponent<PlayerInput>().enabled = false;
+		_spirit.GetComponent<CharacterBase>().Initialize();
 	}
 
 	private void Update () {
 		// ‘€ìƒLƒƒƒ‰‚ÌÀsˆ—
 		controlCharacter.GetComponent<CharacterBase>().Execute();
+		if (controlCharacter != _spirit) {
+			_spirit.GetComponent<SpiritCharacter>().ReturnPosition();
+		}
 	}
 
 	/// <summary>

@@ -13,6 +13,10 @@ public class CharacterBase : MonoBehaviour {
 	// ˆÚ“®‘¬“x‚ÌÅ‘å
 	protected const float MOVE_SPEED_MAX = 5f;
 
+	public virtual void Initialize() {
+
+	}
+
 	/// <summary>
 	/// Àsˆ—
 	/// </summary>
