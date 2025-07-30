@@ -24,24 +24,25 @@ public class CharacterManager : MonoBehaviour {
 	//未使用状態の幽霊
 	private SpiritCharacter _unuseSpirit = null;
 	// 操作中のキャラ
-	public CharacterBase controlCharacter = null;
+	private CharacterBase _controlCharacter = null;
 
-	private void Start () {
-		instance = this;
-		//プレイヤーの生成
-		_unusePlayer = Instantiate(_playerOrigin, _unuseRoot);
-		_unuseSpirit = Instantiate(_spiritOrigin, _unuseRoot);
-		// 初期操作はプレイヤー
-		controlCharacter = _usePlayer;
-		// 幽体の入力はとらない
-		_unuseSpirit.enabled = false;
-		_unuseSpirit.Initialize();
-	}
+	public void Initialize() {
+        instance = this;
+        //プレイヤーの生成
+        _unusePlayer = Instantiate(_playerOrigin, _unuseRoot);
+        _unuseSpirit = Instantiate(_spiritOrigin, _unuseRoot);
+        // 初期操作はプレイヤー
+        _controlCharacter = _unusePlayer;
+        // 幽体の入力はとらない
+        _unuseSpirit.enabled = false;
+        _unuseSpirit.Initialize();
 
+		UsePlayer();
+    }
 	private void Update () {
 		// 操作キャラの実行処理
-		controlCharacter.Execute();
-		if (controlCharacter != _useSpirit) {
+		_controlCharacter.Execute();
+		if (_controlCharacter != _useSpirit) {
 			_unuseSpirit.ReturnPosition();
 		}
 	}
@@ -50,21 +51,21 @@ public class CharacterManager : MonoBehaviour {
 	/// 操作キャラクターのチェンジ
 	/// </summary>
 	public void ChangeControlCharacter() {
-		if (controlCharacter == _usePlayer) {
+		if (_controlCharacter == _usePlayer) {
 			//幽霊を生成
 			UseSpirit();
 			// コントロールを幽体にする
-			controlCharacter = _useSpirit;
+			_controlCharacter = _useSpirit;
 			// プレイヤーの入力を切る
 			_usePlayer.enabled = false;
 			// 幽体の入力をとる
 			_useSpirit.enabled = true;
 		}
-		else if (controlCharacter == _useSpirit) {
+		else if (_controlCharacter == _useSpirit) {
 			//幽霊を未使用化
 			UnuseSpirit();
 			// コントロールをプレイヤーにする
-			controlCharacter = _usePlayer;
+			_controlCharacter = _usePlayer;
 			// 幽体の入力を切る
 			_unuseSpirit.enabled = false;
 			// プレイヤーの入力をとる
