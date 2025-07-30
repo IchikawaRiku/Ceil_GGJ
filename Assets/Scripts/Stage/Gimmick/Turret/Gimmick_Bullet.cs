@@ -6,8 +6,9 @@ using UnityEngine;
 /// 弾
 /// </summary>
 public class Gimmick_Bullet : MonoBehaviour {
-    [SerializeField] private float speed = 10f;  // 弾の速度
-
+    // 弾の速度
+    private readonly float _BULLET_SPEED = 10;
+    // 使用されているかどうか
     private bool isActive = false;
 
     /// <summary>
@@ -22,9 +23,9 @@ public class Gimmick_Bullet : MonoBehaviour {
         if (!isActive) return;
 
         // 前方に移動
-        transform.position += transform.forward * speed * Time.deltaTime;
+        transform.position += transform.forward * _BULLET_SPEED * Time.deltaTime;
 
-        // 画面がい処理
+        
     }
 
     /// <summary>
@@ -34,4 +35,7 @@ public class Gimmick_Bullet : MonoBehaviour {
         isActive = false;
         gameObject.SetActive(false);
     }
+
+
+
 }
