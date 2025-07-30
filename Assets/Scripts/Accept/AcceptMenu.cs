@@ -11,7 +11,7 @@ public class AcceptMenu {
     public async UniTask AcceptInput() {
         //“ü—ÍŽó•t
         while (true) {
-            if(Input.GetKeyDown(KeyCode.Escape)) await MenuManager.instance.Get<MenuSetting>().Open();
+            if(Input.GetKeyDown(KeyCode.Escape)) await MenuManager.instance.Get<MenuInGameMenu>().Open();
 
             await UniTask.DelayFrame(1);
         }

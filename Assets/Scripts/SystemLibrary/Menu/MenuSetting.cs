@@ -48,12 +48,9 @@ public class MenuSetting : MenuBase {
 
             await UniTask.DelayFrame(1);
         }
+        _isClose = false;
         await FadeManager.instance.FadeOut();
         await Close();
-    }
-    public override async UniTask Close() {
-        await base.Close();
-        _isClose = false;
     }
     /// <summary>
     /// メニュー開閉フラグの変更
