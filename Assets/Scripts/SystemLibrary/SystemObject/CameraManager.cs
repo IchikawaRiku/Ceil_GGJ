@@ -1,8 +1,16 @@
+/*
+ *  @file   CameraManager.cs
+ *  @brief  カメラの管理クラス
+ *  @author Riku
+ *  @date   2025/7/30
+ */
+
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : MonoBehaviour {
+public class CameraManager : SystemObject {
 	// 自身への参照
 	public static CameraManager instance { get; private set; } = null;
 	// 管理中のカメラ
@@ -16,10 +24,11 @@ public class CameraManager : MonoBehaviour {
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	public void Initialize() {
+	public override async UniTask Initialize() {
 		instance = this;
 		// シーン上のカメラをキャッシュ
 		_camera = GameObject.Find(_CAMERA_NAME).GetComponent<Camera>();
+		await UniTask.DelayFrame(1);
 	}
 
 	/// <summary>
