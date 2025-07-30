@@ -11,7 +11,6 @@ using UnityEngine;
 
 public class PartMainGame : PartBase {
     public override async UniTask Execute() {
-        await MenuManager.instance.Get<MenuSetting>().Open();
         await UniTask.CompletedTask;
     }
 }
