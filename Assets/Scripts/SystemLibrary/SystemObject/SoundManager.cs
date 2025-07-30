@@ -11,6 +11,7 @@ using System.Threading;
 using UnityEngine;
 
 using static CommonModule;
+using static GameConst;
 
 public class SoundManager : SystemObject {
     public static SoundManager instance { get; private set; } = null;
@@ -51,11 +52,15 @@ public class SoundManager : SystemObject {
         _bgmAudioSource.Stop();
     }
     /// <summary>
-    /// BGM‚Ì‰¹—Êİ’è
+    /// BGM‚Ì‰¹—Êİ’è(10’iŠK’²®)
     /// </summary>
     /// <param name="setValue"></param>
-    public void SetBGMVolume(int setValue) {
-        _bgmAudioSource.volume = setValue / 1.0f;
+    public void SetBGMVolume(float setValue) {
+        if(setValue <= 0) {
+            _bgmAudioSource.volume = 0;
+        } else {
+            _bgmAudioSource.volume = setValue / _DEVIDE_TEN_VOLUME;
+        }
     }
     /// <summary>
     /// SE‚ÌÄ¶
@@ -78,12 +83,16 @@ public class SoundManager : SystemObject {
         }
     }
     /// <summary>
-    /// SE‚Ì‰¹—Êİ’è
+    /// SE‚Ì‰¹—Êİ’è(10’iŠK’²®)
     /// </summary>
     /// <param name="setValue"></param>
-    public void SetSEVolume(int setValue) {
+    public void SetSEVolume(float setValue) {
         for (int i = 0, max = _seAudioSource.Length; i < max; i++) {
-            _seAudioSource[i].volume = setValue / 1.0f;
+            if(setValue <= 0) {
+                _seAudioSource[i].volume = 0;
+            } else {
+                _seAudioSource[i].volume = setValue / _DEVIDE_TEN_VOLUME;
+            }
         }
     }
 }
