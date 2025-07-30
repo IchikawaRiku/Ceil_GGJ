@@ -18,6 +18,13 @@ public class Gimmick_Switch : GimmickBase {
     }
 
     /// <summary>
+    /// –ˆ‰ñ‰Šú‰»
+    /// </summary>
+    public override void SetUp() {
+        // ‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©
+        _isPressed = false;
+    }
+    /// <summary>
     /// XVˆ—
     /// </summary>
     protected override void OnUpdate() {

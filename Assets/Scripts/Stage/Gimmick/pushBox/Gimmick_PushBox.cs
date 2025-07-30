@@ -21,7 +21,7 @@ public class Gimmick_PushBox : GimmickBase {
                          RigidbodyConstraints.FreezePositionY |
                          RigidbodyConstraints.FreezePositionZ;
     }
-
+    public override void SetUp() { }
     /// <summary>
     /// ‰Ÿ‚³‚ê‚Ä‚¢‚éŠÔ‚Ìˆ—
     /// </summary>
