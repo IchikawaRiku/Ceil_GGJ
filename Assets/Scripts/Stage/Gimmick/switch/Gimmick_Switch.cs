@@ -21,6 +21,9 @@ public class Gimmick_Switch : GimmickBase {
     /// XVˆ—
     /// </summary>
     protected override void OnUpdate() {
+        if (Input.GetKeyDown(KeyCode.Y)) {
+            Press();
+        }
     }
 
     /// <summary>
