@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class PartMainGame : PartBase {
     public override async UniTask Execute() {
+
         await UniTask.CompletedTask;
     }
 }
