@@ -25,10 +25,12 @@ public class PlayerCharacter : CharacterBase {
 			moveSpeed = MOVE_SPEED_MAX;
 		}
 
-		Vector3 movePos = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
-		transform.Translate(movePos);
+		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
+		transform.position += moveValue;
+		// デバッグ用
+		//if (!Input.GetKey(KeyCode.U)) return;
 		// カメラの位置をセット
-		//CameraManager.instance.SetPosition(transform.position);
+		CameraManager.instance.SetPosition(transform.position);
 	}
 
 }

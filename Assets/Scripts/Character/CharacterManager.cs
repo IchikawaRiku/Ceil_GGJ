@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class CharacterManager : MonoBehaviour {
 	// 自身への参照
@@ -33,12 +34,13 @@ public class CharacterManager : MonoBehaviour {
         _unuseSpirit = Instantiate(_spiritOrigin, _unuseRoot);
         // 初期操作はプレイヤー
         _controlCharacter = _unusePlayer;
-        // 幽体の入力はとらない
+        // 幽霊の入力はとらない
         _unuseSpirit.enabled = false;
         _unuseSpirit.Initialize();
 
 		UsePlayer();
     }
+
 	private void Update () {
 		// 操作キャラの実行処理
 		_controlCharacter.Execute();
@@ -54,11 +56,11 @@ public class CharacterManager : MonoBehaviour {
 		if (_controlCharacter == _usePlayer) {
 			//幽霊を生成
 			UseSpirit();
-			// コントロールを幽体にする
+			// コントロールを幽霊にする
 			_controlCharacter = _useSpirit;
 			// プレイヤーの入力を切る
 			_usePlayer.enabled = false;
-			// 幽体の入力をとる
+			// 幽霊の入力をとる
 			_useSpirit.enabled = true;
 		}
 		else if (_controlCharacter == _useSpirit) {
@@ -66,12 +68,13 @@ public class CharacterManager : MonoBehaviour {
 			UnuseSpirit();
 			// コントロールをプレイヤーにする
 			_controlCharacter = _usePlayer;
-			// 幽体の入力を切る
+			// 幽霊の入力を切る
 			_unuseSpirit.enabled = false;
 			// プレイヤーの入力をとる
 			_usePlayer.enabled = true;
 		}
 	}
+
 	/// <summary>
 	/// プレイヤーの生成
 	/// </summary>
@@ -88,6 +91,7 @@ public class CharacterManager : MonoBehaviour {
 		_usePlayer = null;
 		_unusePlayer.transform.SetParent(_unuseRoot);
 	}
+
 	/// <summary>
 	/// 幽霊の生成
 	/// </summary>
@@ -103,5 +107,23 @@ public class CharacterManager : MonoBehaviour {
 		_unuseSpirit = _useSpirit;
 		_useSpirit = null;
 		_unuseSpirit.transform.SetParent(_unuseRoot);
+	}
+
+	/// <summary>
+	/// プレイヤーの位置取得
+	/// </summary>
+	public Vector3 GetPlayerPosition() {
+		if (_usePlayer == null) return Vector3.zero;
+		Vector3 position = _usePlayer.transform.position;
+		return position;
+	}
+
+	/// <summary>
+	/// 幽霊の位置取得
+	/// </summary>
+	public Vector3 GetSpiritPosition() {
+		if (_useSpirit == null) return Vector3.zero;
+		Vector3 position = _useSpirit.transform.position;
+		return position;
 	}
 }
