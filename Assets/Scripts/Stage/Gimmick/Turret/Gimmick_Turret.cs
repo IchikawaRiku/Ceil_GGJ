@@ -42,5 +42,6 @@ public class Gimmick_Turret : GimmickBase {
         bullet.transform.position = firePoint.position;
         bullet.transform.rotation = firePoint.rotation;
         bullet.Fire();
+        
     }
 }
