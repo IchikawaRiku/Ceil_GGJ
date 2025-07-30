@@ -12,9 +12,15 @@ using UnityEngine;
 public class PartMainGame : PartBase {
     [SerializeField]
     private CharacterManager _characterManager = null;
+    //“ü—ÍŽó•t
+    private AcceptMenu _acceptMenu = null;
+    public override async UniTask Initialize() {
+        await base.Initialize();
+        _acceptMenu = new AcceptMenu();
+    }
 
     public override async UniTask Execute() {
         _characterManager.Initialize();
-        await UniTask.CompletedTask;
+        await _acceptMenu.AcceptInput();
     }
 }
