@@ -18,15 +18,20 @@ public class Gimmick_Switch : GimmickBase {
     }
 
     /// <summary>
-    /// 更新処理：今回は使用しない
+    /// 更新処理
     /// </summary>
-    protected override void OnUpdate() { }
+    protected override void OnUpdate() {
+        if (Input.GetKeyDown(KeyCode.Y)) {
+            Press();
+        }
+    }
 
     /// <summary>
     /// 外部からスイッチが押されたことを通知する
     /// </summary>
     public void Press() {
-        if (_isPressed) return; // 既に押されていたら無視
+        // すでに押されているか
+        if (_isPressed) return;
         _isPressed = true;
 
         // 範囲内の全Colliderを取得
@@ -40,7 +45,6 @@ public class Gimmick_Switch : GimmickBase {
             }
         }
 
-        Debug.Log($"{gameObject.name} が押され、近くのギミックが停止されました");
     }
 
     /// <summary>
