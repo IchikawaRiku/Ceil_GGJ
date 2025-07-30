@@ -1,3 +1,10 @@
+/*
+ *  @file   CharacterBase.cs
+ *  @brief  キャラクターの基底クラス
+ *  @author Riku
+ *  @date   2025/7/29
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

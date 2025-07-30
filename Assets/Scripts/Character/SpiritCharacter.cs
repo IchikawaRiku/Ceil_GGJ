@@ -1,3 +1,10 @@
+/*
+ *  @file   SpiritCharacter.cs
+ *  @brief  幽体のキャラクター
+ *  @author Riku
+ *  @date   2025/7/29
+ */
+
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
