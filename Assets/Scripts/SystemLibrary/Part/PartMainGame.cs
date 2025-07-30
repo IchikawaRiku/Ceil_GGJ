@@ -10,8 +10,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartMainGame : PartBase {
-    public override async UniTask Execute() {
+    [SerializeField]
+    private CharacterManager _characterManager = null;
+    //“ü—ÍŽó•t
+    private AcceptMenu _acceptMenu = null;
+    public override async UniTask Initialize() {
+        await base.Initialize();
+        _acceptMenu = new AcceptMenu();
+    }
 
-        await UniTask.CompletedTask;
+    public override async UniTask Execute() {
+        _characterManager.Initialize();
+        await _acceptMenu.AcceptInput();
     }
 }
