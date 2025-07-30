@@ -23,8 +23,9 @@ public class PartMainGame : PartBase {
     }
 
     public override async UniTask Execute() {
-        _stageManager.Initialize();
-        _characterManager.Initialize();
+        await _characterManager.Initialize();
+        await _stageManager.Initialize();
+        await _stageManager.Setup();
         await _acceptMenu.AcceptInput();
     }
 }

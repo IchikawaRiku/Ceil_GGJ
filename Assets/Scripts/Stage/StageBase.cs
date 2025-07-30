@@ -7,7 +7,7 @@ using static CommonModule;
 public abstract class StageBase : MonoBehaviour {
 
     [SerializeField]
-    private GimmickBase[] gimmickBases = null;
+    protected GimmickBase[] _gimmickBases = null;
 
     /// <summary>
     /// ‰Šú‰»ˆ—
@@ -17,10 +17,24 @@ public abstract class StageBase : MonoBehaviour {
         gameObject.SetActive(false);
         await UniTask.CompletedTask;
     }
-    
+
     public virtual async UniTask SetUp() {
         gameObject.SetActive(true);
         await UniTask.CompletedTask;
     }
 
+    /// <summary>
+    /// Àsˆ—
+    /// </summary>
+    /// <returns></returns>
+    public abstract UniTask Execute();
+
+    /// <summary>
+    /// •Ğ•t‚¯ˆ—
+    /// </summary>
+    /// <returns></returns>
+    public virtual async UniTask Teardown() {
+        gameObject.SetActive(false);
+        await UniTask.CompletedTask;
+    }
 }

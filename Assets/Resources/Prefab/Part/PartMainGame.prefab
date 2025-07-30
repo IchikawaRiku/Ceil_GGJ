@@ -75,7 +75,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d4558cb6188184b8095cb52364b19b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stagePrefab: {fileID: 7653131971797324741, guid: 121f3333dd135634ca2a16975b517366, type: 3}
+  stagePrefab: {fileID: -6742331360912164337, guid: 121f3333dd135634ca2a16975b517366, type: 3}
+  _stageOriginList:
+  - {fileID: -6742331360912164337, guid: 121f3333dd135634ca2a16975b517366, type: 3}
 --- !u!1 &3794690232922686671
 GameObject:
   m_ObjectHideFlags: 0
