@@ -25,3 +25,16 @@ public enum eFadeState {
     FadeIn,
     FadeOut
 }
+
+/// <summary>
+/// ステージ列挙体
+/// </summary>
+public enum eStageStage {
+    Invalid = -1,
+    Tutorial,
+    Stage1,
+    Stage2,
+    Stage3,
+
+    Max
+}

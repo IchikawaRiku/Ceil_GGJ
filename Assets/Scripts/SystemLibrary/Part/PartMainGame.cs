@@ -12,6 +12,8 @@ using UnityEngine;
 public class PartMainGame : PartBase {
     [SerializeField]
     private CharacterManager _characterManager = null;
+    [SerializeField]
+    private StageManager _stageManager = null;
     //“ü—ÍŽó•t
     private AcceptMenu _acceptMenu = null;
     public override async UniTask Initialize() {
@@ -21,6 +23,7 @@ public class PartMainGame : PartBase {
     }
 
     public override async UniTask Execute() {
+        _stageManager.Initialize();
         _characterManager.Initialize();
         await _acceptMenu.AcceptInput();
     }

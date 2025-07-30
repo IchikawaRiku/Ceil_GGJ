@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Gimmick_Turret : GimmickBase, IDisablable {
     [SerializeField] private Transform firePoint;        // 弾の発射位置
-    [SerializeField] private float fireInterval = 1f;    // 発射レート
+    private float fireInterval = 0.1f;    // 発射レート
 
     private float _timer;
     private bool _canFire = true;                        // 発射可能フラグ
@@ -29,7 +29,7 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
 
         // 経過時間の更新
         _timer += Time.deltaTime;
-        
+
         if (_timer >= fireInterval) {
             // 発射
             Fire();
