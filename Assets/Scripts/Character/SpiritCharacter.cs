@@ -10,11 +10,17 @@ public class SpiritCharacter : CharacterBase {
 	// –ß‚Á‚Ä‚­‚é‚Ì•âŠÔ”ä—¦
 	private const float _RETURN_LATE = 0.05f;
 
+	/// <summary>
+	/// ‰Šú‰»
+	/// </summary>
 	public override void Initialize() {
 		base.Initialize();
 		moveSpeed = MOVE_SPEED_MAX * _SPEED_LATE;
 	}
 
+	/// <summary>
+	/// Àsˆ—
+	/// </summary>
 	public override void Execute() {
 		base.Execute();
 		Vector3 movePos = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;

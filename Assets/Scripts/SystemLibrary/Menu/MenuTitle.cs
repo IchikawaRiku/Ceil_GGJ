@@ -1,3 +1,9 @@
+/*
+ *  @file   MenuTitle.cs
+ *  @brief  タイトルメニュー
+ *  @author Seki
+ *  @date   2025/7/29
+ */
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +14,7 @@ public class MenuTitle : MenuBase {
         await base.Open();
         await FadeManager.instance.FadeIn();
         while (true) {
-            if(Input.anyKeyDown) break;
+            if(Input.GetKeyDown(KeyCode.Space)) break;
 
             await UniTask.DelayFrame(1);
         }
