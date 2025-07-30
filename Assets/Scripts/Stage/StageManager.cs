@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,5 +19,17 @@ public class StageManager : MonoBehaviour {
         Instantiate(stagePrefab);
     }
 
+    public void TeirDown() {
+        
+    }
+
+    private void UnUseStage() {
+
+    }
+
+
+    public async UniTask TransitionStage(eStageStage nextStage) {
+
+    }
 
 }
