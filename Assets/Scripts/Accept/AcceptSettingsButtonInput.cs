@@ -13,19 +13,19 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class AcceptSettingsButtonInput {
-    //入力を保存する変数
+    // 入力を保存する変数
     private Vector2 _prevInputDir = Vector2.zero;
-    //一度押されたか判別するフラグ
+    // 一度押されたか判別するフラグ
     private bool _isNeutral = false;
-    //現在のボタン情報
+    // 現在のボタン情報
     private Button _currentButton = null;
-    //1フレーム前のボタン情報
+    // 1フレーム前のボタン情報
     private Button _prevButton = null;
-    //InputAction
-    private DefaultInputActions inputAction = null;
+    // InputAction
+    private MyInput inputAction = null;
 
     public void Initialize() {
-        inputAction = new DefaultInputActions();
+        inputAction = MyInputManager.inputAction;
     }
     /// <summary>
     /// 初期ボタンの設定と入力有効化
