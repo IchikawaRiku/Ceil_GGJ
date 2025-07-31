@@ -9,7 +9,7 @@ public class AcceptMenu {
     /// </summary>
     /// <returns></returns>
     public async UniTask AcceptInput() {
-        //“ü—ÍŽó•t
+        // “ü—ÍŽó•t
         while (true) {
             if(Input.GetKeyDown(KeyCode.Escape)) await MenuManager.instance.Get<MenuInGameMenu>().Open();
 

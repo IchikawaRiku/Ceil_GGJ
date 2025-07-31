@@ -21,13 +21,13 @@ public class UserDataManager : SystemObject {
 
     public override async UniTask Initialize() {
         instance = this;
-        //StringBuilderの宣言
+        // StringBuilderの宣言
         StringBuilder fileNameBuilder = new StringBuilder();
         fileNameBuilder.Append(Application.persistentDataPath);
         fileNameBuilder.Append(_userFileName);
-        //連結したファイルパスを渡す
+        // 連結したファイルパスを渡す
         _filePath = fileNameBuilder.ToString();
-        //セーブデータのロード
+        // セーブデータのロード
         LoadUserData();
         await UniTask.CompletedTask;
     }
@@ -55,12 +55,12 @@ public class UserDataManager : SystemObject {
     /// </summary>
     /// <param name="setData"></param>
     private void UserDataToFile(UserData setData) {
-        //FileSteamの宣言
+        // FileSteamの宣言
         FileStream fileStream = new FileStream(_filePath, FileMode.Create);
-        //BinaryFormatterの宣言
+        // BinaryFormatterの宣言
         BinaryFormatter bf = new BinaryFormatter();
         bf.Serialize(fileStream, setData);
-        //ファイルを閉じる
+        // ファイルを閉じる
         fileStream.Close();
     }
     /// <summary>
@@ -69,12 +69,12 @@ public class UserDataManager : SystemObject {
     /// <returns></returns>
     private UserData LoadDataFromFile() {
         if(File.Exists(_filePath)) {
-            //FileStreamの宣言
+            // FileStreamの宣言
             FileStream fileStream = new FileStream(_filePath, FileMode.Open);
-            //BinaryFormatterの宣言
+            // BinaryFormatterの宣言
             BinaryFormatter bf = new BinaryFormatter();
             UserData data = (UserData)bf.Deserialize(fileStream);
-            //ファイルを閉じる
+            // ファイルを閉じる
             fileStream.Close();
             return data;
         } else {
