@@ -26,22 +26,29 @@ public class AcceptMenuButtonInput{
 
     public async UniTask AcceptInput() {
         // EventSystemの現在の選択オブジェクトを取得
+        UpdateCurrentButton();
+        // ボタン情報の更新
+        _prevButton = _currentButton;
+
+        await UniTask.CompletedTask;
+    }
+    /// <summary>
+    /// EventSystemの現在の選択オブジェクトからボタンの拾得、設定
+    /// </summary>
+    private void UpdateCurrentButton() {
+        // EventSystemの現在の選択オブジェクトを取得
         GameObject selectObject = EventSystem.current.currentSelectedGameObject;
         if (selectObject == null) {
             //EventSystemの選択オブジェクトにprevのオブジェクトを設定する
             EventSystem.current.SetSelectedGameObject(_prevButton.gameObject);
             return;
         }
-        // 選択オブジェクトからボタン情報を取得
+        //現在のボタンの取得
         _currentButton = selectObject.GetComponent<Button>();
         if (_currentButton == null && _prevButton != null) {
             //prevを選択状態にする
             _prevButton.Select();
             _currentButton = _prevButton;
         }
-        // ボタン情報の更新
-        _prevButton = _currentButton;
-
-        await UniTask.CompletedTask;
     }
 }
