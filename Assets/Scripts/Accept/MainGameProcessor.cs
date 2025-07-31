@@ -18,6 +18,7 @@ public class MainGameProcessor {
         // “ü—ÍŽó•t
         while (true) {
             if(Input.GetKeyDown(KeyCode.Escape)) await MenuManager.instance.Get<MenuInGameMenu>().Open();
+            await CharacterManager.instance.Execute();
 
             await UniTask.DelayFrame(1);
         }
