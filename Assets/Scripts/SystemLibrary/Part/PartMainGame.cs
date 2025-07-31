@@ -36,5 +36,6 @@ public class PartMainGame : PartBase {
     public override async UniTask Teardown() {
         await base.Teardown();
         _mainProcessor.Teardown();
+        _characterManager.Teardown();
     }
 }

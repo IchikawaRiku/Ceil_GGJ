@@ -139,4 +139,13 @@ public class CharacterManager : MonoBehaviour {
         Vector3 position = _useSpirit.transform.position;
         return position;
     }
+    
+    /// <summary>
+    /// •Ð•t‚¯
+    /// </summary>
+    public void Teardown() {
+        UnusePlayer();
+        UnuseSpirit();
+    }
+
 }
