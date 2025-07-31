@@ -103,6 +103,6 @@ public class SpiritCharacter : CharacterBase {
 	/// <param name="context"></param>
 	public void OnSwitch(InputAction.CallbackContext context) {
 		if (!context.performed || !canOnSwitch) return;
-		Debug.Log("スイッチオン");
+		SwitchUtility.Press();
 	}
 }

@@ -70,7 +70,7 @@ MeshRenderer:
     firstSubMesh: 0
     subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
+  m_ProbeAnchor: {fileID: 4948870729968441596, guid: 46f311046d2104da8b56be3d0a49a119, type: 3}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_ReceiveGI: 1
@@ -183,6 +183,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d338be53-718c-44f7-9487-5159c8693d1c
     m_ActionName: Player/ChangeSprit[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 004fcade-e642-4c4b-af60-449c72b9ddf2
+    m_ActionName: Player/SwitchOn[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
