@@ -38,7 +38,7 @@ public class CameraManager : SystemObject {
 	/// </summary>
 	/// <param name="setPosition"></param>
 	public void SetPosition(Vector3 setPosition) {
-		setPosition.y = _cameraHeight;
+		setPosition.y += _cameraHeight;
 		setPosition.z = _cameraDistance;
 		_camera.transform.position = setPosition;
 	}

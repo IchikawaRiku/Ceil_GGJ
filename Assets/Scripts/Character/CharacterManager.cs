@@ -43,12 +43,17 @@ public class CharacterManager : MonoBehaviour {
         await UniTask.CompletedTask;
     }
 
-    private void Update() {
+    /// <summary>
+    /// Àsˆ—
+    /// </summary>
+    /// <returns></returns>
+    public async UniTask Execute() {
         // ‘€ìƒLƒƒƒ‰‚ÌÀsˆ—
         _controlCharacter.Execute();
         if (_controlCharacter != _useSpirit) {
             _unuseSpirit.ReturnPosition();
         }
+        await UniTask.CompletedTask;
     }
 
     /// <summary>
