@@ -77,11 +77,11 @@ public class CommonModule{
     /// <param name="taskList"></param>
     /// <returns></returns>
     public static async UniTask WaitTask(List<UniTask> taskList) {
-        //タスクリストが空になるまで待つ
+        // タスクリストが空になるまで待つ
         while(!IsEmpty(taskList)) {
             for (int i = taskList.Count - 1; i >= 0; i--) {
                 if (!taskList[i].Status.IsCompleted()) continue;
-                //完了したタスクを取り除く
+                // 完了したタスクを取り除く
                 taskList.RemoveAt(i);
             }
             await UniTask.DelayFrame(1);
