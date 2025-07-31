@@ -48,6 +48,7 @@ public class CharacterManager : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public async UniTask Execute() {
+        if (_controlCharacter == null) return; 
         // ‘€ìƒLƒƒƒ‰‚ÌÀsˆ—
         _controlCharacter.Execute();
         if (_controlCharacter != _useSpirit) {
