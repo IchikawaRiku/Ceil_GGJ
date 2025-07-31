@@ -7,6 +7,7 @@ TagManager:
   - Obstacle
   - switch
   - bullet
+  - ghost
   layers:
   - Default
   - TransparentFX
