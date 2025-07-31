@@ -15,11 +15,14 @@ public class PartMainGame : PartBase {
     [SerializeField]
     private StageManager _stageManager = null;
     //“ü—ÍŽó•t
-    private AcceptMenu _acceptMenu = null;
+    private AcceptOpenMenuInput _acceptMenu = null;
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuInGameMenu>("Prefab/Menu/CanvasInGameMenu").Initialize();
-        _acceptMenu = new AcceptMenu();
+        _acceptMenu = new AcceptOpenMenuInput();
+        await _characterManager.Initialize();
+        await _stageManager.Initialize();
+        _acceptMenu = new AcceptOpenMenuInput();
     }
 
     public override async UniTask Execute() {

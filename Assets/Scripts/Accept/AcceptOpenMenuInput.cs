@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AcceptMenu {
+public class AcceptOpenMenuInput {
     /// <summary>
     /// ƒƒjƒ…[‚Ìó•t
     /// </summary>
