@@ -18,6 +18,8 @@ public class CameraManager : SystemObject {
 	// カメラの離れる距離
 	[SerializeField]
 	private float _cameraDistance = -10f;
+	// カメラの高さ
+	private float _cameraHeight = 2;
 	// カメラの名前
 	private const string _CAMERA_NAME = "Main Camera";
 
@@ -36,6 +38,7 @@ public class CameraManager : SystemObject {
 	/// </summary>
 	/// <param name="setPosition"></param>
 	public void SetPosition(Vector3 setPosition) {
+		setPosition.y = _cameraHeight;
 		setPosition.z = _cameraDistance;
 		_camera.transform.position = setPosition;
 	}

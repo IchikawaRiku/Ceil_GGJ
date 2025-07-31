@@ -75,7 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d4558cb6188184b8095cb52364b19b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stagePrefab: {fileID: -6742331360912164337, guid: 121f3333dd135634ca2a16975b517366, type: 3}
   _stageOriginList:
   - {fileID: -6742331360912164337, guid: 121f3333dd135634ca2a16975b517366, type: 3}
 --- !u!1 &3794690232922686671
@@ -173,5 +172,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _useRoot: {fileID: 2669385000208849357}
   _unuseRoot: {fileID: 1359561233235843851}
-  _playerOrigin: {fileID: 999298662735923019, guid: 179ed56d0fd38d04eae7fcdf790aab16, type: 3}
-  _spiritOrigin: {fileID: 6402439361867626465, guid: 82f28cfecba232b4c80644b135805b4f, type: 3}
+  _playerOrigin: {fileID: 2426098444471397656, guid: 179ed56d0fd38d04eae7fcdf790aab16, type: 3}
+  _spiritOrigin: {fileID: 4752169814502111452, guid: 82f28cfecba232b4c80644b135805b4f, type: 3}
