@@ -35,7 +35,7 @@ public class CharacterBase : MonoBehaviour {
 	/// Àsˆ—
 	/// </summary>
 	public virtual void Execute() {
-		
+
 	}
 
 	/// <summary>
