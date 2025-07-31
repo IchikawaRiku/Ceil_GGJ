@@ -19,12 +19,12 @@ public class PartMainGame : PartBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuInGameMenu>("Prefab/Menu/CanvasInGameMenu").Initialize();
+        await _characterManager.Initialize();
+        await _stageManager.Initialize();
         _acceptMenu = new AcceptMenu();
     }
 
     public override async UniTask Execute() {
-        await _characterManager.Initialize();
-        await _stageManager.Initialize();
         await _stageManager.Setup();
         await _acceptMenu.AcceptInput();
     }
