@@ -24,11 +24,18 @@ public class PartMainGame : PartBase {
         await _stageManager.Initialize();
         _mainProcessor = new MainGameProcessor();
     }
-
+    public override async UniTask Setup() {
+        await base.Setup();
+        _mainProcessor.Setup();
+    }
     public override async UniTask Execute() {
         await _characterManager.Initialize();
         await _stageManager.Initialize();
         await _stageManager.Setup();
         await _mainProcessor.Execute();
+    }
+    public override async UniTask Teardown() {
+        await base.Teardown();
+        _mainProcessor.Teardown();
     }
 }

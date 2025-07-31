@@ -18,6 +18,8 @@ public class SystemManager : MonoBehaviour {
     private void Start() {
         // フレームレート固定
         Application.targetFrameRate = _FPS;
+        //InputActionの初期化
+        MyInputManager.Initialize();
         // システムオブジェクトの生成、初期化
         UniTask task = Initialize();
     }

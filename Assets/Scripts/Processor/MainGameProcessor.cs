@@ -10,6 +10,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainGameProcessor {
+    private MyInput _inputAction = null;
+
+    public void Initialize() {
+        _inputAction = MyInputManager.inputAction;
+    }
+    public void Setup() {
+        _inputAction.Player.Pause.Enable();
+    }
     /// <summary>
     /// メインゲームの実行処理
     /// </summary>
@@ -17,10 +25,13 @@ public class MainGameProcessor {
     public async UniTask Execute() {
         // 入力受付
         while (true) {
-            if(Input.GetKeyDown(KeyCode.Escape)) await MenuManager.instance.Get<MenuInGameMenu>().Open();
+            if(_inputAction.Player.Pause.IsPressed()) await MenuManager.instance.Get<MenuInGameMenu>().Open();
             await CharacterManager.instance.Execute();
 
             await UniTask.DelayFrame(1);
         }
+    }
+    public void Teardown() {
+        _inputAction.Disable();
     }
 }
