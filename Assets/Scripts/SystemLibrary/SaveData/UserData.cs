@@ -10,6 +10,8 @@ using UnityEngine;
 
 [System.Serializable]
 public class UserData{
+    // ステージ攻略データ
+    public int clearStageNum = 0;
     // BGM音量データ
     public float bgmVolume = 0;
     // SE音量データ
