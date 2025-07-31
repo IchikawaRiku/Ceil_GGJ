@@ -69,7 +69,7 @@ public class Gimmick_Switch : GimmickBase {
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player")) {
+        if (other.CompareTag("ghost")) {
             // スイッチを押される対象に登録
             SwitchUtility.Register(this);
         }
@@ -80,7 +80,7 @@ public class Gimmick_Switch : GimmickBase {
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Player")) {
+        if (other.CompareTag("ghost")) {
             // プレイヤーが離れたら解除
             SwitchUtility.Clear();
         }

@@ -23,7 +23,9 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
     /// <summary>
     /// ‚¢‚Ü‚Í‚Â‚©‚í‚È‚¢
     /// </summary>
-    public override void SetUp() {}
+    public override void SetUp() {
+        _canFire = true;
+    }
 
     /// <summary>
     /// XVˆ—

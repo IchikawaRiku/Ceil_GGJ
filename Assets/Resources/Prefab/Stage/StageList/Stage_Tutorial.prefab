@@ -1223,7 +1223,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1179329821109953485, guid: 753c87c7d081efa4787ed8505a9a0620, type: 3}
       propertyPath: disableRadius
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4174691531354486061, guid: 753c87c7d081efa4787ed8505a9a0620, type: 3}
       propertyPath: m_LocalPosition.x
