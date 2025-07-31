@@ -10,7 +10,7 @@ public class BulletPool : MonoBehaviour {
     public static BulletPool Instance { get; private set; }
 
     [SerializeField] private Gimmick_Bullet bulletPrefab;      // ’e‚ÌƒvƒŒƒnƒu
-    [SerializeField] private int initialPoolSize = 100; // ‰Šú¶¬”
+    [SerializeField] private int initialPoolSize = 1000; // ‰Šú¶¬”
 
     private Queue<Gimmick_Bullet> bulletPool = new Queue<Gimmick_Bullet>();
 

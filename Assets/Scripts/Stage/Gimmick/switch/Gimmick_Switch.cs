@@ -6,7 +6,7 @@ using UnityEngine;
 /// スイッチギミック：押されると近くのギミックを停止する
 /// </summary>
 public class Gimmick_Switch : GimmickBase {
-    [SerializeField] private float disableRadius = 10f; // 停止範囲の半径
+    [SerializeField] private float disableRadius; // 停止範囲の半径
     private bool _isPressed = false;                    // 押されたかどうかのフラグ
 
     /// <summary>
@@ -28,6 +28,7 @@ public class Gimmick_Switch : GimmickBase {
     /// 更新処理
     /// </summary>
     protected override void OnUpdate() {
+        // デバッグ用の実装
         if (Input.GetKeyDown(KeyCode.Y)) {
             Press();
         }
@@ -60,5 +61,28 @@ public class Gimmick_Switch : GimmickBase {
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, disableRadius);
+    }
+
+
+    /// <summary>
+    /// プレイヤーがエリア内にいるとき
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Player")) {
+            // スイッチを押される対象に登録
+            SwitchUtility.Register(this);
+        }
+    }
+
+    /// <summary>
+    /// プレイヤーが離れたとき
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerExit(Collider other) {
+        if (other.CompareTag("Player")) {
+            // プレイヤーが離れたら解除
+            SwitchUtility.Clear();
+        }
     }
 }
