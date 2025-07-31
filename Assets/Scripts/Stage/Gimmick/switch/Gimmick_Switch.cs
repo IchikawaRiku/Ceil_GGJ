@@ -28,28 +28,36 @@ public class Gimmick_Switch : GimmickBase {
     /// 更新処理
     /// </summary>
     protected override void OnUpdate() {
-        // デバッグ用の実装
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            Press();
-        }
+        // 特に使用しない
     }
 
     /// <summary>
     /// 外部からスイッチが押されたことを通知する
     /// </summary>
     public void Press() {
-        // すでに押されているか
+        // 押されているか
         if (_isPressed) return;
+        // 押した判定にする
         _isPressed = true;
 
         // 範囲内の全Colliderを取得
         Collider[] hits = Physics.OverlapSphere(transform.position, disableRadius);
 
+        // ぶんまわ～す
         foreach (var hit in hits) {
-            // IDisablable を実装しているギミックを検索
-            IDisablable target = hit.GetComponent<IDisablable>();
-            if (target != null) {
-                target.Disable(); // 停止処理を呼び出す
+            // 停止対象
+            if (hit.TryGetComponent(out IDisablable disablable)) {
+                disablable.Disable();
+            }
+
+            // 破壊対象
+            if (hit.TryGetComponent(out IDestroyable destroyable)) {
+                destroyable.DestroyGimmick();
+            }
+
+            // 可視状態切替対象
+            if (hit.TryGetComponent(out IVisibleToggleable toggleable)) {
+                toggleable.ToggleVisibility();
             }
         }
 
