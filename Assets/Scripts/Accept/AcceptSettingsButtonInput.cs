@@ -28,14 +28,13 @@ public class AcceptSettingsButtonInput {
         inputAction = new DefaultInputActions();
     }
     /// <summary>
-    /// 準備処理
+    /// 初期ボタンの設定と入力有効化
     /// </summary>
     /// <param name="setInitButton"></param>
     public void Setup(Button setInitButton) {
-        // UIが表示されたとき、最初に設定されるボタンを受け取っておく
-        EventSystem.current.SetSelectedGameObject(setInitButton.gameObject);
-        // 最初にSelectが外れたときの対策として、prevに受け取ったボタンを最初に入れておく
+        // 最初にSelectが外れたときの対策
         _prevButton = setInitButton;
+        EventSystem.current.SetSelectedGameObject(setInitButton.gameObject);
         inputAction.UI.Enable();
     }
     /// <summary>
@@ -46,10 +45,38 @@ public class AcceptSettingsButtonInput {
         // 現在の入力の値の取得
         Vector2 currentInputDir = inputAction.UI.Navigate.ReadValue<Vector2>();
         // 一度入力をやめたら、ニュートラル状態にする
-        if (currentInputDir == Vector2.zero) {
-            _isNeutral = true;
-            return;
+        if (IsInputNeutral(currentInputDir)) return;
+        // 選択オブジェクトからボタン情報を取得
+        UpdateCurrentButton();
+        // 左右方向のみの判定
+        bool isSameHorizotal = IsSameHorizotal(currentInputDir, _prevInputDir);
+        //入力が同じ方向で、かつ一度離された後ならボタンの処理実行
+        if (_isNeutral && isSameHorizotal && _currentButton == _prevButton) {
+            _currentButton.onClick.Invoke();
+            await UniTask.Delay(200);
         }
+        //入力、ボタンの更新
+        UpdateInputState(currentInputDir);
+    }
+    public void Teardown() {
+        inputAction.UI.Disable();
+    }
+    /// <summary>
+    /// デバイス入力ゼロか判定
+    /// </summary>
+    /// <param name="inputDir"></param>
+    /// <returns></returns>
+    private bool IsInputNeutral(Vector2 inputDir) {
+        if (inputDir == Vector2.zero) {
+            _isNeutral = true;
+            return true;
+        }
+        return false;
+    }
+    /// <summary>
+    /// EventSystemの現在の選択オブジェクトからボタンの拾得、設定
+    /// </summary>
+    private void UpdateCurrentButton() {
         // EventSystemの現在の選択オブジェクトを取得
         GameObject selectObject = EventSystem.current.currentSelectedGameObject;
         if (selectObject == null) {
@@ -57,30 +84,13 @@ public class AcceptSettingsButtonInput {
             EventSystem.current.SetSelectedGameObject(_prevButton.gameObject);
             return;
         }
-        // 選択オブジェクトからボタン情報を取得
+        //現在のボタンの取得
         _currentButton = selectObject.GetComponent<Button>();
         if (_currentButton == null && _prevButton != null) {
             //prevを選択状態にする
             _prevButton.Select();
             _currentButton = _prevButton;
         }
-        // 左右方向のみの判定
-        bool isSame = IsSameHorizotal(currentInputDir, _prevInputDir);
-        //入力が同じ方向で、かつ一度離された後ならボタンの処理実行
-        if (_isNeutral && isSame && _currentButton == _prevButton) {
-            _currentButton.onClick.Invoke();
-            await UniTask.Delay(200);
-        }
-        // 入力が新しい方向なら更新
-        if (currentInputDir != _prevInputDir) {
-            _prevInputDir = currentInputDir;
-            _isNeutral = false;
-        }
-        // ボタン情報の更新
-        _prevButton = _currentButton;
-    }
-    public void Teardown() {
-        inputAction.UI.Disable();
     }
     /// <summary>
     /// 左右方向のみの入力取得(方向のみの取得のためMathf.Signを使用)
@@ -95,5 +105,18 @@ public class AcceptSettingsButtonInput {
 
         return Mathf.Sign(currentDir.x) != 0 &&
             Mathf.Sign(currentDir.x) == Mathf.Sign(prevDir.x);
+    }
+    /// <summary>
+    /// 前回の入力やボタン状態を更新
+    /// </summary>
+    /// <param name="inputDir"></param>
+    private void UpdateInputState(Vector2 inputDir) {
+        // 入力が新しい方向なら更新
+        if (inputDir != _prevInputDir) {
+            _prevInputDir = inputDir;
+            _isNeutral = false;
+        }
+        // ボタン情報の更新
+        _prevButton = _currentButton;
     }
 }
