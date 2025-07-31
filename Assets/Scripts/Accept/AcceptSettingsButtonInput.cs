@@ -30,12 +30,12 @@ public class AcceptSettingsButtonInput {
     /// <summary>
     /// 準備処理
     /// </summary>
-    /// <param name="setButton"></param>
-    public void Setup(Button setButton) {
+    /// <param name="setInitButton"></param>
+    public void Setup(Button setInitButton) {
         // UIが表示されたとき、最初に設定されるボタンを受け取っておく
-        EventSystem.current.SetSelectedGameObject(setButton.gameObject);
+        EventSystem.current.SetSelectedGameObject(setInitButton.gameObject);
         // 最初にSelectが外れたときの対策として、prevに受け取ったボタンを最初に入れておく
-        _prevButton = setButton;
+        _prevButton = setInitButton;
         inputAction.UI.Enable();
     }
     /// <summary>
