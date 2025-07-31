@@ -25,8 +25,11 @@ public class MainGameProcessor {
     public async UniTask Execute() {
         // “ü—ÍŽó•t
         while (true) {
-            if(_inputAction.Player.Pause.IsPressed()) await MenuManager.instance.Get<MenuInGameMenu>().Open();
-            await CharacterManager.instance.Execute();
+            if (_inputAction.Player.Pause.WasPressedThisFrame()) {
+                await MenuManager.instance.Get<MenuInGameMenu>().Open();
+                _inputAction.Player.Pause.Enable();
+            }
+            UniTask task =  CharacterManager.instance.Execute();
 
             await UniTask.DelayFrame(1);
         }

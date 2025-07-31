@@ -58,7 +58,7 @@ public class MenuSetting : MenuBase {
         _acceptUIButton.Setup(_initSelectButton);
         while (true) {
             await _acceptUIButton.AcceptInput();
-            if(_isClose || _inputAction.Player.Pause.IsPressed()) break;
+            if(_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
 
             await UniTask.DelayFrame(1);
         }

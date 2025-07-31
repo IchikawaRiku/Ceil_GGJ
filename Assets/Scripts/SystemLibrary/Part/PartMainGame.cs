@@ -23,6 +23,7 @@ public class PartMainGame : PartBase {
         await _characterManager.Initialize();
         await _stageManager.Initialize();
         _mainProcessor = new MainGameProcessor();
+        _mainProcessor.Initialize();
     }
     public override async UniTask Setup() {
         await base.Setup();

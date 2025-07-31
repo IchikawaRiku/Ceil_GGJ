@@ -28,13 +28,13 @@ public class MenuInGameMenu : MenuBase {
         await base.Open();
         _inputAction.Player.Pause.Enable();
         _acceptMenuButton.Setup(_initSelectButton);
-        // 入力を取るために1フレーム待つ
-        await UniTask.DelayFrame(1);
         while (true) {
+            // 入力を取るために1フレーム待つ
+            await UniTask.DelayFrame(1);
+            //Escapeで閉じる
+            if (_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
             //ボタン入力処理
             await _acceptMenuButton.AcceptInput();
-            //Escapeで閉じる
-            if (_isClose || _inputAction.Player.Pause.IsPressed()) break;
             //SettingフラグでSetting画面へ遷移
             if (_isSettingsOpen) {
                 await MenuManager.instance.Get<MenuSetting>().Open();
