@@ -86,6 +86,7 @@ MonoBehaviour:
   _gimmickBases:
   - {fileID: 3925299566852369772}
   - {fileID: 7723821097391675057}
+  - {fileID: 342180205297234015}
 --- !u!1 &8148367128440580872
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,6 +799,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc0067b2d25a5f740bfaf06b3af9b654, type: 3}
+--- !u!114 &342180205297234015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6956987672919397899, guid: fc0067b2d25a5f740bfaf06b3af9b654, type: 3}
+  m_PrefabInstance: {fileID: 7220260281602582100}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e69f6b96360de2c449b362ee9f364a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &352466098397720311 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6978242359869147299, guid: fc0067b2d25a5f740bfaf06b3af9b654, type: 3}

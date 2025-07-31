@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,36 +6,22 @@ using UnityEngine;
 /// <summary>
 /// プレイヤーの初期生成位置を決める
 /// </summary>
-public class StartObject : StageObject {
+public class StartObject : GimmickBase {
 
-    public override void Setup() {
-        base.Setup();
+    public override void SetUp() {
+        base.SetUp();
         CreatePlayer();
+    }
+
+    protected override void OnUpdate() {
     }
 
     /// <summary>
     /// プレイヤーを自身の位置に移動
     /// </summary>
     private void CreatePlayer() {
-        CharacterManager.instance.UsePlayer();
+        CharacterUtility.UsePlayer();
+        CharacterManager.instance.SetPlayerPosition(transform.position);
     }
 
-
-    public override Vector3 GetPosition() {
-        return position;
-    }
-
-    public override Quaternion GetRotation() {
-        return rotation;
-    }
-
-    public override void SetPosition(Vector3 _position) {
-        position = _position;
-        transform.position = position;
-    }
-
-    public override void SetRotation(Quaternion _rotation) {
-        rotation = _rotation;
-        transform.rotation = rotation;
-    }
 }

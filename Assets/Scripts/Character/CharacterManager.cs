@@ -39,7 +39,7 @@ public class CharacterManager : MonoBehaviour {
         _unuseSpirit.enabled = false;
         _unuseSpirit.Initialize();
 
-        UsePlayer();
+        
         await UniTask.CompletedTask;
     }
 
@@ -118,6 +118,11 @@ public class CharacterManager : MonoBehaviour {
         if (_usePlayer == null) return Vector3.zero;
         Vector3 position = _usePlayer.transform.position;
         return position;
+    }
+
+
+    public void SetPlayerPosition(Vector3 positoin) {
+        _usePlayer.transform.position = positoin;
     }
 
     /// <summary>
