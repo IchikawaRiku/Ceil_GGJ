@@ -9,13 +9,27 @@ public class Gimmick_PushBox : GimmickBase {
     // 押しているフラグ
     private bool isPushing = false;
 
-    // プレイヤーのTransform参照
+    // プレイヤーのTransform
     private Transform playerTransform;
 
+    // 初期位置保存用
+    private Vector3 boxPosition;
     /// <summary>
     /// 初期化処理
     /// </summary>
     public override void Initialize() {
+        // 初期生成位置を記憶
+        boxPosition = transform.position;
+    }
+
+    /// <summary>
+    /// 使用前準備
+    /// </summary>
+    public override void SetUp() {
+        // 生成位置、各フラグを初期化
+        transform.position = boxPosition;
+        isPushing = false;
+        playerTransform = null;
     }
 
     /// <summary>
@@ -23,6 +37,7 @@ public class Gimmick_PushBox : GimmickBase {
     /// </summary>
     protected override void OnUpdate() {
         if (isPushing && playerTransform != null) {
+            // プレイヤーと箱の距離を正規化して代入
             Vector3 direction = (playerTransform.position - transform.position).normalized;
 
             // 押す方向がX軸成分強めの時だけ移動（X方向にしか動かさない制限）
