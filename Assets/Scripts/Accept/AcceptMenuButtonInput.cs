@@ -12,9 +12,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class AcceptMenuButtonInput{
-    //現在のボタン情報
+    // 現在のボタン情報
     private Button _currentButton = null;
-    //1フレーム前のボタン情報
+    // 1フレーム前のボタン情報
     private Button _prevButton = null;
 
     public void Setup(Button setInitButton) {
@@ -43,10 +43,10 @@ public class AcceptMenuButtonInput{
             EventSystem.current.SetSelectedGameObject(_prevButton.gameObject);
             return;
         }
-        //現在のボタンの取得
+        // 現在のボタンの取得
         _currentButton = selectObject.GetComponent<Button>();
         if (_currentButton == null && _prevButton != null) {
-            //prevを選択状態にする
+            // prevを選択状態にする
             _prevButton.Select();
             _currentButton = _prevButton;
         }

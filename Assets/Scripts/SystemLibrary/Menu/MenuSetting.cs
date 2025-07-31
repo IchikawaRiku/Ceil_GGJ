@@ -8,6 +8,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,8 @@ public class MenuSetting : MenuBase {
     private Button _initSelectButton = null;
     // ボタンの入力受付
     private AcceptSettingsButtonInput _acceptUIButton = null;
+    // InputAction
+    private MyInput _inputAction = null;
     // メニューを閉じるか判別するフラグ
     private bool _isClose = false;
     // BGMの音量データ
@@ -34,6 +37,7 @@ public class MenuSetting : MenuBase {
 
     public override async UniTask Initialize() {
         await base.Initialize();
+        _inputAction = MyInputManager.inputAction;
         _acceptUIButton = new AcceptSettingsButtonInput();
         _acceptUIButton.Initialize();
         _isClose = false;
@@ -50,14 +54,16 @@ public class MenuSetting : MenuBase {
     public override async UniTask Open() {
         await base.Open();
         await FadeManager.instance.FadeIn();
+        _inputAction.Player.Pause.Enable();
         _acceptUIButton.Setup(_initSelectButton);
         while (true) {
             await _acceptUIButton.AcceptInput();
-            if(_isClose || Input.GetKeyDown(KeyCode.Escape)) break;
+            if(_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
 
             await UniTask.DelayFrame(1);
         }
         _isClose = false;
+        _inputAction.Player.Pause.Disable();
         _acceptUIButton.Teardown();
         await FadeManager.instance.FadeOut();
         await Close();
