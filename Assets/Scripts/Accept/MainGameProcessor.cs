@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AcceptOpenMenuInput {
+public class MainGameProcessor {
     /// <summary>
-    /// メニューの受付
+    /// メインゲームの実行処理
     /// </summary>
     /// <returns></returns>
-    public async UniTask AcceptInput() {
+    public async UniTask Execute() {
         // 入力受付
         while (true) {
             if(Input.GetKeyDown(KeyCode.Escape)) await MenuManager.instance.Get<MenuInGameMenu>().Open();

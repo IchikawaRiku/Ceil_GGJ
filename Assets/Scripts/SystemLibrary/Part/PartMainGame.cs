@@ -15,20 +15,20 @@ public class PartMainGame : PartBase {
     [SerializeField]
     private StageManager _stageManager = null;
     //“ü—ÍŽó•t
-    private AcceptOpenMenuInput _acceptMenu = null;
+    private MainGameProcessor _mainProcessor = null;
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuInGameMenu>("Prefab/Menu/CanvasInGameMenu").Initialize();
-        _acceptMenu = new AcceptOpenMenuInput();
+        _mainProcessor = new MainGameProcessor();
         await _characterManager.Initialize();
         await _stageManager.Initialize();
-        _acceptMenu = new AcceptOpenMenuInput();
+        _mainProcessor = new MainGameProcessor();
     }
 
     public override async UniTask Execute() {
         await _characterManager.Initialize();
         await _stageManager.Initialize();
         await _stageManager.Setup();
-        await _acceptMenu.AcceptInput();
+        await _mainProcessor.Execute();
     }
 }
