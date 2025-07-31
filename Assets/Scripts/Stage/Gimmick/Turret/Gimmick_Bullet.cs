@@ -9,7 +9,7 @@ public class Gimmick_Bullet : MonoBehaviour {
     // ’e‚Ì‘¬“x
     private readonly float _BULLET_SPEED = 10;
     // ’e‚ª‚«‚¦‚é‚Ü‚Å‚ÌŽžŠÔ
-    private readonly float _LIFETIME = 1f;
+    private readonly float _LIFETIME = 0.3f;
 
     // Žg—p‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
     private bool _isActive = false;
