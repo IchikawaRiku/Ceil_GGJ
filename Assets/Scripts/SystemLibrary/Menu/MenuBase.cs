@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuBase : MonoBehaviour {
-    //メニューオブジェクト
+    // メニューオブジェクト
     [SerializeField]
     private Transform _menuRoot = null;
 

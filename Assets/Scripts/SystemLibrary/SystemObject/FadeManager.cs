@@ -50,11 +50,11 @@ public class FadeManager : SystemObject {
         Color targetColor = _fadeImage.color;
         while(elapsedTime < duration) {
             elapsedTime += Time.deltaTime;
-            //補完した不透明度をフェード画像に設定
+            // 補完した不透明度をフェード画像に設定
             float t = elapsedTime / duration;
             targetColor.a = Mathf.Lerp(startAlpha, (float)fadeState, t);
             _fadeImage.color = targetColor;
-            //1フレーム待つ
+            // 1フレーム待つ
             await UniTask.DelayFrame(1);
         }
         targetColor.a = (int)fadeState;

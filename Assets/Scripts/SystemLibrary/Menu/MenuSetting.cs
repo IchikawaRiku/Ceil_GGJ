@@ -10,25 +10,32 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.UI;
 using static GameConst;
 
 public class MenuSetting : MenuBase {
-    //BGM音量のテキスト
+    // BGM音量のテキスト
     [SerializeField]
     private TextMeshProUGUI _bgmVolumeText = null;
-    //SE音量のテキスト
+    // SE音量のテキスト
     [SerializeField]
     private TextMeshProUGUI _seVolumeText = null;
-    //メニューを閉じるか判別するフラグ
+    // 最初に選択されるボタン
+    [SerializeField]
+    private Button _initSelectButton = null;
+    // ボタンの入力受付
+    private AcceptSettingsButtonInput _acceptUIButton = null;
+    // メニューを閉じるか判別するフラグ
     private bool _isClose = false;
-    //BGMの音量データ
+    // BGMの音量データ
     private float _bgmVolumeData = -1;
-    //SEの音量データ
+    // SEの音量データ
     private float _seVolumeData = -1;
 
     public override async UniTask Initialize() {
         await base.Initialize();
+        _acceptUIButton = new AcceptSettingsButtonInput();
+        _acceptUIButton.Initialize();
         _isClose = false;
         SetupData();
     }
@@ -42,13 +49,16 @@ public class MenuSetting : MenuBase {
     }
     public override async UniTask Open() {
         await base.Open();
+        _acceptUIButton.Setup(_initSelectButton);
         await FadeManager.instance.FadeIn();
-        while (true) { 
+        while (true) {
+            await _acceptUIButton.AcceptInput();
             if(_isClose || Input.GetKeyDown(KeyCode.Escape)) break;
 
             await UniTask.DelayFrame(1);
         }
         _isClose = false;
+        _acceptUIButton.Teardown();
         await FadeManager.instance.FadeOut();
         await Close();
     }
@@ -64,7 +74,7 @@ public class MenuSetting : MenuBase {
     /// <param name="setValue"></param>
     public void SetBGMVolume(float setValue) {
         _bgmVolumeData = Mathf.Clamp(setValue, 0, _DEVIDE_TEN_VOLUME);
-        //テキストの表示（10段階の整数にする）
+        // テキストの表示（10段階の整数にする）
         _bgmVolumeText.text = (_bgmVolumeData).ToString();
     }
     /// <summary>

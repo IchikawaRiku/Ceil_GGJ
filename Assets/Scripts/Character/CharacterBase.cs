@@ -42,7 +42,7 @@ public class CharacterBase : MonoBehaviour {
 	/// ˆÚ“®‚Ì“ü—Í
 	/// </summary>
 	/// <param name="context"></param>
-	protected void OnMove(InputAction.CallbackContext context) {
+	public void OnMove(InputAction.CallbackContext context) {
 		moveInput = context.ReadValue<Vector2>();
 	}
 
@@ -50,7 +50,7 @@ public class CharacterBase : MonoBehaviour {
 	/// —H‘Ì—£’E‚Ì“ü—Í
 	/// </summary>
 	/// <param name="context"></param>
-	protected void OnChangeSpirit(InputAction.CallbackContext context) {
+	public void OnChangeSpirit(InputAction.CallbackContext context) {
 		if (!context.performed) return;
 		CharacterManager.instance.ChangeControlCharacter();
 	}

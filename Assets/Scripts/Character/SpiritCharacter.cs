@@ -38,6 +38,7 @@ public class SpiritCharacter : CharacterBase {
 	public override void Execute() {
 		base.Execute();
 		moveValue = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
+
 		// ˆÚ“®§ŒÀ
 		LeaveLimit();
 		transform.position += moveValue;

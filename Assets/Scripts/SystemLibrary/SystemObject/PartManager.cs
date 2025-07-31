@@ -39,12 +39,12 @@ public class PartManager : SystemObject {
     /// <param name="nextPart"></param>
     /// <returns></returns>
     public async UniTask TransitionPart(eGamePart nextPart) {
-        //現在のパートの片付け
+        // 現在のパートの片付け
         if (_currentPart != null) await _currentPart.Teardown();
-        //パートの切り替え
+        // パートの切り替え
         _currentPart = _partList[(int)nextPart];
         await _currentPart.Setup();
-        //次のパートの実行処理
+        // 次のパートの実行処理
         UniTask task = _currentPart.Execute();
     }
 }

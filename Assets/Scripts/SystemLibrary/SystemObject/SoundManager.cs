@@ -15,20 +15,20 @@ using static GameConst;
 
 public class SoundManager : SystemObject {
     public static SoundManager instance { get; private set; } = null;
-    //BGM再生用コンポーネント
+    // BGM再生用コンポーネント
     [SerializeField]
     private AudioSource _bgmAudioSource = null;
-    //SE再生用コンポーネント
+    // SE再生用コンポーネント
     [SerializeField]
     private AudioSource[] _seAudioSource = null;
-    //BGMのリスト
+    // BGMのリスト
     [SerializeField]
     private BGMAssign _bgmAssign = null;
-    //SEのリスト
+    // SEのリスト
     [SerializeField]
     private SEAssign _seAssign = null;
 
-    //入力受付タスク中断用トークン
+    // 入力受付タスク中断用トークン
     private CancellationToken _token;
 
     public override async UniTask Initialize() {
@@ -70,13 +70,13 @@ public class SoundManager : SystemObject {
     public async UniTask PlaySE(int seID) {
         _token = this.GetCancellationTokenOnDestroy();
         if(!IsEnableIndex(_seAssign.seArray, seID)) return;
-        //再生中でないオーディオソースを探してそれを再生
+        // 再生中でないオーディオソースを探してそれを再生
         for (int i = 0, max = _seAudioSource.Length; i < max; i++) {
             if(_seAudioSource[i] == null || _seAudioSource[i].isPlaying) continue;
-            //再生中でないオーディオソースが見つかったら再生
+            // 再生中でないオーディオソースが見つかったら再生
             _seAudioSource[i].clip = _seAssign.seArray[seID];
             _seAudioSource[i].Play();
-            //SEの終了待ち
+            // SEの終了待ち
             while(_seAudioSource[i].isPlaying) await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
 
             return;

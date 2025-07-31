@@ -10,8 +10,8 @@ using UnityEngine;
 
 [System.Serializable]
 public class UserData{
-    //BGM音量データ
+    // BGM音量データ
     public float bgmVolume = 0;
-    //SE音量データ
+    // SE音量データ
     public float seVolume = 0;
 }
