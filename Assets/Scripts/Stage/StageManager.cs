@@ -16,6 +16,10 @@ public class StageManager : MonoBehaviour {
     // 現在のステージ
     private StageBase _currentStage = null;
 
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <returns></returns>
     public async UniTask Initialize() {
         instance = this;
         int stageMax = (int)eStageStage.Max;
@@ -29,18 +33,25 @@ public class StageManager : MonoBehaviour {
         await WaitTask(taskList);
     }
 
+    /// <summary>
+    /// 準備
+    /// </summary>
+    /// <returns></returns>
     public async UniTask Setup() {
         int stageMax = (int)eStageStage.Max;
-        _stageList = new StageBase[stageMax];
-
         List<UniTask> taskList = new List<UniTask>(stageMax);
         for (int i = 0; i < 1; i++) {
-            _stageList[i] = Instantiate(_stageOriginList[i], transform);
+
             taskList.Add(_stageList[i].SetUp());
         }
         await WaitTask(taskList);
     }
 
+    /// <summary>
+    /// ステージの遷移
+    /// </summary>
+    /// <param name="nextStage"></param>
+    /// <returns></returns>
     public async UniTask TransitionStage(eStageStage nextStage) {
         // 現在のステージの片付け
         if (_currentStage != null) await _currentStage.Teardown();
