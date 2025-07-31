@@ -1,3 +1,10 @@
+/*
+ *  @file   CharacterManager.cs
+ *  @brief  キャラクターの管理クラス
+ *  @author Riku
+ *  @date   2025/7/29
+ */
+
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,8 +44,8 @@ public class CharacterManager : MonoBehaviour {
         _controlCharacter = _unusePlayer;
         // 幽霊の入力はとらない
         _unuseSpirit.enabled = false;
-        _unuseSpirit.Initialize();
-
+        await _unuseSpirit.Initialize();
+        await _unusePlayer.Initialize();
         
         await UniTask.CompletedTask;
     }
@@ -126,7 +133,10 @@ public class CharacterManager : MonoBehaviour {
         return position;
     }
 
-
+    /// <summary>
+    /// プレイヤーの位置のセット
+    /// </summary>
+    /// <param name="positoin"></param>
     public void SetPlayerPosition(Vector3 positoin) {
         _usePlayer.transform.position = positoin;
     }

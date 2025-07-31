@@ -5,32 +5,46 @@
  *  @date   2025/7/29
  */
 
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerCharacter : CharacterBase {
+	private Rigidbody _rig = null;
+	// ジャンプ力
+	private float _jumpPower = 5f;
+
+	public override async UniTask Initialize() {
+		await base.Initialize();
+		_rig = GetComponent<Rigidbody>();
+	}
 
 	/// <summary>
 	/// 実行処理
 	/// </summary>
-	public override void Execute() {
-		base.Execute();
-		// 箱押し判定(仮)
-		if (Input.GetKey(KeyCode.LeftShift)) {
-			moveSpeed = MOVE_SPEED_MAX * speedDownLate;
-		}
-		else {
-			moveSpeed = MOVE_SPEED_MAX;
-		}
+	public override async UniTask Execute() {
+		await base.Execute();
 
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.position += moveValue;
-		// デバッグ用
-		//if (!Input.GetKey(KeyCode.U)) return;
 		// カメラの位置をセット
 		CameraManager.instance.SetPosition(transform.position);
+		// デバッグ用
+		if (Input.GetKeyDown(KeyCode.U)) {
+			OnJump();
+		}
+
+		prevPos = transform.position;
+	}
+
+	/// <summary>
+	/// 地面触れ判定
+	/// </summary>
+	private bool GetTouchGround() {
+		if (prevPos.y == transform.position.y) return false;
+		return true;
 	}
 
 	/// <summary>
@@ -43,4 +57,11 @@ public class PlayerCharacter : CharacterBase {
 		}
 	}
 
+	/// <summary>
+	/// ジャンプの入力
+	/// </summary>
+	private void OnJump() {
+		if (GetTouchGround()) return;
+		_rig.velocity = Vector3.up * _jumpPower;
+	}
 }

@@ -27,32 +27,31 @@ public class SpiritCharacter : CharacterBase {
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	public override void Initialize() {
-		base.Initialize();
+	public override async UniTask Initialize() {
+		await base.Initialize();
 		moveSpeed = MOVE_SPEED_MAX * _SPEED_LATE;
 	}
 
 	/// <summary>
 	/// 実行処理
 	/// </summary>
-	public override void Execute() {
-		base.Execute();
+	public override async UniTask Execute() {
+		await base.Execute();
 		moveValue = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
-
 		// 移動制限
 		LeaveLimit();
 		transform.position += moveValue;
+
+		prevPos = transform.position;
 	}
 
 	/// <summary>
 	/// 移動制限
 	/// </summary>
 	private void LeaveLimit() {
-		// 現在地
-		Vector3 position = transform.position;
 		// 移動予定地
-		float movePosX = position.x + moveValue.x;
-		float movePosY = position.y + moveValue.y;
+		float movePosX = prevPos.x + moveValue.x;
+		float movePosY = prevPos.y + moveValue.y;
 		// プレイヤーから離れられる距離
 		float playerLeaveMaxX = CharacterManager.instance.GetPlayerPosition().x + _PLAYER_LEAVE_MAX;
 		float playerLeaveMinX = CharacterManager.instance.GetPlayerPosition().x - _PLAYER_LEAVE_MAX;

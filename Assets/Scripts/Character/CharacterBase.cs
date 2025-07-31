@@ -5,6 +5,7 @@
  *  @date   2025/7/29
  */
 
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class CharacterBase : MonoBehaviour {
 	protected Vector2 moveInput = Vector2.zero;
 	// 最終的な移動量
 	protected Vector3 moveValue = Vector3.zero;
+	// 1フレーム前のポジション
+	public Vector3 prevPos = Vector3.zero;
 	// 移動速度の最大
 	protected const float MOVE_SPEED_MAX = 5f;
 	// ステージギミックの弾のタグ
@@ -27,15 +30,15 @@ public class CharacterBase : MonoBehaviour {
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	public virtual void Initialize() {
-
+	public virtual async UniTask Initialize() {
+		await UniTask.CompletedTask;
 	}
 
 	/// <summary>
 	/// 実行処理
 	/// </summary>
-	public virtual void Execute() {
-
+	public virtual async UniTask Execute() {
+		await UniTask.CompletedTask;
 	}
 
 	/// <summary>
