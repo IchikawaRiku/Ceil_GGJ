@@ -49,8 +49,8 @@ public class MenuSetting : MenuBase {
     }
     public override async UniTask Open() {
         await base.Open();
-        _acceptUIButton.Setup(_initSelectButton);
         await FadeManager.instance.FadeIn();
+        _acceptUIButton.Setup(_initSelectButton);
         while (true) {
             await _acceptUIButton.AcceptInput();
             if(_isClose || Input.GetKeyDown(KeyCode.Escape)) break;
