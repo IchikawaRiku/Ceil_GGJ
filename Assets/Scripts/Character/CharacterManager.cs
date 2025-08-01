@@ -163,6 +163,9 @@ public class CharacterManager : MonoBehaviour {
     /// •Ð•t‚¯
     /// </summary>
     public void Teardown() {
+        _usePlayer.Teardown();
+        if (_useSpirit == null) _unuseSpirit.Teardown();
+        else _useSpirit.Teardown();
         UnusePlayer();
         UnuseSpirit();
     }
