@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3cd0ee189a243446b9f5e4ac55143da0, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -234,3 +238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddc582597a9bef4b872569b3e781db5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  moveInput: {x: 0, y: 0}
+  moveValue: {x: 0, y: 0, z: 0}
