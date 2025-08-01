@@ -27,7 +27,6 @@ public class PartMainGame : PartBase {
     }
     public override async UniTask Setup() {
         await base.Setup();
-        await _stageManager.Setup();
         _mainProcessor.Setup();
     }
     public override async UniTask Execute() {

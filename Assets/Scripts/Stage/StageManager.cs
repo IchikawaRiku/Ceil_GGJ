@@ -26,27 +26,12 @@ public class StageManager : MonoBehaviour {
         _stageList = new StageBase[stageMax];
 
         List<UniTask> taskList = new List<UniTask>(stageMax);
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < stageMax; i++) {
             _stageList[i] = Instantiate(_stageOriginList[i], transform);
             taskList.Add(_stageList[i].Initialize());
         }
         await WaitTask(taskList);
     }
-
-    /// <summary>
-    /// 準備
-    /// </summary>
-    /// <returns></returns>
-    public async UniTask Setup() {
-        int stageMax = (int)eStageStage.Max;
-        List<UniTask> taskList = new List<UniTask>(stageMax);
-        for (int i = 0; i < 1; i++) {
-
-            taskList.Add(_stageList[i].SetUp());
-        }
-        await WaitTask(taskList);
-    }
-
     /// <summary>
     /// ステージの遷移
     /// </summary>

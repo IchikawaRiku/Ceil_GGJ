@@ -77,6 +77,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stageOriginList:
   - {fileID: -6742331360912164337, guid: 121f3333dd135634ca2a16975b517366, type: 3}
+  - {fileID: 1342874875894951380, guid: ed659b981939954448b1470ef97af7a2, type: 3}
+  - {fileID: 3124782119318338921, guid: 695073160ed0c924ab44ca674d1fe0ca, type: 3}
+  - {fileID: 3995837784983181039, guid: 3c5580fc18dbf3f44b47208bcac0b9a5, type: 3}
 --- !u!1 &3794690232922686671
 GameObject:
   m_ObjectHideFlags: 0

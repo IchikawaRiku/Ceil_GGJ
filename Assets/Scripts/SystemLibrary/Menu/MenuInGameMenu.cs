@@ -17,24 +17,22 @@ public class MenuInGameMenu : MenuBase {
     // タイトルパートへ戻るか判別するフラグ
     private bool _isReturnTitle = false;
 
-    private AcceptMenuButtonInput _acceptMenuButton = null;
+    private AcceptMenuButtonInput _acceptButtonInput = null;
 
     public override async UniTask Initialize() {
         await base.Initialize();
         _inputAction = MyInputManager.inputAction;
-        _acceptMenuButton = new AcceptMenuButtonInput();
+        _acceptButtonInput = new AcceptMenuButtonInput();
     }
     public override async UniTask Open() {
         await base.Open();
         _inputAction.Player.Pause.Enable();
-        _acceptMenuButton.Setup(_initSelectButton);
+        await _acceptButtonInput.Setup(_initSelectButton);
         while (true) {
-            // 入力を取るために1フレーム待つ
-            await UniTask.DelayFrame(1);
             //Escapeで閉じる
             if (_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
             //ボタン入力処理
-            await _acceptMenuButton.AcceptInput();
+            await _acceptButtonInput.AcceptInput();
             //SettingフラグでSetting画面へ遷移
             if (_isSettingsOpen) {
                 await MenuManager.instance.Get<MenuSetting>().Open();
