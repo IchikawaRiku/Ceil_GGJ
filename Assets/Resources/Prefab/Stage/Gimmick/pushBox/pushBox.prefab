@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 3158846165225326004}
   - component: {fileID: 7658551941057218606}
   - component: {fileID: 8942105783815972359}
-  m_Layer: 0
-  m_Name: PushBox
+  m_Layer: 7
+  m_Name: pushBox
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
