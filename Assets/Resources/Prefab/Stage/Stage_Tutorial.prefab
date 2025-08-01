@@ -1441,6 +1441,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tile_Road_Solo (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8235233857279082801, guid: 341e51ffcacc4a3419e517763508953d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8719739787567930251, guid: 341e51ffcacc4a3419e517763508953d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -2130,6 +2134,10 @@ PrefabInstance:
     - target: {fileID: 8235233857279082801, guid: 341e51ffcacc4a3419e517763508953d, type: 3}
       propertyPath: m_Name
       value: Tile_Road_Solo (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8235233857279082801, guid: 341e51ffcacc4a3419e517763508953d, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8719739787567930251, guid: 341e51ffcacc4a3419e517763508953d, type: 3}
       propertyPath: m_LocalScale.x
