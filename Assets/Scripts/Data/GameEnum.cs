@@ -13,7 +13,8 @@ public enum eGamePart {
     Stanby,
     Title,
     MainGame,
-    Ending,
+    GameClear,
+    GameOver,
 
     Max
 }
