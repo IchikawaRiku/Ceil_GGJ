@@ -13,15 +13,16 @@ using UnityEngine.InputSystem;
 
 public class CharacterBase : MonoBehaviour {
 	// 移動速度
+	[SerializeField]
 	protected float moveSpeed = 5f;
 	// 移動速度減少の倍率
 	protected float speedDownLate = 0.5f;
+	[SerializeField]
 	// 移動入力
 	protected Vector2 moveInput = Vector2.zero;
+	[SerializeField]
 	// 最終的な移動量
 	protected Vector3 moveValue = Vector3.zero;
-	// 1フレーム前のポジション
-	public Vector3 prevPos = Vector3.zero;
 	// 移動速度の最大
 	protected const float MOVE_SPEED_MAX = 5f;
 	// ステージギミックの弾のタグ
@@ -55,7 +56,7 @@ public class CharacterBase : MonoBehaviour {
 	/// <param name="context"></param>
 	public void OnChangeSpirit(InputAction.CallbackContext context) {
 		if (!context.performed) return;
-		CharacterManager.instance.ChangeControlCharacter();
+ 		CharacterManager.instance.ChangeControlCharacter();
 	}
 
 }
