@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5752699570299759676}
   - component: {fileID: 2761272559810198890}
   - component: {fileID: 377426969098149059}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Stage_Collider_Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6565628804546270116}
   - component: {fileID: 2610903147314860831}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletPoolHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 3505970626198751273}
   - component: {fileID: 5836040989861938469}
   - component: {fileID: 202683317335573908}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7173589740582321305}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,9 +155,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3505970626198751273}
     m_Modifications:
+    - target: {fileID: 2701207937982334111, guid: cd40cab47ac214e4782fe0898644945c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2701207938523222053, guid: cd40cab47ac214e4782fe0898644945c, type: 3}
       propertyPath: m_Name
       value: canon_001
+      objectReference: {fileID: 0}
+    - target: {fileID: 2701207938523222053, guid: cd40cab47ac214e4782fe0898644945c, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3330217183687215775, guid: cd40cab47ac214e4782fe0898644945c, type: 3}
       propertyPath: m_LocalScale.x

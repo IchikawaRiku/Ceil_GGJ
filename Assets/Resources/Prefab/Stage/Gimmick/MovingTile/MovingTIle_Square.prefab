@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8421865011171320540}
   - component: {fileID: 5834530953220127418}
   - component: {fileID: 3958523017759540533}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MovingTIle_Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
