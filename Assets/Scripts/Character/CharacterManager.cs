@@ -57,7 +57,7 @@ public class CharacterManager : MonoBehaviour {
     public async UniTask Execute() {
         if (_controlCharacter == null) return; 
         // 操作キャラの実行処理
-        UniTask task = _controlCharacter.Execute();
+        await _controlCharacter.Execute();
         if (_controlCharacter != _useSpirit) {
             _unuseSpirit.ReturnPosition();
         }
@@ -71,23 +71,24 @@ public class CharacterManager : MonoBehaviour {
         if (_controlCharacter == _usePlayer) {
             //幽霊を生成
             UseSpirit();
-            // コントロールを幽霊にする
-            _controlCharacter = _useSpirit;
-            // プレイヤーの入力を切る
-            _usePlayer.enabled = false;
-            // 幽霊の入力をとる
-            _useSpirit.enabled = true;
-        }
+			// コントロールを幽霊にする
+			_controlCharacter = _useSpirit;
+			// プレイヤーの入力を切る
+			_usePlayer.enabled = false;
+			// 幽霊の入力をとる
+			_useSpirit.enabled = true;
+
+		}
         else if (_controlCharacter == _useSpirit) {
             //幽霊を未使用化
             UnuseSpirit();
-            // コントロールをプレイヤーにする
-            _controlCharacter = _usePlayer;
-            // 幽霊の入力を切る
-            _unuseSpirit.enabled = false;
-            // プレイヤーの入力をとる
-            _usePlayer.enabled = true;
-        }
+			// コントロールをプレイヤーにする
+			_controlCharacter = _usePlayer;
+			// 幽霊の入力を切る
+			_unuseSpirit.enabled = false;
+			// プレイヤーの入力をとる
+			_usePlayer.enabled = true;
+		}
     }
 
     /// <summary>
@@ -97,12 +98,19 @@ public class CharacterManager : MonoBehaviour {
         _usePlayer = _unusePlayer;
         _unusePlayer = null;
         _usePlayer.transform.SetParent(_useRoot);
-    }
+		// コントロールをプレイヤーにする
+		_controlCharacter = _usePlayer;
+		// 幽霊の入力を切る
+		_unuseSpirit.enabled = false;
+		// プレイヤーの入力をとる
+		_usePlayer.enabled = true;
+	}
     /// <summary>
     /// プレイヤーの未使用化
     /// </summary>
     public void UnusePlayer() {
-        _unusePlayer = _usePlayer;
+		if (_usePlayer == null) return;
+		_unusePlayer = _usePlayer;
         _usePlayer = null;
         _unusePlayer.transform.SetParent(_unuseRoot);
     }
@@ -114,15 +122,16 @@ public class CharacterManager : MonoBehaviour {
         _useSpirit = _unuseSpirit;
         _unuseSpirit = null;
         _useSpirit.transform.SetParent(_useRoot);
-    }
+	}
     /// <summary>
     /// 幽霊の未使用化
     /// </summary>
     public void UnuseSpirit() {
+        if (_useSpirit == null) return;
         _unuseSpirit = _useSpirit;
         _useSpirit = null;
         _unuseSpirit.transform.SetParent(_unuseRoot);
-    }
+	}
 
     /// <summary>
     /// プレイヤーの位置取得

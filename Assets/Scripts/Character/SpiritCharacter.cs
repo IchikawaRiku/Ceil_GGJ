@@ -41,17 +41,16 @@ public class SpiritCharacter : CharacterBase {
 		// 移動制限
 		LeaveLimit();
 		transform.position += moveValue;
-
-		prevPos = transform.position;
 	}
 
 	/// <summary>
 	/// 移動制限
 	/// </summary>
 	private void LeaveLimit() {
+		Vector3 position = transform.position;
 		// 移動予定地
-		float movePosX = prevPos.x + moveValue.x;
-		float movePosY = prevPos.y + moveValue.y;
+		float movePosX = position.x + moveValue.x;
+		float movePosY = position.y + moveValue.y;
 		// プレイヤーから離れられる距離
 		float playerLeaveMaxX = CharacterManager.instance.GetPlayerPosition().x + _PLAYER_LEAVE_MAX;
 		float playerLeaveMinX = CharacterManager.instance.GetPlayerPosition().x - _PLAYER_LEAVE_MAX;

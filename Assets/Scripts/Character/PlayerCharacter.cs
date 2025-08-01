@@ -15,6 +15,10 @@ public class PlayerCharacter : CharacterBase {
 	private Rigidbody _rig = null;
 	// ジャンプ力
 	private float _jumpPower = 5f;
+	// プレイヤーの座標から足元座標までの距離
+	private const float _FEET_DISTANCE = 0.5f;
+	// 地面判定用の半径
+	private const float _FEET_RADIUS = 0.2f;
 
 	public override async UniTask Initialize() {
 		await base.Initialize();
@@ -35,16 +39,14 @@ public class PlayerCharacter : CharacterBase {
 		if (Input.GetKeyDown(KeyCode.U)) {
 			OnJump();
 		}
-
-		prevPos = transform.position;
 	}
 
 	/// <summary>
 	/// 地面触れ判定
 	/// </summary>
-	private bool GetTouchGround() {
-		if (prevPos.y == transform.position.y) return false;
-		return true;
+	private bool GetTouchGround(Vector3 position) {
+		position.y -= _FEET_DISTANCE;
+		return Physics.CheckSphere(position, _FEET_RADIUS);		
 	}
 
 	/// <summary>
@@ -61,7 +63,7 @@ public class PlayerCharacter : CharacterBase {
 	/// ジャンプの入力
 	/// </summary>
 	private void OnJump() {
-		if (GetTouchGround()) return;
+		if (GetTouchGround(transform.position)) return;
 		_rig.velocity = Vector3.up * _jumpPower;
 	}
 }
