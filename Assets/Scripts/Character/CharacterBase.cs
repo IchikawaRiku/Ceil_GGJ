@@ -11,7 +11,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterBase : MonoBehaviour {
+public class CharacterBase : MonoBehaviour { 
+	protected Rigidbody rig = null;
 	// à⁄ìÆë¨ìx
 	[SerializeField]
 	protected float moveSpeed = 5f;
@@ -32,6 +33,7 @@ public class CharacterBase : MonoBehaviour {
 	/// èâä˙âª
 	/// </summary>
 	public virtual async UniTask Initialize() {
+		rig = GetComponent<Rigidbody>();
 		await UniTask.CompletedTask;
 	}
 
@@ -57,6 +59,16 @@ public class CharacterBase : MonoBehaviour {
 	public void OnChangeSpirit(InputAction.CallbackContext context) {
 		if (!context.performed) return;
  		CharacterManager.instance.ChangeControlCharacter();
+	}
+
+	/// <summary>
+	/// ï–ïtÇØ
+	/// </summary>
+	public void Teardown() {
+		moveSpeed = MOVE_SPEED_MAX;
+		rig.velocity = Vector3.zero;
+		moveInput = Vector2.zero;
+		moveValue = Vector3.zero;
 	}
 
 }

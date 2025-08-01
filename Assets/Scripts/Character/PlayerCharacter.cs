@@ -14,7 +14,6 @@ using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 
 public class PlayerCharacter : CharacterBase {
-	private Rigidbody _rig = null;
 	// 地面のレイヤー
 	private LayerMask _groundLayer;
 	// ジャンプ力
@@ -26,7 +25,6 @@ public class PlayerCharacter : CharacterBase {
 
 	public override async UniTask Initialize() {
 		await base.Initialize();
-		_rig = GetComponent<Rigidbody>();
 		_groundLayer = LayerMask.GetMask("Jump");
 	}
 
@@ -80,6 +78,6 @@ public class PlayerCharacter : CharacterBase {
 	/// </summary>
 	private void OnJump() {
 		if (GetTouchGround(transform.position)) return;
-		_rig.velocity = Vector3.up * _jumpPower;
+		rig.velocity = Vector3.up * _jumpPower;
 	}
 }

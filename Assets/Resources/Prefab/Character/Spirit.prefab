@@ -219,8 +219,20 @@ MonoBehaviour:
     m_ActionName: Player/SwitchOn[/Keyboard/f]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: a3fc54cb-d23d-459b-b115-25ea202a8f0f
-    m_ActionName: UI/New action
+    m_ActionId: 18824f99-f555-4f9e-92b5-e71750aa5f9c
+    m_ActionName: Player/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8a25a5df-f605-4044-9fc8-fad4234742d0
+    m_ActionName: Player/Enter[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2336d001-6bab-4124-bc0f-63a7f9c1d65b
+    m_ActionName: UI/Submit[/Keyboard/enter,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2dda47eb-e9b4-410f-b026-26a490cfb9b7
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -238,3 +250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ca0997cd68935549a4e5bd22e2075f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  moveInput: {x: 0, y: 0}
+  moveValue: {x: 0, y: 0, z: 0}
