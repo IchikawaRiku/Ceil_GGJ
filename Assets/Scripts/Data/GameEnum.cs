@@ -38,3 +38,12 @@ public enum eStageStage {
 
     Max
 }
+
+/// <summary>
+/// ゲーム終了要因
+/// </summary>
+public enum eEndReason {
+    Invalid = -1,
+    Dead,           // プレイヤー死亡
+    Clear,			// ゲームクリア
+}

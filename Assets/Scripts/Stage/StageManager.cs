@@ -47,4 +47,17 @@ public class StageManager : MonoBehaviour {
         UniTask task = _currentStage.Execute();
     }
 
+    /// <summary>
+    /// リトライ
+    /// </summary>
+    /// <returns></returns>
+    public async UniTask RetryCurrentStage() {
+        // 現在のステージの片付け
+        if (_currentStage != null) await _currentStage.Teardown();
+
+        await _currentStage.SetUp();
+        // 次のステージの実行処理
+        UniTask task = _currentStage.Execute();
+    }
+
 }

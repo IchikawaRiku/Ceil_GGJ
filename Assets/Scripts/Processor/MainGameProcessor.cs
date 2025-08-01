@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class MainGameProcessor {
     private MyInput _inputAction = null;
+    public static eEndReason _eEndReason = eEndReason.Invalid;
 
     public void Initialize() {
         _inputAction = MyInputManager.inputAction;
@@ -22,19 +23,25 @@ public class MainGameProcessor {
     /// メインゲームの実行処理
     /// </summary>
     /// <returns></returns>
-    public async UniTask Execute() {
+    public async UniTask<eEndReason> Execute() {
         // 入力受付
-        while (true) {
+        while (_eEndReason == eEndReason.Invalid) {
             if (_inputAction.Player.Pause.WasPressedThisFrame()) {
                 await MenuManager.instance.Get<MenuInGameMenu>().Open();
                 _inputAction.Player.Pause.Enable();
             }
-            UniTask task =  CharacterManager.instance.Execute();
+            UniTask task = CharacterManager.instance.Execute();
 
             await UniTask.DelayFrame(1);
         }
+        return _eEndReason;
     }
     public void Teardown() {
         _inputAction.Disable();
     }
+
+    public static void EndGameReason(eEndReason endReason) {
+        _eEndReason = endReason;
+    }
+
 }

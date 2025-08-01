@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static MainGameProcessor;
 public class goalObject : GimmickBase {
     // ゴールしたかどうか
     public bool isGoal { get; private set; } = false;
@@ -26,9 +27,8 @@ public class goalObject : GimmickBase {
     private void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.layer == 6) {
             isGoal = true;
-            // フェードいる？
-            UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
-            //GameManager.instance.StageChange();
+            EndGameReason(eEndReason.Clear);
+
         }
     }
 }
