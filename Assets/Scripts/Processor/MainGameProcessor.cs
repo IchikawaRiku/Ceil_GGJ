@@ -18,6 +18,7 @@ public class MainGameProcessor {
     }
     public void Setup() {
         _inputAction.Player.Pause.Enable();
+        _eEndReason = eEndReason.Invalid;
     }
     /// <summary>
     /// ƒƒCƒ“ƒQ[ƒ€‚ÌÀsˆ—

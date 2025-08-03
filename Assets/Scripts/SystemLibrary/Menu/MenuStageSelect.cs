@@ -9,23 +9,23 @@ public class MenuStageSelect : MenuBase {
     [SerializeField]
     private Button _initSelectButton = null;
     //ボタン操作入力処理
-    private AcceptMenuButtonInput _acceptButtonInput = null;
+    private AcceptMenuButtonInput _buttonInput = null;
     //ステージ番号
     private eStageStage _stageNum = eStageStage.Invalid;
 
     public override async UniTask Initialize() {
         await base.Initialize();
-        _acceptButtonInput = new AcceptMenuButtonInput();
+        _buttonInput = new AcceptMenuButtonInput();
     }
     public override async UniTask Open() {
         await base.Open();
         await FadeManager.instance.FadeIn();
-        await _acceptButtonInput.Setup(_initSelectButton);
+        await _buttonInput.Setup(_initSelectButton);
         _stageNum = eStageStage.Invalid;
         while (_stageNum == eStageStage.Invalid) {
             await UniTask.DelayFrame(1);
         }
-        await _acceptButtonInput.Teardown();
+        await _buttonInput.Teardown();
         await FadeManager.instance.FadeOut();
         await StageManager.instance.TransitionStage(_stageNum);
         await Close();

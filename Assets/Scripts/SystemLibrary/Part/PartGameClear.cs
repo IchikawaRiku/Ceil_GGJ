@@ -10,8 +10,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartGameClear : PartBase {
+    public override async UniTask Initialize() {
+        await base.Initialize();
+        await MenuManager.instance.Get<MenuGameClear>("Prefab/Menu/CanvasGameClear").Initialize();
+    }
     public override async UniTask Execute() {
-        //UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
-        await UniTask.CompletedTask;
+        await MenuManager.instance.Get<MenuGameClear>().Open();
     }
 }

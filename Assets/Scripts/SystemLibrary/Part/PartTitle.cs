@@ -18,7 +18,7 @@ public class PartTitle : PartBase {
     }
     public override async UniTask Execute() {
         // タイトルメニュー表示
-        await MenuManager.instance.Get<MenuTitle>().Open();
+        if(!MenuGameClear.isTitleSkip) await MenuManager.instance.Get<MenuTitle>().Open();
         await MenuManager.instance.Get<MenuStageSelect>().Open();
         // メインパート遷移
         UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);

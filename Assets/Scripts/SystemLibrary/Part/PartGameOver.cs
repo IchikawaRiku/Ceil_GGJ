@@ -4,7 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartGameOver : PartBase {
+    public override async UniTask Initialize() {
+        await base.Initialize();
+        await MenuManager.instance.Get<MenuGameOver>("Prefab/Menu/CanvasGameOver").Initialize();
+    }
+
     public override async UniTask Execute() {
-        await UniTask.CompletedTask;
+        await MenuManager.instance.Get<MenuGameOver>().Open();
     }
 }
