@@ -1,6 +1,6 @@
 /*
- *  @file   PartEnding.cs
- *  @brief  エンディングパート
+ *  @file   PartGameClear.cs
+ *  @brief  ゲームクリアパート
  *  @author Seki
  *  @date   2025/7/29
  */

@@ -1,3 +1,9 @@
+/*
+ *  @file   MenuGameOver.cs
+ *  @brief  ゲームオーバーメニュー
+ *  @author Seki
+ *  @date   2025/8/1
+ */
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;

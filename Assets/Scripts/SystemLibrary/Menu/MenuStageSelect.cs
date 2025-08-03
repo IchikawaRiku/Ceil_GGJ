@@ -11,7 +11,7 @@ public class MenuStageSelect : MenuBase {
     //ボタン操作入力処理
     private AcceptMenuButtonInput _buttonInput = null;
     //ステージ番号
-    private eStageStage _stageNum = eStageStage.Invalid;
+    public eStageStage stageNum { get; private set; } = eStageStage.Invalid;
 
     public override async UniTask Initialize() {
         await base.Initialize();
@@ -21,21 +21,12 @@ public class MenuStageSelect : MenuBase {
         await base.Open();
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
-        _stageNum = eStageStage.Invalid;
-        while (_stageNum == eStageStage.Invalid) {
+        stageNum = eStageStage.Invalid;
+        while (stageNum == eStageStage.Invalid) {
             await UniTask.DelayFrame(1);
         }
         await _buttonInput.Teardown();
-        await StageManager.instance.TransitionStage(_stageNum);
         await FadeManager.instance.FadeOut();
-        await FadeManager.instance.FadeOut();
-        //ステージ以外はタイトルに戻る
-        if(_stageNum == eStageStage.Max) {
-            await FadeManager.instance.FadeOut();
-            UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
-        } else {
-            await StageManager.instance.TransitionStage(_stageNum);
-        }
         await Close();
     }
     public override async UniTask Close() {
@@ -45,27 +36,27 @@ public class MenuStageSelect : MenuBase {
     /// チュートリアルステージ選択
     /// </summary>
     public void SelectTutorialStage() {
-        _stageNum = eStageStage.Tutorial;
+        stageNum = eStageStage.Tutorial;
     }
     /// <summary>
     /// ステージ1選択
     /// </summary>
     public void SelectStage1() {
-        _stageNum = eStageStage.Stage1;
+        stageNum = eStageStage.Stage1;
     }
     /// <summary>
     /// ステージ2選択
     /// </summary>
     public void SelectStage2() {
-        _stageNum = eStageStage.Stage2;
+        stageNum = eStageStage.Stage2;
     }
     /// <summary>
     /// ステージ3選択
     /// </summary>
     public void SelectStage3() {
-        _stageNum = eStageStage.Stage3;
+        stageNum = eStageStage.Stage3;
     }
     public void ReturnTitle() {
-        _stageNum = eStageStage.Max;
+        stageNum = eStageStage.Max;
     }
 }

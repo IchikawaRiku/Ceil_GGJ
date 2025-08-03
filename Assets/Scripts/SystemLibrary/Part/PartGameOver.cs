@@ -1,3 +1,9 @@
+/*
+ *  @file   PartGameOver.cs
+ *  @brief  ゲームオーバーパート
+ *  @author Seki
+ *  @date   2025/7/29
+ */
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
