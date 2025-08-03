@@ -13,6 +13,8 @@ using UnityEngine.InputSystem;
 
 public class CharacterBase : MonoBehaviour { 
 	protected Rigidbody rig = null;
+	[SerializeField]
+	protected Animator anim = null;
 	// 移動速度
 	[SerializeField]
 	protected float moveSpeed = 5f;
@@ -26,8 +28,10 @@ public class CharacterBase : MonoBehaviour {
 	protected Vector3 moveValue = Vector3.zero;
 	// 移動速度の最大
 	protected const float MOVE_SPEED_MAX = 5f;
-	// ステージギミックの弾のタグ
-	protected const string _BULLET_TAG = "bullet";
+	// 進行方向の向き
+	private const float _DIRECTION_ANGLE = 90;
+    // ステージギミックの弾のタグ
+    protected const string _BULLET_TAG = "bullet";
 
 	/// <summary>
 	/// 初期化
@@ -48,8 +52,12 @@ public class CharacterBase : MonoBehaviour {
 	/// 移動の入力
 	/// </summary>
 	/// <param name="context"></param>
-	public void OnMove(InputAction.CallbackContext context) {
+	public virtual void OnMove(InputAction.CallbackContext context) {
 		moveInput = context.ReadValue<Vector2>();
+		Vector3 rotation = transform.eulerAngles;
+        if (moveInput.x > 0) rotation.y = _DIRECTION_ANGLE;
+        else if (moveInput.x < 0) rotation.y = -_DIRECTION_ANGLE;
+		transform.eulerAngles = rotation;
 	}
 
 	/// <summary>
@@ -59,7 +67,7 @@ public class CharacterBase : MonoBehaviour {
 	public void OnChangeSpirit(InputAction.CallbackContext context) {
 		if (!context.performed) return;
  		CharacterManager.instance.ChangeControlCharacter();
-	}
+    }
 
 	/// <summary>
 	/// 片付け

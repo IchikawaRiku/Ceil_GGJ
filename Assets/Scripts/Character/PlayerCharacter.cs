@@ -14,6 +14,8 @@ using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 
 public class PlayerCharacter : CharacterBase {
+	//Animator animator;
+
 	// 地面のレイヤー
 	private LayerMask _groundLayer;
 	// ジャンプ力
@@ -21,11 +23,12 @@ public class PlayerCharacter : CharacterBase {
 	// プレイヤーの座標から足元座標までの距離
 	private const float _FEET_DISTANCE = 0f;
 	// 地面判定用の半径
-	private const float _FEET_RADIUS = 0.1f;
+	private const float _FEET_RADIUS = 0.05f;
 
 	public override async UniTask Initialize() {
 		await base.Initialize();
 		_groundLayer = LayerMask.GetMask("Jump");
+		//animator = GetComponent<Animator>();
 	}
 
 	/// <summary>
@@ -33,7 +36,6 @@ public class PlayerCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Execute() {
 		await base.Execute();
-
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.position += moveValue;
 		// カメラの位置をセット
@@ -42,7 +44,8 @@ public class PlayerCharacter : CharacterBase {
 		if (Input.GetKeyDown(KeyCode.U)) {
 			OnJump();
 		}
-		
+		if (GetTouchGround()) anim.SetBool("jump", false);
+        else anim.SetBool("jump", true);
 	}
 
 	private void OnDrawGizmos() {
@@ -58,9 +61,10 @@ public class PlayerCharacter : CharacterBase {
 	/// <summary>
 	/// 地面触れ判定
 	/// </summary>
-	private bool GetTouchGround(Vector3 position) {
-		position.y -= _FEET_DISTANCE;
-		return !Physics.CheckSphere(position, _FEET_RADIUS, _groundLayer);		
+	private bool GetTouchGround() {
+		Vector3 position = transform.position;
+        position.y -= _FEET_DISTANCE;
+		return Physics.CheckSphere(position, _FEET_RADIUS, _groundLayer);		
 	}
 
 	/// <summary>
@@ -73,11 +77,17 @@ public class PlayerCharacter : CharacterBase {
 		}
 	}
 
-	/// <summary>
-	/// ジャンプの入力
-	/// </summary>
-	private void OnJump() {
-		if (GetTouchGround(transform.position)) return;
+    public override void OnMove(InputAction.CallbackContext context) {
+        base.OnMove(context);
+        if (context.started && GetTouchGround()) anim.SetBool("run", true);
+        if (context.canceled) anim.SetBool("run", false);
+    }
+
+    /// <summary>
+    /// ジャンプの入力
+    /// </summary>
+    private void OnJump() {
+		if (!GetTouchGround()) return;
 		rig.velocity = Vector3.up * _jumpPower;
 	}
 }
