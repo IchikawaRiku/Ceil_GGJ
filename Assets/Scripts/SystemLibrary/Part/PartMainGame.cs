@@ -30,7 +30,16 @@ public class PartMainGame : PartBase {
         _mainProcessor.Setup();
     }
     public override async UniTask Execute() {
-        await _mainProcessor.Execute();
+        eEndReason endReason = await _mainProcessor.Execute();
+        await FadeManager.instance.FadeOut();
+        switch (endReason) {
+            case eEndReason.Dead:
+                UniTask task = PartManager.instance.TransitionPart(eGamePart.GameOver);
+                break;
+            case eEndReason.Clear:
+                 task = PartManager.instance.TransitionPart(eGamePart.GameClear);
+                break;
+        }
     }
     public override async UniTask Teardown() {
         await base.Teardown();
