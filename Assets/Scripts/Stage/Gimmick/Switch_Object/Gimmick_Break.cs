@@ -15,7 +15,7 @@ public class Gimmick_Break : GimmickBase, IDestroyable {
     /// 準備
     /// </summary>
     public override void SetUp() {
-        gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -24,9 +24,9 @@ public class Gimmick_Break : GimmickBase, IDestroyable {
     /// <exception cref="System.NotImplementedException"></exception>
     protected override void OnUpdate() {
     }
- 
-    
-    
+
+
+
     /// <summary>
     /// オブジェクトを非アクティブにする
     /// </summary>
