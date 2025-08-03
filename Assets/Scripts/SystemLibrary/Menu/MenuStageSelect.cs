@@ -26,10 +26,8 @@ public class MenuStageSelect : MenuBase {
             await UniTask.DelayFrame(1);
         }
         await _buttonInput.Teardown();
-<<<<<<< Updated upstream
         await StageManager.instance.TransitionStage(_stageNum);
         await FadeManager.instance.FadeOut();
-=======
         await FadeManager.instance.FadeOut();
         //ステージ以外はタイトルに戻る
         if(_stageNum == eStageStage.Max) {
@@ -38,7 +36,6 @@ public class MenuStageSelect : MenuBase {
         } else {
             await StageManager.instance.TransitionStage(_stageNum);
         }
->>>>>>> Stashed changes
         await Close();
     }
     public override async UniTask Close() {
