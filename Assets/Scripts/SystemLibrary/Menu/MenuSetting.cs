@@ -25,7 +25,7 @@ public class MenuSetting : MenuBase {
     [SerializeField]
     private Button _initSelectButton = null;
     // ボタンの入力受付
-    private AcceptSettingsButtonInput _acceptButtonInput = null;
+    private AcceptSettingsButtonInput _buttonInput = null;
     // InputAction
     private MyInput _inputAction = null;
     // メニューを閉じるか判別するフラグ
@@ -38,7 +38,7 @@ public class MenuSetting : MenuBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         _inputAction = MyInputManager.inputAction;
-        _acceptButtonInput = new AcceptSettingsButtonInput();
+        _buttonInput = new AcceptSettingsButtonInput();
         _isClose = false;
         SetupData();
     }
@@ -54,16 +54,16 @@ public class MenuSetting : MenuBase {
         await base.Open();
         await FadeManager.instance.FadeIn();
         _inputAction.Player.Pause.Enable();
-        await _acceptButtonInput.Setup(_initSelectButton);
+        await _buttonInput.Setup(_initSelectButton);
         while (true) {
-            await _acceptButtonInput.AcceptInput();
+            await _buttonInput.AcceptInput();
             if(_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
 
             await UniTask.DelayFrame(1);
         }
         _isClose = false;
         _inputAction.Player.Pause.Disable();
-        await _acceptButtonInput.Teardown();
+        await _buttonInput.Teardown();
         await FadeManager.instance.FadeOut();
         await Close();
     }

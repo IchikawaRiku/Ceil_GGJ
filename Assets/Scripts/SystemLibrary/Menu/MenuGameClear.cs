@@ -8,6 +8,7 @@ public class MenuGameClear : MenuBase {
     // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
+    //ボタン入力受付
     private AcceptMenuButtonInput _buttonInput = null;
     //タイトルスキップフラグ
     public static bool isTitleSkip { get; private set; } = false;
@@ -32,6 +33,7 @@ public class MenuGameClear : MenuBase {
             await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
         }
+        await _buttonInput.Teardown();
         await FadeManager.instance.FadeOut();
         await Close();
         if (_isRetryStage) {

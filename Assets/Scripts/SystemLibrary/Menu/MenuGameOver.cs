@@ -30,6 +30,7 @@ public class MenuGameOver : MenuBase {
             await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
         }
+        await _buttonInput.Teardown();
         await FadeManager.instance.FadeOut();
         await Close();
         if (_isRetryStage) {

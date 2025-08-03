@@ -26,8 +26,8 @@ public class MenuStageSelect : MenuBase {
             await UniTask.DelayFrame(1);
         }
         await _buttonInput.Teardown();
-        await FadeManager.instance.FadeOut();
         await StageManager.instance.TransitionStage(_stageNum);
+        await FadeManager.instance.FadeOut();
         await Close();
     }
     public override async UniTask Close() {

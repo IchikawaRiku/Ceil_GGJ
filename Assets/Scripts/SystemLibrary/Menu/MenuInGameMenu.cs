@@ -50,6 +50,7 @@ public class MenuInGameMenu : MenuBase {
         }
         _isClose = false;
         _inputAction.Player.Pause.Disable();
+        await _buttonInput.Teardown();
         await Close();
     }
     /// <summary>
