@@ -18,10 +18,10 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
     // 一度押されたか判別するフラグ
     private bool _isNeutral = false;
     // InputAction
-    private MyInput inputAction = null;
+    private MyInput _inputAction = null;
 
     public AcceptSettingsButtonInput() {
-        inputAction = MyInputManager.inputAction;
+        _inputAction = MyInputManager.inputAction;
     }
     /// <summary>
     /// 初期ボタンの設定と入力有効化
@@ -31,7 +31,7 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
         // 最初にSelectが外れたときの対策
         prevButton = setInitButton;
         EventSystem.current.SetSelectedGameObject(setInitButton.gameObject);
-        inputAction.UI.Enable();
+        _inputAction.UI.Enable();
         await UniTask.DelayFrame(1);
     }
     /// <summary>
@@ -40,7 +40,7 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
     /// <returns></returns>
     public override async UniTask AcceptInput() {
         // 現在の入力の値の取得
-        Vector2 currentInputDir = inputAction.UI.Navigate.ReadValue<Vector2>();
+        Vector2 currentInputDir = _inputAction.UI.Navigate.ReadValue<Vector2>();
         // 一度入力をやめたら、ニュートラル状態にする
         if (IsInputNeutral(currentInputDir)) return;
         // 選択オブジェクトからボタン情報を取得
@@ -56,7 +56,7 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
         UpdateInputState(currentInputDir);
     }
     public override async UniTask Teardown() {
-        inputAction.UI.Disable();
+        _inputAction.UI.Disable();
         await UniTask.CompletedTask;
     }
     /// <summary>

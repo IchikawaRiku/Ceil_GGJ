@@ -5,6 +5,7 @@
  *  @date   2025/7/30
  */
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -68,16 +69,23 @@ public class UserDataManager : SystemObject {
     /// </summary>
     /// <returns></returns>
     private UserData LoadDataFromFile() {
-        if(File.Exists(_filePath)) {
-            // FileStreamの宣言
-            FileStream fileStream = new FileStream(_filePath, FileMode.Open);
-            // BinaryFormatterの宣言
-            BinaryFormatter bf = new BinaryFormatter();
-            UserData data = (UserData)bf.Deserialize(fileStream);
-            // ファイルを閉じる
-            fileStream.Close();
-            return data;
+        if (File.Exists(_filePath)) {
+            FileInfo fileInfo = new FileInfo(_filePath);
+            if (fileInfo.Length == 0) {
+                Debug.LogWarning("ファイルは存在しますが中身が空です。");
+                return new UserData(); // デフォルトデータを返す
+            }
+            try {
+                using (FileStream fileStream = new FileStream(_filePath, FileMode.Open)) {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    return (UserData)bf.Deserialize(fileStream);
+                }
+            } catch (Exception exeption) {
+                Debug.LogError("デシリアライズ中に例外が発生しました: " + exeption.Message);
+                return new UserData(); // デフォルトデータでリカバリ
+            }
         } else {
+            Debug.Log("セーブデータが見つからないので、新規作成します。");
             return new UserData();
         }
     }

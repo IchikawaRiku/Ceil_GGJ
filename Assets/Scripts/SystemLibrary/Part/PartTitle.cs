@@ -18,10 +18,15 @@ public class PartTitle : PartBase {
     }
     public override async UniTask Execute() {
         // タイトルメニュー表示
-        await MenuManager.instance.Get<MenuTitle>().Open();
+        if (!MenuGameClear.isTitleSkip) await MenuManager.instance.Get<MenuTitle>().Open();
         await MenuManager.instance.Get<MenuStageSelect>().Open();
-        // メインパート遷移
-        UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);
-        await UniTask.CompletedTask;
+        // パート遷移
+        eStageStage stage = MenuManager.instance.Get<MenuStageSelect>().stageNum;
+        if (stage == eStageStage.Max) {
+            UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
+        } else {
+            await StageManager.instance.TransitionStage(stage);
+            UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);
+        }
     }
 }
