@@ -38,8 +38,6 @@ public class PlayerCharacter : CharacterBase {
 		await base.Execute();
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.position += moveValue;
-		// カメラの位置をセット
-		CameraManager.instance.SetPosition(transform.position);
 		// デバッグ用
 		if (Input.GetKeyDown(KeyCode.U)) {
 			OnJump();
@@ -79,8 +77,8 @@ public class PlayerCharacter : CharacterBase {
 
     public override void OnMove(InputAction.CallbackContext context) {
         base.OnMove(context);
-        if (context.started && GetTouchGround()) anim.SetBool("run", true);
-        if (context.canceled) anim.SetBool("run", false);
+        if (context.performed && GetTouchGround()) anim.SetBool("run", true);
+        else anim.SetBool("run", false);
     }
 
     /// <summary>

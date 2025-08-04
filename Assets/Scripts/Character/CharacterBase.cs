@@ -45,6 +45,8 @@ public class CharacterBase : MonoBehaviour {
 	/// 実行処理
 	/// </summary>
 	public virtual async UniTask Execute() {
+		// カメラの位置をセット
+		CameraManager.instance.SetPosition(transform.position);
 		await UniTask.CompletedTask;
 	}
 
