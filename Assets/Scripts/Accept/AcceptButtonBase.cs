@@ -27,10 +27,10 @@ public abstract class AcceptButtonBase {
     /// </summary>
     protected void UpdateCurrentButton() {
         // EventSystemの現在の選択オブジェクトを取得
-        GameObject selectObject = EventSystem.current.currentSelectedGameObject;
+        GameObject selectObject = EventSystem.current?.currentSelectedGameObject;
         if (selectObject == null) {
             //EventSystemの選択オブジェクトにprevのオブジェクトを設定する
-            EventSystem.current.SetSelectedGameObject(prevButton.gameObject);
+            EventSystem.current?.SetSelectedGameObject(prevButton.gameObject);
             return;
         }
         //現在のボタンの取得

@@ -47,6 +47,7 @@ public class MenuGameClear : MenuBase {
             UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);
         } else {
             UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
+            isTitleSkip = false;
         }
     }
     /// <summary>

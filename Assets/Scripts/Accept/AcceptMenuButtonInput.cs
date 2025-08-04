@@ -23,7 +23,7 @@ public class AcceptMenuButtonInput : AcceptButtonBase{
         // EventSystemの現在の選択オブジェクトを取得
         UpdateCurrentButton();
         // ボタン情報の更新
-        prevButton = currentButton;
+        if(currentButton != null) prevButton = currentButton;
 
         await UniTask.CompletedTask;
     }
