@@ -20,6 +20,8 @@ public class MenuTitle : MenuBase {
     private bool _isClose = false;
     //ゲーム終了フラグ
     private bool _isGameEnd = false;
+    //設定開閉フラグ
+    private bool _isSelect = false;
 
     public override async UniTask Initialize() {
         await base.Initialize();
@@ -29,10 +31,18 @@ public class MenuTitle : MenuBase {
         await base.Open();
         _isClose = false;
         _isGameEnd = false;
+        _isSelect = false;
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
         while (!_isClose) {
             await _buttonInput.AcceptInput();
+            if (_isSelect) {
+                await FadeManager.instance.FadeOut();
+                await MenuManager.instance.Get<MenuSetting>().Open();
+                await FadeManager.instance.FadeIn();
+                await _buttonInput.Setup(_initSelectButton);
+                _isSelect = false;
+            }
             await UniTask.DelayFrame(1);
         }
         if (_isGameEnd) QuitApp();
@@ -44,6 +54,9 @@ public class MenuTitle : MenuBase {
     /// </summary>
     public void MenuClose() {
         _isClose = true;
+    }
+    public void ToMenuSetting() {
+        _isSelect = true;
     }
     public void EndGame() {
         _isClose = true;

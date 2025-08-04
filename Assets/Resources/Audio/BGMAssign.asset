@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0d501359b999a4c864ac7a312169b8, type: 3}
   m_Name: BGMAssign
   m_EditorClassIdentifier: 
-  bgmArray: []
+  bgmArray:
+  - {fileID: 8300000, guid: 66d02e8cd8907874bad9a182193f06ae, type: 3}
+  - {fileID: 8300000, guid: 729677b191b062241bcb4f75480b12d7, type: 3}

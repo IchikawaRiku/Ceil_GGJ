@@ -13,7 +13,7 @@ public class UserData{
     // ステージ攻略データ
     public int clearStageNum = 0;
     // BGM音量データ
-    public float bgmVolume = 0;
+    public float bgmVolume = 5;
     // SE音量データ
-    public float seVolume = 0;
+    public float seVolume = 5;
 }
