@@ -35,6 +35,8 @@ public class CharacterManager : MonoBehaviour {
     // 操作中のキャラ
     private CharacterBase _controlCharacter = null;
 
+    private PlayerInput _playerInput;
+
     public async UniTask Initialize() {
         instance = this;
         //プレイヤーの生成
