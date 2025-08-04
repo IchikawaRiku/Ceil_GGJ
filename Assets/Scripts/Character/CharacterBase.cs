@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 public class CharacterBase : MonoBehaviour { 
 	protected Rigidbody rig = null;
 	[SerializeField]
-	protected Animator anim = null;
+	public Animator anim = null;
 	// 移動速度
 	[SerializeField]
 	protected float moveSpeed = 5f;
@@ -31,7 +31,7 @@ public class CharacterBase : MonoBehaviour {
 	// 進行方向の向き
 	private const float _DIRECTION_ANGLE = 90;
     // ステージギミックの弾のタグ
-    protected const string _BULLET_TAG = "bullet";
+    protected const string BULLET_TAG = "bullet";
 
 	/// <summary>
 	/// 初期化
@@ -56,20 +56,26 @@ public class CharacterBase : MonoBehaviour {
 	/// <param name="context"></param>
 	public virtual void OnMove(InputAction.CallbackContext context) {
 		moveInput = context.ReadValue<Vector2>();
-		Vector3 rotation = transform.eulerAngles;
-        if (moveInput.x > 0) rotation.y = _DIRECTION_ANGLE;
-        else if (moveInput.x < 0) rotation.y = -_DIRECTION_ANGLE;
-		transform.eulerAngles = rotation;
 	}
 
 	/// <summary>
 	/// 幽体離脱の入力
 	/// </summary>
 	/// <param name="context"></param>
-	public void OnChangeSpirit(InputAction.CallbackContext context) {
-		if (!context.performed) return;
+	public virtual void OnChangeSpirit(InputAction.CallbackContext context) {
+		if (!context.started) return;
  		CharacterManager.instance.ChangeControlCharacter();
     }
+
+	/// <summary>
+	/// 進行方向を向く
+	/// </summary>
+	protected void ChangeAngle() {
+		Vector3 rotation = transform.eulerAngles;
+		if (moveInput.x > 0) rotation.y = _DIRECTION_ANGLE;
+		else if (moveInput.x < 0) rotation.y = -_DIRECTION_ANGLE;
+		transform.eulerAngles = rotation;
+	}
 
 	/// <summary>
 	/// 片付け

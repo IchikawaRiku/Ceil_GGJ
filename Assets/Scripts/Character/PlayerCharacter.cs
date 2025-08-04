@@ -36,6 +36,8 @@ public class PlayerCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Execute() {
 		await base.Execute();
+		// 向き変更
+		if (!anim.GetBool("change")) ChangeAngle();
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.position += moveValue;
 		// デバッグ用
@@ -44,6 +46,7 @@ public class PlayerCharacter : CharacterBase {
 		}
 		if (GetTouchGround()) anim.SetBool("jump", false);
         else anim.SetBool("jump", true);
+		Debug.Log(moveInput);
 	}
 
 	private void OnDrawGizmos() {
@@ -70,21 +73,25 @@ public class PlayerCharacter : CharacterBase {
 	/// </summary>
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other) {
-		if (other.CompareTag(_BULLET_TAG)) {
+		if (other.CompareTag(BULLET_TAG)) {
 			Debug.Log("死んだ");
 		}
 	}
 
+	/// <summary>
+	/// 移動入力
+	/// </summary>
+	/// <param name="context"></param>
     public override void OnMove(InputAction.CallbackContext context) {
-        base.OnMove(context);
+		base.OnMove(context);
         if (context.performed && GetTouchGround()) anim.SetBool("run", true);
         else anim.SetBool("run", false);
-    }
+	}
 
-    /// <summary>
-    /// ジャンプの入力
-    /// </summary>
-    private void OnJump() {
+	/// <summary>
+	/// ジャンプの入力
+	/// </summary>
+	private void OnJump() {
 		if (!GetTouchGround()) return;
 		rig.velocity = Vector3.up * _jumpPower;
 	}

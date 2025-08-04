@@ -37,6 +37,8 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Execute() {
 		await base.Execute();
+		// Œü‚«•ÏX
+		ChangeAngle();
 		moveValue = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
 		// ˆÚ“®§ŒÀ
 		LeaveLimit();
@@ -81,7 +83,7 @@ public class SpiritCharacter : CharacterBase {
 		if (other.CompareTag(_SWITCH_TAG)) {
 			canOnSwitch = true;
 		}
-		if (other.CompareTag(_BULLET_TAG)) {
+		if (other.CompareTag(BULLET_TAG)) {
 			Debug.Log("€‚ñ‚¾");
 		}
 	}
@@ -94,6 +96,22 @@ public class SpiritCharacter : CharacterBase {
 		if (other.CompareTag(_SWITCH_TAG)) {
 			canOnSwitch = false;
 		}
+	}
+
+	/// <summary>
+	/// ˆÚ“®“ü—Í
+	/// </summary>
+	/// <param name="context"></param>
+	public override void OnMove(InputAction.CallbackContext context) {
+		base.OnMove(context);
+	}
+
+	/// <summary>
+	///	ˆÚ“®“ü—Í
+	/// </summary>
+	/// <param name="context"></param>
+	public override void OnChangeSpirit(InputAction.CallbackContext context) {
+		base.OnChangeSpirit(context);
 	}
 
 	/// <summary>
