@@ -33,6 +33,13 @@ public class Gimmick_Deth : GimmickBase {
             // 死亡判定をMainGameProcessorに送る
             EndGameReason(eEndReason.Dead);
         }
+
+        // 押せる箱（PushBox）だったらリセット
+        var pushBox = collision.GetComponent<Gimmick_PushBox>();
+        if (pushBox != null) {
+            pushBox.ResetBox();
+        }
+
     }
 
 }

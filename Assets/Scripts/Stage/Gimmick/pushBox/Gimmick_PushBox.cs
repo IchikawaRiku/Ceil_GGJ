@@ -14,6 +14,7 @@ public class Gimmick_PushBox : GimmickBase {
 
     // 初期位置保存用
     private Vector3 boxPosition;
+
     /// <summary>
     /// 初期化処理
     /// </summary>
@@ -67,6 +68,22 @@ public class Gimmick_PushBox : GimmickBase {
         if (collision.collider.CompareTag("Player")) {
             isPushing = false;
             playerTransform = null;
+        }
+    }
+
+    /// <summary>
+    /// 箱の位置を初期化
+    /// </summary>
+    public void ResetBox() {
+        transform.position = boxPosition;
+        isPushing = false;
+        playerTransform = null;
+
+        // 必要なら物理特性もリセット（Rigidbody付きの場合）
+        var rb = GetComponent<Rigidbody>();
+        if (rb != null) {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
         }
     }
 }

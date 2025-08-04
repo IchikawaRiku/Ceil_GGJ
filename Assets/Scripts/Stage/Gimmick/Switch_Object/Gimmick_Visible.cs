@@ -2,39 +2,44 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// スイッチなどで可視状態を切り替えるギミック（不透明→透明にフェード）
+/// スイッチなどで可視状態を切り替えるギミック
+/// 透明から不透明に変化させる
 /// </summary>
 [RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Collider))]
 public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
-    [Header("フェード設定")]
     [Tooltip("透明になるまでのフェード時間（秒）")]
     [SerializeField] private float fadeDuration = 1f;
 
     private Renderer _renderer;
     private Material _material;
     private Coroutine _fadeCoroutine;
+    private Collider _collider;
 
     private const float Transparent = 0f;
     private const float Opaque = 1f;
 
     /// <summary>
-    /// 初期化時にRendererとMaterialを取得。不透明状態に設定。
+    /// 準備
     /// </summary>
     public override void SetUp() {
         _renderer = GetComponent<Renderer>();
         _material = _renderer.material;
+        _collider = GetComponent<Collider>();
 
         SetMaterialToTransparent(_material);
-
-        SetAlpha(Transparent); // ← 初期状態を「透明」に変更！
+        // 初期状態を透明に設定
+        SetAlpha(Transparent);
+        _collider.isTrigger = true;
     }
 
     /// <summary>
-    /// 外部（スイッチなど）から呼ばれて、透明にフェードする。
+    /// 不透明にする
     /// </summary>
     public void ToggleVisibility() {
         if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
-        _fadeCoroutine = StartCoroutine(FadeToAlpha(Opaque)); // ← 切り替えを「不透明に」！
+        _fadeCoroutine = StartCoroutine(FadeToAlpha(Opaque));
+        _collider.isTrigger = false;
     }
 
     /// <summary>
