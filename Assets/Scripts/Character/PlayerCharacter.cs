@@ -40,10 +40,6 @@ public class PlayerCharacter : CharacterBase {
 		if (!anim.GetBool("change")) ChangeAngle();
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.position += moveValue;
-		// デバッグ用
-		if (Input.GetKeyDown(KeyCode.U)) {
-			OnJump();
-		}
 		if (GetTouchGround()) anim.SetBool("jump", false);
         else anim.SetBool("jump", true);
 		Debug.Log(moveInput);
@@ -91,7 +87,7 @@ public class PlayerCharacter : CharacterBase {
 	/// <summary>
 	/// ジャンプの入力
 	/// </summary>
-	private void OnJump() {
+	public void OnJump(InputAction.CallbackContext context) {
 		if (!GetTouchGround()) return;
 		rig.velocity = Vector3.up * _jumpPower;
 	}
