@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CharacterUtility;
 public class MainGameProcessor {
     private MyInput _inputAction = null;
     public static eEndReason _eEndReason = eEndReason.Invalid;
@@ -25,16 +26,18 @@ public class MainGameProcessor {
     /// </summary>
     /// <returns></returns>
     public async UniTask<eEndReason> Execute() {
+        CameraManager.instance.SetPosition(GetPlayerPosition());
+        await FadeManager.instance.FadeIn();
         // “ü—ÍŽó•t
         while (_eEndReason == eEndReason.Invalid) {
             if (_inputAction.Player.Pause.WasPressedThisFrame()) {
                 await MenuManager.instance.Get<MenuInGameMenu>().Open();
-                _inputAction.Player.Pause.Enable();
             }
             UniTask task = CharacterManager.instance.Execute();
 
             await UniTask.DelayFrame(1);
         }
+        await FadeManager.instance.FadeOut();
         return _eEndReason;
     }
     public void Teardown() {
