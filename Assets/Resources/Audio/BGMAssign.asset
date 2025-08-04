@@ -15,3 +15,5 @@ MonoBehaviour:
   bgmArray:
   - {fileID: 8300000, guid: 66d02e8cd8907874bad9a182193f06ae, type: 3}
   - {fileID: 8300000, guid: 729677b191b062241bcb4f75480b12d7, type: 3}
+  - {fileID: 8300000, guid: 9ebd8cb6900a6e846b8f2b692fc9c80c, type: 3}
+  - {fileID: 8300000, guid: 1d6c41ac3bd56a74db1571d94ad6a745, type: 3}

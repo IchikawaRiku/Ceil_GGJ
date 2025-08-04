@@ -50,12 +50,14 @@ public class MenuGameOver : MenuBase {
     /// メニュー開閉フラグの変更
     /// </summary>
     public void MenuClose() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
     }
     /// <summary>
     /// メニュー開閉フラグ、ステージリトライフラグの変更
     /// </summary>
     public void RetryCurrentStage() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
         _isRetryStage = true;
     }

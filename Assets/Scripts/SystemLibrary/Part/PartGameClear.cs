@@ -15,6 +15,12 @@ public class PartGameClear : PartBase {
         await MenuManager.instance.Get<MenuGameClear>("Prefab/Menu/CanvasGameClear").Initialize();
     }
     public override async UniTask Execute() {
+        SoundManager.instance.PlayBGM(3);
         await MenuManager.instance.Get<MenuGameClear>().Open();
+    }
+
+    public override async UniTask Teardown() {
+        await base.Teardown();
+        SoundManager.instance.StopBGM();
     }
 }

@@ -50,6 +50,7 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
         //入力が同じ方向で、かつ一度離された後ならボタンの処理実行
         if (_isNeutral && isSameHorizotal && currentButton == prevButton) {
             currentButton.onClick.Invoke();
+            UniTask task = SoundManager.instance.PlaySE(0);
             await UniTask.Delay(200);
         }
         //入力、ボタンの更新
@@ -96,6 +97,9 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
             _isNeutral = false;
         }
         // ボタン情報の更新
+        if(currentButton != prevButton) {
+            UniTask task = SoundManager.instance.PlaySE(0);
+        }
         prevButton = currentButton;
     }
 }

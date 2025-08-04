@@ -17,6 +17,7 @@ public class PartTitle : PartBase {
         await MenuManager.instance.Get<MenuSetting>("Prefab/Menu/CanvasSettings").Initialize();
     }
     public override async UniTask Execute() {
+        SoundManager.instance.PlayBGM(0);
         // タイトルメニュー表示
         if (!MenuGameClear.isTitleSkip) await MenuManager.instance.Get<MenuTitle>().Open();
         await MenuManager.instance.Get<MenuStageSelect>().Open();
@@ -28,5 +29,10 @@ public class PartTitle : PartBase {
             await StageManager.instance.TransitionStage(stage);
             UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);
         }
+    }
+
+    public override async UniTask Teardown() {
+        await base.Teardown();
+        SoundManager.instance.StopBGM();
     }
 }

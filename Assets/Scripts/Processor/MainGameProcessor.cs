@@ -32,6 +32,7 @@ public class MainGameProcessor {
         while (_eEndReason == eEndReason.Invalid) {
             if (_inputAction.Player.Pause.WasPressedThisFrame()) {
                 await MenuManager.instance.Get<MenuInGameMenu>().Open();
+                _inputAction.Player.Pause.Enable();
             }
             UniTask task = CharacterManager.instance.Execute();
 
