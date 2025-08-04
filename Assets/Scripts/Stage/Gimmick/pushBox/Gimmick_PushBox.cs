@@ -75,11 +75,12 @@ public class Gimmick_PushBox : GimmickBase {
     /// 箱の位置を初期化
     /// </summary>
     public void ResetBox() {
+        // 位置を初期生成位置に戻す
         transform.position = boxPosition;
         isPushing = false;
         playerTransform = null;
 
-        // 必要なら物理特性もリセット（Rigidbody付きの場合）
+        // RigidBodyも直す
         var rb = GetComponent<Rigidbody>();
         if (rb != null) {
             rb.velocity = Vector3.zero;
