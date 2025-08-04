@@ -13,6 +13,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 
+using static MainGameProcessor;
+
 public class PlayerCharacter : CharacterBase {
 	//Animator animator;
 
@@ -42,7 +44,6 @@ public class PlayerCharacter : CharacterBase {
 		transform.position += moveValue;
 		if (GetTouchGround()) anim.SetBool("jump", false);
         else anim.SetBool("jump", true);
-		Debug.Log(moveInput);
 	}
 
 	private void OnDrawGizmos() {
@@ -70,7 +71,7 @@ public class PlayerCharacter : CharacterBase {
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag(BULLET_TAG)) {
-			Debug.Log("Ž€‚ñ‚¾");
+			EndGameReason(eEndReason.Dead);
 		}
 	}
 
