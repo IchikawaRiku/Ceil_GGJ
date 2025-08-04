@@ -77,6 +77,8 @@ public class CharacterManager : MonoBehaviour {
 			_usePlayer.enabled = false;
 			// 幽霊の入力をとる
 			_useSpirit.enabled = true;
+            // アニメーション再生
+            _usePlayer.anim.SetBool("change", true);
 
 		}
         else if (_controlCharacter == _useSpirit) {
@@ -88,6 +90,8 @@ public class CharacterManager : MonoBehaviour {
 			_unuseSpirit.enabled = false;
 			// プレイヤーの入力をとる
 			_usePlayer.enabled = true;
+            // アニメーション終了
+            _usePlayer.anim.SetBool("change", false);
 		}
     }
 
