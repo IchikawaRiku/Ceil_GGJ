@@ -10,13 +10,9 @@ public class MenuInGameMenu : MenuBase {
     private Button _initSelectButton = null;
     // InputAction
     private MyInput _inputAction = null;
-    // メニューを閉じるか判別するフラグ
-    private bool _isClose = false;
-    // 設定画面を開くか判別するフラグ
-    private bool _isSettingsOpen = false;
-    // タイトルパートへ戻るか判別するフラグ
-    private bool _isReturnTitle = false;
-
+    //セレクトメニュー
+    private eMenuSelect _menuSelect = eMenuSelect.Invalid;
+    //ボタン入力処理
     private AcceptMenuButtonInput _buttonInput = null;
 
     public override async UniTask Initialize() {
@@ -26,49 +22,39 @@ public class MenuInGameMenu : MenuBase {
     }
     public override async UniTask Open() {
         await base.Open();
+        _menuSelect = eMenuSelect.Invalid;
         _inputAction.Player.Pause.Enable();
         await _buttonInput.Setup(_initSelectButton);
-        while (true) {
+        while (_menuSelect == eMenuSelect.Invalid) {
             //Escapeで閉じる
-            if (_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
+            if (_inputAction.Player.Pause.WasPressedThisFrame()) break;
             //ボタン入力処理
             await _buttonInput.AcceptInput();
             //SettingフラグでSetting画面へ遷移
-            if (_isSettingsOpen) {
-                await MenuManager.instance.Get<MenuSetting>().Open();
-                _isSettingsOpen = false;
-                break;
-            }
-            //returnフラグでタイトル画面へ遷移
-            if (_isReturnTitle) {
-                await FadeManager.instance.FadeOut();
-                UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
-                _isReturnTitle = false;
-                break;
-            }
             await UniTask.DelayFrame(1);
         }
-        _isClose = false;
         _inputAction.Player.Pause.Disable();
         await _buttonInput.Teardown();
         await Close();
+        if( _menuSelect == eMenuSelect.Settings) await MenuManager.instance.Get<MenuSetting>().Open();
     }
     /// <summary>
     /// メニュー開閉フラグの変更
     /// </summary>
     public void MenuClose() {
-        _isClose = true;
+        _menuSelect = eMenuSelect.CloseMenu;
     }
     /// <summary>
     /// 設定画面を開くフラグ変更
     /// </summary>
     public void SettingMenuOpen() {
-        _isSettingsOpen = true;
+        _menuSelect = eMenuSelect.Settings;
     }
     /// <summary>
     /// タイトルパートに戻るフラグの変更
     /// </summary>
     public void ReturnTitle() {
-        _isReturnTitle = true;
+        _menuSelect = eMenuSelect.ReturnTitle;
+        MainGameProcessor.EndGameReason(eEndReason.Return);
     }
 }

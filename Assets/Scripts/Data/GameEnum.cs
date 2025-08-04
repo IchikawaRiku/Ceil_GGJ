@@ -47,4 +47,14 @@ public enum eEndReason {
     Invalid = -1,
     Dead,           // プレイヤー死亡
     Clear,			// ゲームクリア
+    Return          //タイトルへ戻る
+}
+/// <summary>
+/// メニューセレクト
+/// </summary>
+public enum eMenuSelect {
+    Invalid = -1,
+    Settings,
+    ReturnTitle,
+    CloseMenu
 }
