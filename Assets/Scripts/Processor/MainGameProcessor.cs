@@ -49,4 +49,8 @@ public class MainGameProcessor {
         _eEndReason = endReason;
     }
 
+    public static eEndReason GetGameReason() {
+        return _eEndReason;
+    }
+
 }

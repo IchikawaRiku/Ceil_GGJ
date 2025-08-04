@@ -12,6 +12,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
+using static MainGameProcessor;
+
 public class SpiritCharacter : CharacterBase {
 	// スイッチを押せるか否か
 	private bool canOnSwitch = false;
@@ -86,7 +88,8 @@ public class SpiritCharacter : CharacterBase {
 			canOnSwitch = true;
 		}
 		if (other.CompareTag(BULLET_TAG)) {
-			Debug.Log("死んだ");
+			anim.Play("ghost_dissolve");
+			EndGameReason(eEndReason.Dead);
 		}
 	}
 

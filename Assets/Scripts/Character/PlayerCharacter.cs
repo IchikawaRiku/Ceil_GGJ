@@ -71,6 +71,7 @@ public class PlayerCharacter : CharacterBase {
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag(BULLET_TAG)) {
+			anim.Play("boy_down_back");
 			EndGameReason(eEndReason.Dead);
 		}
 	}
@@ -89,7 +90,7 @@ public class PlayerCharacter : CharacterBase {
 	/// ƒWƒƒƒ“ƒv‚Ì“ü—Í
 	/// </summary>
 	public void OnJump(InputAction.CallbackContext context) {
-		if (!GetTouchGround()) return;
+		if (!GetTouchGround() || anim.GetBool("change")) return;
 		rig.velocity = Vector3.up * _jumpPower;
 	}
 }
