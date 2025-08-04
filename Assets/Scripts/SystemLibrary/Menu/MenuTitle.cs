@@ -53,12 +53,15 @@ public class MenuTitle : MenuBase {
     /// メニュー開閉フラグの変更
     /// </summary>
     public void MenuClose() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
     }
     public void ToMenuSetting() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _isSelect = true;
     }
     public void EndGame() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
         _isGameEnd = true;
     }

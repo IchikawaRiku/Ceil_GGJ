@@ -42,18 +42,21 @@ public class MenuInGameMenu : MenuBase {
     /// メニュー開閉フラグの変更
     /// </summary>
     public void MenuClose() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _menuSelect = eMenuSelect.CloseMenu;
     }
     /// <summary>
     /// 設定画面を開くフラグ変更
     /// </summary>
     public void SettingMenuOpen() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _menuSelect = eMenuSelect.Settings;
     }
     /// <summary>
     /// タイトルパートに戻るフラグの変更
     /// </summary>
     public void ReturnTitle() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _menuSelect = eMenuSelect.ReturnTitle;
         MainGameProcessor.EndGameReason(eEndReason.Return);
     }

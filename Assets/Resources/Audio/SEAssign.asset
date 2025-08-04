@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be65a0003dc8c44e8ae384b7928f04d, type: 3}
   m_Name: SEAssign
   m_EditorClassIdentifier: 
-  seArray: []
+  seArray:
+  - {fileID: 8300000, guid: 8c3b7fbfeeeba604f8da51dd98c28d39, type: 3}
+  - {fileID: 8300000, guid: e2edb20c2c6d7a74ca2feb67b0937c4e, type: 3}
+  - {fileID: 8300000, guid: 7c1263b29eadb2143960c3a6de8d10be, type: 3}

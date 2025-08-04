@@ -23,6 +23,7 @@ public class MenuStageSelect : MenuBase {
         await _buttonInput.Setup(_initSelectButton);
         stageNum = eStageStage.Invalid;
         while (stageNum == eStageStage.Invalid) {
+            await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
         }
         await _buttonInput.Teardown();
@@ -36,27 +37,32 @@ public class MenuStageSelect : MenuBase {
     /// チュートリアルステージ選択
     /// </summary>
     public void SelectTutorialStage() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageStage.Tutorial;
     }
     /// <summary>
     /// ステージ1選択
     /// </summary>
     public void SelectStage1() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageStage.Stage1;
     }
     /// <summary>
     /// ステージ2選択
     /// </summary>
     public void SelectStage2() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageStage.Stage2;
     }
     /// <summary>
     /// ステージ3選択
     /// </summary>
     public void SelectStage3() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageStage.Stage3;
     }
     public void ReturnTitle() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageStage.Max;
     }
 }

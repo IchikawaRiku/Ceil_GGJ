@@ -16,6 +16,12 @@ public class PartGameOver : PartBase {
     }
 
     public override async UniTask Execute() {
+        SoundManager.instance.PlayBGM(2);
         await MenuManager.instance.Get<MenuGameOver>().Open();
+    }
+
+    public override async UniTask Teardown() {
+        await base.Teardown();
+        SoundManager.instance.StopBGM();
     }
 }

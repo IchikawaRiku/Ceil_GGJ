@@ -30,6 +30,7 @@ public class PartMainGame : PartBase {
         _mainProcessor.Setup();
     }
     public override async UniTask Execute() {
+        SoundManager.instance.PlayBGM(1);
         eEndReason endReason = await _mainProcessor.Execute();
         switch (endReason) {
             case eEndReason.Dead:
@@ -45,6 +46,7 @@ public class PartMainGame : PartBase {
     }
     public override async UniTask Teardown() {
         await base.Teardown();
+        SoundManager.instance.StopBGM();
         _mainProcessor.Teardown();
         _characterManager.Teardown();
     }

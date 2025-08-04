@@ -54,6 +54,7 @@ public class MenuGameClear : MenuBase {
     /// メニュー開閉フラグ、タイトルスキップフラグの変更
     /// </summary>
     public void MenuCloseToStageSelect() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
         isTitleSkip = true;
     }
@@ -61,6 +62,7 @@ public class MenuGameClear : MenuBase {
     /// メニュー開閉フラグ、ステージリトライフラグの変更
     /// </summary>
     public void RetryCurrentStage() {
+        UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
         _isRetryStage = true;
     }
