@@ -58,13 +58,15 @@ public class SpiritCharacter : CharacterBase {
 		float playerLeaveMinX = CharacterManager.instance.GetPlayerPosition().x - _PLAYER_LEAVE_MAX;
 		float playerLeaveMaxY = CharacterManager.instance.GetPlayerPosition().y + _PLAYER_LEAVE_MAX;
 		float playerLeaveMinY = CharacterManager.instance.GetPlayerPosition().y - _PLAYER_LEAVE_MAX;
+
 		// ”ÍˆÍŠO‚È‚çˆÚ“®‚µ‚È‚¢
-		if (movePosX > playerLeaveMaxX || movePosX < playerLeaveMinX) {
+		if ((movePosX > playerLeaveMaxX && moveValue.x > 0)
+			|| (movePosX < playerLeaveMinX && moveValue.x < 0))
 			moveValue.x = 0;
-		}
-		if (movePosY > playerLeaveMaxY || movePosY < playerLeaveMinY) {
+
+		if ((movePosY > playerLeaveMaxY && moveValue.y > 0)
+			|| (movePosY < playerLeaveMinY && moveValue.y < 0))
 			moveValue.y = 0;
-		}
 	}
 
 	/// <summary>
