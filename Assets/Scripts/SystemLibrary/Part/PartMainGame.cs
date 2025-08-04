@@ -31,13 +31,15 @@ public class PartMainGame : PartBase {
     }
     public override async UniTask Execute() {
         eEndReason endReason = await _mainProcessor.Execute();
-        await FadeManager.instance.FadeOut();
         switch (endReason) {
             case eEndReason.Dead:
                 UniTask task = PartManager.instance.TransitionPart(eGamePart.GameOver);
                 break;
             case eEndReason.Clear:
-                 task = PartManager.instance.TransitionPart(eGamePart.GameClear);
+                task = PartManager.instance.TransitionPart(eGamePart.GameClear);
+                break;
+            case eEndReason.Return:
+                task = PartManager.instance.TransitionPart(eGamePart.Title);
                 break;
         }
     }

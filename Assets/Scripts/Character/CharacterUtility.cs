@@ -33,4 +33,8 @@ public class CharacterUtility{
     public static void UnuseSpirit() {
         CharacterManager.instance.UnuseSpirit();
     }
+
+    public static Vector3 GetPlayerPosition() {
+        return CharacterManager.instance.GetPlayerPosition();
+    }
 }
