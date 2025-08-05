@@ -67,7 +67,7 @@ public class CharacterManager : MonoBehaviour {
     /// <summary>
     /// 操作キャラクターのチェンジ
     /// </summary>
-    public void ChangeControlCharacter() {
+    public async UniTask ChangeControlCharacter() {
         if (controlCharacter == _usePlayer) {
             //幽霊を生成
             UseSpirit();
@@ -93,6 +93,7 @@ public class CharacterManager : MonoBehaviour {
             // アニメーション終了
             _usePlayer.anim.SetBool("change", false);
 		}
+        await UniTask.CompletedTask;
     }
 
     /// <summary>

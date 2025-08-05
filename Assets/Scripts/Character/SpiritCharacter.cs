@@ -148,4 +148,11 @@ public class SpiritCharacter : CharacterBase {
 		if (!canOnSwitch) return;
 		SwitchUtility.Press();
 	}
+
+	/// <summary>
+	/// 幽体離脱のアニメーションの終わり
+	/// </summary>
+	public void ChangeAnimationEnd() {
+
+	}
 }

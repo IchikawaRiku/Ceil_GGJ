@@ -95,7 +95,8 @@ public class CharacterBase : MonoBehaviour {
 	/// </summary>
 	/// <param name="context"></param>
 	public virtual void OnChangeSpirit(InputAction.CallbackContext context) {
- 		CharacterManager.instance.ChangeControlCharacter();
+		moveInput = Vector2.zero;
+ 		UniTask task = CharacterManager.instance.ChangeControlCharacter();
     }
 
 	/// <summary>
