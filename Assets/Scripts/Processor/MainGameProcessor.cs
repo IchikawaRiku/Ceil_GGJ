@@ -28,13 +28,16 @@ public class MainGameProcessor {
     public async UniTask<eEndReason> Execute() {
         CameraManager.instance.SetPosition(GetPlayerPosition());
         await FadeManager.instance.FadeIn();
-        // “ü—ÍŽó•t
-        while (_eEndReason == eEndReason.Invalid) {
+		CharacterManager.instance.controlCharacter.EnableInput();
+		// “ü—ÍŽó•t
+		while (_eEndReason == eEndReason.Invalid) {
             if (_inputAction.Player.Pause.WasPressedThisFrame()) {
-                await MenuManager.instance.Get<MenuInGameMenu>().Open();
+				CharacterManager.instance.controlCharacter.DisableInput();
+				await MenuManager.instance.Get<MenuInGameMenu>().Open();
                 _inputAction.Player.Pause.Enable();
+				CharacterManager.instance.controlCharacter.EnableInput();
             }
-            UniTask task = CharacterManager.instance.Execute();
+            await CharacterManager.instance.Execute();
 
             await UniTask.DelayFrame(1);
         }

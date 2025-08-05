@@ -14,6 +14,7 @@ using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 
 using static MainGameProcessor;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerCharacter : CharacterBase {
 	//Animator animator;
@@ -40,12 +41,17 @@ public class PlayerCharacter : CharacterBase {
 		await base.Execute();
 		// 向き変更
 		if (!anim.GetBool("change")) ChangeAngle();
+		// 移動処理
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.position += moveValue;
+		if (moveValue.x != 0 && GetTouchGround()) anim.SetBool("run", true);
+		else anim.SetBool("run", false);
+		// ジャンプアニメーション
 		if (GetTouchGround()) anim.SetBool("jump", false);
         else anim.SetBool("jump", true);
 	}
 
+	/*
 	private void OnDrawGizmos() {
 		Vector3 position = transform.position;
 		position.y -= _FEET_DISTANCE;
@@ -55,6 +61,7 @@ public class PlayerCharacter : CharacterBase {
 		Gizmos.color = hit ? hitColor : noHitColor;
 		Gizmos.DrawWireSphere(position, _FEET_RADIUS);
 	}
+	*/
 
 	/// <summary>
 	/// 地面触れ判定
@@ -73,24 +80,43 @@ public class PlayerCharacter : CharacterBase {
 		if (other.CompareTag(BULLET_TAG)) {
 			anim.Play("boy_down_back");
 			EndGameReason(eEndReason.Dead);
+			DisableInput();
 		}
+	}
+
+	/// <summary>
+	/// Inputのアクティブ化
+	/// </summary>
+	public override void EnableInput() {
+		base.EnableInput();
+		action = input.actions["Jump"];
+		action.started += OnJump;
+		action.Enable();
+	}
+
+	/// <summary>
+	/// Inputの非アクティブ化
+	/// </summary>
+	public override void DisableInput() {
+		base.DisableInput();
+		action = input.actions["Jump"];
+		action.started -= OnJump;
+		action.Disable();
 	}
 
 	/// <summary>
 	/// 移動入力
 	/// </summary>
 	/// <param name="context"></param>
-    public override void OnMove(InputAction.CallbackContext context) {
+	public override void OnMove(InputAction.CallbackContext context) {
 		base.OnMove(context);
-        if (context.performed && GetTouchGround()) anim.SetBool("run", true);
-        else anim.SetBool("run", false);
 	}
 
 	/// <summary>
 	/// ジャンプの入力
 	/// </summary>
 	public void OnJump(InputAction.CallbackContext context) {
-		if (!GetTouchGround() || anim.GetBool("change")) return;
+		if (!GetTouchGround()) return;
 		rig.velocity = Vector3.up * _jumpPower;
 	}
 }

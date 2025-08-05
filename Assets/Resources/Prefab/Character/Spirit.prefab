@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 8818dcb2f794f2f4ba3066f4f05503ff, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -236,6 +236,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2dda47eb-e9b4-410f-b026-26a490cfb9b7
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 44883922-2dfd-475f-b55a-26faad799ef0
+    m_ActionName: Player/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -257,6 +261,7 @@ MonoBehaviour:
   moveSpeed: 5
   moveInput: {x: 0, y: 0}
   moveValue: {x: 0, y: 0, z: 0}
+  input: {fileID: 0}
 --- !u!95 &-9158589776548455277
 Animator:
   serializedVersion: 5

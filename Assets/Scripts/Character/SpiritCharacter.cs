@@ -90,6 +90,7 @@ public class SpiritCharacter : CharacterBase {
 		if (other.CompareTag(BULLET_TAG)) {
 			anim.Play("ghost_dissolve");
 			EndGameReason(eEndReason.Dead);
+			DisableInput();
 		}
 	}
 
@@ -101,6 +102,26 @@ public class SpiritCharacter : CharacterBase {
 		if (other.CompareTag(_SWITCH_TAG)) {
 			canOnSwitch = false;
 		}
+	}
+
+	/// <summary>
+	/// Inputのアクティブ化
+	/// </summary>
+	public override void EnableInput() {
+		base.EnableInput();
+		action = input.actions["SwitchOn"];
+		action.started += OnSwitch;
+		action.Enable();
+	}
+
+	/// <summary>
+	/// Inputの非アクティブ化
+	/// </summary>
+	public override void DisableInput() {
+		base.DisableInput();
+		action = input.actions["SwitchOn"];
+		action.started -= OnSwitch;
+		action.Disable();
 	}
 
 	/// <summary>
@@ -124,7 +145,7 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	/// <param name="context"></param>
 	public void OnSwitch(InputAction.CallbackContext context) {
-		if (!context.performed || !canOnSwitch) return;
+		if (!canOnSwitch) return;
 		SwitchUtility.Press();
 	}
 }

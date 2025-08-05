@@ -26,6 +26,10 @@ public class CharacterBase : MonoBehaviour {
 	[SerializeField]
 	// 最終的な移動量
 	protected Vector3 moveValue = Vector3.zero;
+	// InputSystem
+	public PlayerInput input = null;
+	// アクション
+	protected InputAction action = null;
 	// 移動速度の最大
 	protected const float MOVE_SPEED_MAX = 5f;
 	// 進行方向の向き
@@ -38,6 +42,8 @@ public class CharacterBase : MonoBehaviour {
 	/// </summary>
 	public virtual async UniTask Initialize() {
 		rig = GetComponent<Rigidbody>();
+		input = GetComponent<PlayerInput>();
+		//input.actions = Instantiate(input.actions);
 		await UniTask.CompletedTask;
 	}
 
@@ -48,6 +54,32 @@ public class CharacterBase : MonoBehaviour {
 		// カメラの位置をセット
 		CameraManager.instance.SetPosition(transform.position);
 		await UniTask.CompletedTask;
+	}
+
+	/// <summary>
+	/// Inputのアクティブ化
+	/// </summary>
+	public virtual void EnableInput() {
+		action = input.actions["Move"];
+		action.performed += OnMove;
+		action.canceled += OnMove;
+		action.Enable();
+		action = input.actions["ChangeSpirit"];
+		action.started += OnChangeSpirit;
+		action.Enable();
+	}
+
+	/// <summary>
+	/// Inputの非アクティブ化
+	/// </summary>
+	public virtual void DisableInput() {
+		action = input.actions["Move"];
+		action.performed -= OnMove;
+		action.canceled -= OnMove;
+		action.Disable();
+		action = input.actions["ChangeSpirit"];
+		action.started -= OnChangeSpirit;
+		action.Disable();
 	}
 
 	/// <summary>
@@ -63,7 +95,6 @@ public class CharacterBase : MonoBehaviour {
 	/// </summary>
 	/// <param name="context"></param>
 	public virtual void OnChangeSpirit(InputAction.CallbackContext context) {
-		if (!context.started) return;
  		CharacterManager.instance.ChangeControlCharacter();
     }
 
