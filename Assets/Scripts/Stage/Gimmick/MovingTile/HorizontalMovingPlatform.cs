@@ -36,6 +36,7 @@ public class HorizontalMovingPlatform : GimmickBase {
     public override void SetUp() {
         transform.position = _startPosition;
         _movingRight = true;
+   
         if (detector != null) {
             detector.OnDetectedEnter += rb => {
                 if (!rigidBodys.Contains(rb)) rigidBodys.Add(rb);
@@ -109,5 +110,15 @@ public class HorizontalMovingPlatform : GimmickBase {
                 rb.MovePosition(nextPos);
             }
         }
+    }
+
+    /// <summary>
+    /// •Ğ•t‚¯ˆ—
+    /// </summary>
+    public override void Teardown() {
+        // ƒŠƒXƒg‚©‚çíœ
+        rigidBodys.Clear();
+
+
     }
 }

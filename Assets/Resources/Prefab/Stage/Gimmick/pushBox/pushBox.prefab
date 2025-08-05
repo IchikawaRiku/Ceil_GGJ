@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 348640053878417249}
   - component: {fileID: 3158846165225326004}
   - component: {fileID: 7658551941057218606}
-  - component: {fileID: 8942105783815972359}
+  - component: {fileID: -3654390417257541342}
   m_Layer: 7
   m_Name: pushBox
   m_TagString: Obstacle
@@ -93,7 +93,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3673727392852851746}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: dbcae3ce136f82c4b8b3a2a2d21cfda8, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -105,7 +105,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19999997, y: 0.19999999, z: 0.19999997}
+  m_Size: {x: 0.22, y: 0.19999999, z: 0.22}
   m_Center: {x: 0, y: -0.0000000037252903, z: 0}
 --- !u!114 &7658551941057218606
 MonoBehaviour:
@@ -120,7 +120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushSpeed: 4
---- !u!54 &8942105783815972359
+  groundCheckDistance: 0.1
+--- !u!54 &-3654390417257541342
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

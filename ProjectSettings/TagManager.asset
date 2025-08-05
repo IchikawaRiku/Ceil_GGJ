@@ -8,6 +8,7 @@ TagManager:
   - switch
   - bullet
   - ghost
+  - SettingVolumeButton
   layers:
   - Default
   - TransparentFX
