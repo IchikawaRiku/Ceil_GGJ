@@ -4,64 +4,106 @@ using UnityEngine;
 
 public class Gimmick_PushBox : GimmickBase {
     [SerializeField]
-    private float pushSpeed = 2f;
+    private float pushSpeed = 2f;  // 箱を押すスピード
 
-    // 押しているフラグ
-    private bool isPushing = false;
+    [SerializeField]
+    private float groundCheckDistance = 0.1f;  // 地面チェック用のRaycast距離
 
-    // プレイヤーのTransform
-    private Transform playerTransform;
+    private bool isPushing = false;  // プレイヤーが押しているか
+    private Transform playerTransform;  // プレイヤーのTransform参照
+    private Vector3 boxPosition;  // 初期位置保存用
+    private Rigidbody rb;  // Rigidbodyキャッシュ
+    private Vector3 lastPlayerPos;  // 前フレームのプレイヤー位置
 
-    // 初期位置保存用
-    private Vector3 boxPosition;
+    private bool isGrounded = true;  // 地面に接しているかどうか
 
-    /// <summary>
-    /// 初期化処理
-    /// </summary>
+    // 初期化処理
     public override void Initialize() {
-        // 初期生成位置を記憶
-        boxPosition = transform.position;
+        boxPosition = transform.position;  // 初期位置を保存
+        rb = GetComponent<Rigidbody>();    // Rigidbody取得
+        if (rb == null) {
+        }
     }
 
-    /// <summary>
-    /// 使用前準備
-    /// </summary>
+    // 準備処理
     public override void SetUp() {
-        // 生成位置、各フラグを初期化
-        transform.position = boxPosition;
+        transform.position = boxPosition;  // 箱を初期位置に戻す
         isPushing = false;
         playerTransform = null;
+        lastPlayerPos = Vector3.zero;
+
+        // Rigidbodyの速度をリセット
+        if (rb != null) {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
-    /// <summary>
-    /// 更新処理
-    /// </summary>
+    // 今は使われていない
     protected override void OnUpdate() {
-        if (isPushing && playerTransform != null) {
-            // プレイヤーと箱の距離を正規化して代入
-            Vector3 direction = (playerTransform.position - transform.position).normalized;
+    }
 
-            // 押す方向がX軸成分強めの時だけ移動（X方向にしか動かさない制限）
-            if (Mathf.Abs(direction.x) > 0.7f) {
-                float pushDir = Mathf.Sign(direction.x);
-                transform.position += new Vector3(pushDir * pushSpeed * Time.deltaTime, 0, 0);
+    // 物理処理用（固定時間ごとに呼ばれる）
+    private void FixedUpdate() {
+        CheckGround();  // 地面判定を毎回行う
+
+        if (!isGrounded) {
+            // 地面がなければ落下に任せる（Rigidbodyの重力で自然落下）
+            return;
+        }
+
+        // プレイヤーが押していて、参照が有効で、Rigidbodyがある場合
+        if (isPushing && playerTransform != null && rb != null) {
+            // 前フレームのプレイヤー位置が未初期化なら初期化だけして抜ける
+            if (lastPlayerPos == Vector3.zero) {
+                lastPlayerPos = playerTransform.position;
+                return;
             }
+
+            // プレイヤーの移動量を取得
+            Vector3 playerDelta = playerTransform.position - lastPlayerPos;
+            float moveX = playerDelta.x * pushSpeed;  // 押す方向と量
+
+            // 箱の新しい位置を計算
+            Vector3 nextPos = rb.position + new Vector3(moveX, 0, 0);
+
+            // RigidbodyをMovePositionで移動
+            rb.MovePosition(nextPos);
+
+            // プレイヤー位置を更新
+            lastPlayerPos = playerTransform.position;
+        }
+        else {
+            // 押していないときは場所をリセット
+            lastPlayerPos = Vector3.zero;
         }
     }
 
     /// <summary>
-    /// プレイヤーが押し続けている間
+    /// 地面に接地しているかどうか、RayCastで調べる
+    /// </summary>
+    private void CheckGround() {
+        Vector3 origin = transform.position + Vector3.up * 0.1f;  // 少し上からRayを飛ばす
+        Ray ray = new Ray(origin, Vector3.down);
+
+        // Raycastで下方向にコライダーがあるか判定
+        isGrounded = Physics.Raycast(ray, groundCheckDistance + 0.1f);
+
+    }
+
+    /// <summary>
+    /// プレイヤーが箱と接地していたら
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionStay(Collision collision) {
         if (!collision.collider.CompareTag("Player")) return;
-
+        // 押している状態にする
         isPushing = true;
         playerTransform = collision.transform;
     }
 
     /// <summary>
-    /// プレイヤーと離れたとき
+    /// プレイヤーが箱から離れたら
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionExit(Collision collision) {
@@ -71,17 +113,16 @@ public class Gimmick_PushBox : GimmickBase {
         }
     }
 
-    /// <summary>
-    /// 箱の位置を初期化
-    /// </summary>
+    // 箱をリセットする
     public void ResetBox() {
-        // 位置を初期生成位置に戻す
+        // 初期位置に戻す
         transform.position = boxPosition;
+        // フラグを初期化
         isPushing = false;
         playerTransform = null;
+        // プレイヤーの最後の場所を初期化
+        lastPlayerPos = Vector3.zero;
 
-        // RigidBodyも直す
-        var rb = GetComponent<Rigidbody>();
         if (rb != null) {
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
