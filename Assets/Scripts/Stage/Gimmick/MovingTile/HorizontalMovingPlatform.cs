@@ -110,4 +110,14 @@ public class HorizontalMovingPlatform : GimmickBase {
             }
         }
     }
+
+    /// <summary>
+    /// •Ğ•t‚¯ˆ—
+    /// </summary>
+    public override void Teardown() {
+        // ƒŠƒXƒg‚©‚çíœ
+        rigidBodys.Clear();
+
+
+    }
 }
