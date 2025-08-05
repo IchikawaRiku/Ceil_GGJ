@@ -6,22 +6,24 @@ using UnityEngine;
 /// タレットギミック：一定間隔で弾を発射する
 /// </summary>
 public class Gimmick_Turret : GimmickBase, IDisablable {
-    [SerializeField] private Transform firePoint;        // 弾の発射位置
-    private float fireInterval = 0.2f;    // 発射レート
+    [SerializeField] private Transform firePoint;             // 弾の発射位置
+    [SerializeField] private float fireInterval = 0.2f;       // 発射レート
+    [SerializeField] private float detectionRange = 10f;      // 撃ち始める距離
+    [SerializeField] private Transform playerTransform;       // プレイヤーのTransform（Inspectorでセット or 自動取得）
 
     private float _timer;
-    private bool _canFire = true;                        // 発射可能フラグ
+    private bool _canFire = true;                             // 発射可能フラグ
 
     /// <summary>
     /// 初期化処理
     /// </summary>
     public override void Initialize() {
         _timer = 0f;
-        _canFire = true; // 初期状態で発射可能にする
+        _canFire = true;
     }
 
     /// <summary>
-    /// いまはつかわない
+    /// 使用前準備
     /// </summary>
     public override void SetUp() {
         _canFire = true;
@@ -31,22 +33,25 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
     /// 更新処理
     /// </summary>
     protected override void OnUpdate() {
-        // 発射停止されていたら撃たない
         if (!_canFire) return;
 
-        // 経過時間の更新
+        // プレイヤーの座標を取得
+        Vector3 playerPos = CharacterUtility.GetPlayerPosition();
+        if (playerPos == Vector3.negativeInfinity) return;
+        // プレイヤーが近くにいるか
+        float distance = Vector3.Distance(transform.position, playerPos);
+        if (distance > detectionRange) return;
+
         _timer += Time.deltaTime;
 
         if (_timer >= fireInterval) {
-            // 発射
             Fire();
-            // 経過時間初期化
             _timer = 0f;
         }
     }
 
     /// <summary>
-    /// 弾を発射する処理
+    /// 撃つ
     /// </summary>
     private void Fire() {
         var bullet = BulletPool.Instance.GetBullet();
@@ -55,8 +60,9 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
         bullet.Fire();
     }
 
+
     /// <summary>
-    /// タレットの弾の発射を停止する
+    /// 撃たない
     /// </summary>
     public void Disable() {
         _canFire = false;
