@@ -6503,6 +6503,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4176065260191840976, guid: c3553fe4403871042a019836282f312f, type: 3}
+      propertyPath: moveSpeed.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176065260191840976, guid: c3553fe4403871042a019836282f312f, type: 3}
       propertyPath: moveDistance
       value: 7
       objectReference: {fileID: 0}
