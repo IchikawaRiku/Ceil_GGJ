@@ -12,7 +12,7 @@ public class VerticalMovingPlatform : GimmickBase {
     private bool _movingUp = true;                                  // 現在の移動方向
     [SerializeField] private Rigidbody rigidBody = null;            // この床の Rigidbody
     private List<Rigidbody> rigidBodys = new();                     // 上に乗ったオブジェクトの Rigidbody
-    [SerializeField] private PlatformDetector detector;             // 子オブジェクトのスクリプトをInspectorでセット
+    [SerializeField] private PlatformDetector1 detector;             // 子オブジェクトのスクリプトをInspectorでセット
 
     /// <summary>
     /// 初期化処理
@@ -75,25 +75,6 @@ public class VerticalMovingPlatform : GimmickBase {
         }
     }
 
-    /// <summary>
-    /// トリガーに入ったオブジェクトのRigidbodyを登録
-    /// </summary>
-    void OnTriggerEnter(Collider other) {
-        Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-        if (rb != null && !rigidBodys.Contains(rb)) {
-            rigidBodys.Add(rb);
-        }
-    }
-
-    /// <summary>
-    /// トリガーから出たオブジェクトのRigidbodyを削除
-    /// </summary>
-    void OnTriggerExit(Collider other) {
-        Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-        if (rb != null) {
-            rigidBodys.Remove(rb);
-        }
-    }
 
     /// <summary>
     /// 移動床の速度を上に乗っているオブジェクトに反映
