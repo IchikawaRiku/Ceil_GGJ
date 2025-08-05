@@ -15,6 +15,9 @@ using UnityEngine.UI;
 using static GameConst;
 
 public class MenuSetting : MenuBase {
+    //ボタンの配列
+    [SerializeField]
+    private Button[] _buttonList = null;
     // BGM音量のテキスト
     [SerializeField]
     private TextMeshProUGUI _bgmVolumeText = null;
@@ -55,6 +58,7 @@ public class MenuSetting : MenuBase {
         await FadeManager.instance.FadeIn();
         _inputAction.Player.Pause.Enable();
         await _buttonInput.Setup(_initSelectButton);
+        await SetPushButtonState(_buttonList, true);
         while (true) {
             await _buttonInput.AcceptInput();
             if(_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
@@ -64,6 +68,7 @@ public class MenuSetting : MenuBase {
         _isClose = false;
         _inputAction.Player.Pause.Disable();
         await _buttonInput.Teardown();
+        await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
         await Close();
     }

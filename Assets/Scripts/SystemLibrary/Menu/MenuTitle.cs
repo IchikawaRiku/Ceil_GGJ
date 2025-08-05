@@ -11,6 +11,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuTitle : MenuBase {
+    //ボタンの配列
+    [SerializeField]
+    private Button[] _buttonList = null;
     // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
@@ -34,17 +37,21 @@ public class MenuTitle : MenuBase {
         _isSelect = false;
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
+        await SetPushButtonState(_buttonList, true);
         while (!_isClose) {
             await _buttonInput.AcceptInput();
             if (_isSelect) {
+                await SetPushButtonState(_buttonList, false);
                 await FadeManager.instance.FadeOut();
                 await MenuManager.instance.Get<MenuSetting>().Open();
                 await FadeManager.instance.FadeIn();
                 await _buttonInput.Setup(_initSelectButton);
                 _isSelect = false;
+                await SetPushButtonState(_buttonList, true);
             }
             await UniTask.DelayFrame(1);
         }
+        await SetPushButtonState(_buttonList, false);
         if (_isGameEnd) QuitApp();
         await FadeManager.instance.FadeOut();
         await Close();
@@ -61,7 +68,7 @@ public class MenuTitle : MenuBase {
         _isSelect = true;
     }
     public void EndGame() {
-        UniTask task = SoundManager.instance.PlaySE(1);
+        //UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
         _isGameEnd = true;
     }
