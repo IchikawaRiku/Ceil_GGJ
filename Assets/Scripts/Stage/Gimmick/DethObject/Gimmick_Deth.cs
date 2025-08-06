@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,8 @@ public class Gimmick_Deth : GimmickBase {
     private void OnTriggerEnter(Collider collision) {
         // ƒvƒŒƒCƒ„[‚¾‚Á‚½‚ç
         if (collision.gameObject.layer == 6) {
+            // SEÄ¶
+            UniTask task = SoundManager.instance.PlaySE(6);
             // €–S”»’è‚ğMainGameProcessor‚É‘—‚é
             EndGameReason(eEndReason.Dead);
         }

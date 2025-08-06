@@ -27,6 +27,7 @@ public class goalObject : GimmickBase {
     private void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.layer == 6) {
             isGoal = true;
+            UniTask task = SoundManager.instance.PlaySE(7);
             EndGameReason(eEndReason.Clear);
 
         }
