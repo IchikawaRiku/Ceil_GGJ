@@ -31,6 +31,7 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
         // ‰Šúó‘Ô‚ğ“§–¾‚Éİ’è
         SetAlpha(Transparent);
         _collider.isTrigger = true;
+        Debug.Log("SetUp called");
     }
 
     /// <summary>
