@@ -12,6 +12,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
+using static MainGameProcessor;
+
 public class CharacterManager : MonoBehaviour {
     // 自身への参照
     public static CharacterManager instance { get; private set; } = null;
@@ -58,34 +60,35 @@ public class CharacterManager : MonoBehaviour {
         if (controlCharacter == null) return;
 		// 操作キャラの実行処理
 		await controlCharacter.Execute();
-        if (controlCharacter != _useSpirit) {
-            _unuseSpirit.ReturnPosition();
-        }
-		await UniTask.CompletedTask;
     }
 
     /// <summary>
     /// 操作キャラクターのチェンジ
     /// </summary>
     public async UniTask ChangeControlCharacter() {
+        // 操作キャラの入力を切る
+        controlCharacter.DisableInput();
+		// アニメーション再生
+		_usePlayer.anim.SetBool("change", true);
+        // チェンジ中待機
+        controlCharacter.changeMove = true;
+        while (controlCharacter.changeMove) {
+            await UniTask.DelayFrame(1);
+        }
         if (controlCharacter == _usePlayer) {
+            // 幽霊をプレイヤーの場所へ
+            _unuseSpirit.transform.position = GetPlayerPosition();
             //幽霊を生成
             UseSpirit();
-            // プレイヤーの入力を切る
-            controlCharacter.DisableInput();
 			// コントロールを幽霊にする
 			controlCharacter = _useSpirit;
             // 幽霊の入力をとる
             controlCharacter.EnableInput();
-			// アニメーション再生
-			_usePlayer.anim.SetBool("change", true);
 
 		}
         else if (controlCharacter == _useSpirit) {
             //幽霊を未使用化
             UnuseSpirit();
-            // 幽霊の入力を切る
-            controlCharacter.DisableInput();
 			// コントロールをプレイヤーにする
 			controlCharacter = _usePlayer;
 			// プレイヤーの入力をとる
@@ -165,6 +168,7 @@ public class CharacterManager : MonoBehaviour {
     /// 片付け
     /// </summary>
     public void Teardown() {
+        controlCharacter.changeMove = false;
         _usePlayer.Teardown();
         if (_useSpirit == null) _unuseSpirit.Teardown();
         else _useSpirit.Teardown();

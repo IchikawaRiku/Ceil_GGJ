@@ -16,20 +16,20 @@ public class CharacterBase : MonoBehaviour {
 	[SerializeField]
 	public Animator anim = null;
 	// 移動速度
-	[SerializeField]
 	protected float moveSpeed = 5f;
 	// 移動速度減少の倍率
 	protected float speedDownLate = 0.5f;
-	[SerializeField]
 	// 移動入力
 	protected Vector2 moveInput = Vector2.zero;
-	[SerializeField]
 	// 最終的な移動量
 	protected Vector3 moveValue = Vector3.zero;
 	// InputSystem
 	public PlayerInput input = null;
 	// アクション
 	protected InputAction action = null;
+	// 幽体離脱中の動き
+	public bool changeMove = false;
+
 	// 移動速度の最大
 	protected const float MOVE_SPEED_MAX = 5f;
 	// 進行方向の向き

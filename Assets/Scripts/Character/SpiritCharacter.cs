@@ -20,9 +20,11 @@ public class SpiritCharacter : CharacterBase {
 	// スピードの倍率
 	private const float _SPEED_LATE = 1.9f;
 	// 戻ってくる時の補間比率
-	private const float _RETURN_LATE = 0.05f;
+	private const float _RETURN_LATE = 0.08f;
 	// 移動制限距離
 	private const float _PLAYER_LEAVE_MAX = 8;
+	// プレイヤーと交代する為の距離
+	private const float _PLAYER_CHANGE_DISTANCE = 0.1f;
 	// スイッチのタグ名
 	private const string _SWITCH_TAG = "switch";
 
@@ -45,6 +47,12 @@ public class SpiritCharacter : CharacterBase {
 		// 移動制限
 		LeaveLimit();
 		transform.position += moveValue;
+		if (changeMove) {
+			ReturnPosition();
+			if (Vector3.Distance(transform.position, CharacterManager.instance.GetPlayerPosition())
+				< _PLAYER_CHANGE_DISTANCE) 
+				changeMove = false;
+		}
 	}
 
 	/// <summary>
@@ -75,8 +83,8 @@ public class SpiritCharacter : CharacterBase {
 	/// 元の位置に戻る
 	/// </summary>
 	public void ReturnPosition() {
-		transform.position = CharacterManager.instance.GetPlayerPosition();
-		//transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, _RETURN_LATE);
+		//transform.position = CharacterManager.instance.GetPlayerPosition();
+		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), _RETURN_LATE);
 	}
 
 	/// <summary>
@@ -87,7 +95,7 @@ public class SpiritCharacter : CharacterBase {
 		if (other.CompareTag(_SWITCH_TAG)) {
 			canOnSwitch = true;
 		}
-		if (other.CompareTag(BULLET_TAG)) {
+		if (other.CompareTag(BULLET_TAG) && !changeMove) {
 			anim.Play("ghost_dissolve");
 			EndGameReason(eEndReason.Dead);
 			DisableInput();
@@ -149,10 +157,4 @@ public class SpiritCharacter : CharacterBase {
 		SwitchUtility.Press();
 	}
 
-	/// <summary>
-	/// 幽体離脱のアニメーションの終わり
-	/// </summary>
-	public void ChangeAnimationEnd() {
-
-	}
 }

@@ -14,7 +14,6 @@ using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
 
 using static MainGameProcessor;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerCharacter : CharacterBase {
 	//Animator animator;
@@ -119,4 +118,11 @@ public class PlayerCharacter : CharacterBase {
 		if (!GetTouchGround()) return;
 		rig.velocity = Vector3.up * _jumpPower;
 	}
+
+    /// <summary>
+    /// 幽体離脱のアニメーションの終わり
+    /// </summary>
+    public void ChangeAnimationEnd() {
+        changeMove = false;
+    }
 }
