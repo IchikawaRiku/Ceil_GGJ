@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuInGameMenu : MenuBase {
+    //ボタンの配列
+    [SerializeField]
+    private Button[] _buttonList = null;
     // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
@@ -25,6 +28,7 @@ public class MenuInGameMenu : MenuBase {
         _menuSelect = eMenuSelect.Invalid;
         _inputAction.Player.Pause.Enable();
         await _buttonInput.Setup(_initSelectButton);
+        await SetPushButtonState(_buttonList, true);
         while (_menuSelect == eMenuSelect.Invalid) {
             //Escapeで閉じる
             if (_inputAction.Player.Pause.WasPressedThisFrame()) break;
@@ -35,6 +39,7 @@ public class MenuInGameMenu : MenuBase {
         }
         _inputAction.Player.Pause.Disable();
         await _buttonInput.Teardown();
+        await SetPushButtonState(_buttonList, true);
         await Close();
         if( _menuSelect == eMenuSelect.Settings) await MenuManager.instance.Get<MenuSetting>().Open();
     }

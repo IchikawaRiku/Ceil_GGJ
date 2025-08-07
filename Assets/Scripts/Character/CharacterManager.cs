@@ -12,6 +12,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
+using static MainGameProcessor;
+
 public class CharacterManager : MonoBehaviour {
     // 自身への参照
     public static CharacterManager instance { get; private set; } = null;
@@ -33,21 +35,21 @@ public class CharacterManager : MonoBehaviour {
     //未使用状態の幽霊
     private SpiritCharacter _unuseSpirit = null;
     // 操作中のキャラ
-    private CharacterBase _controlCharacter = null;
+    public CharacterBase controlCharacter { get; private set; } = null;
+
+    // InputSystem
+    //private PlayerInput _playerInput;
+    //private PlayerInput _spiritInput;
 
     public async UniTask Initialize() {
         instance = this;
         //プレイヤーの生成
         _unusePlayer = Instantiate(_playerOrigin, _unuseRoot);
         _unuseSpirit = Instantiate(_spiritOrigin, _unuseRoot);
-        // 初期操作はプレイヤー
-        _controlCharacter = _unusePlayer;
-        // 幽霊の入力はとらない
-        _unuseSpirit.enabled = false;
         await _unuseSpirit.Initialize();
         await _unusePlayer.Initialize();
         
-        await UniTask.CompletedTask;
+		await UniTask.CompletedTask;
     }
 
     /// <summary>
@@ -55,44 +57,46 @@ public class CharacterManager : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public async UniTask Execute() {
-        if (_controlCharacter == null) return; 
-        // 操作キャラの実行処理
-        await _controlCharacter.Execute();
-        if (_controlCharacter != _useSpirit) {
-            _unuseSpirit.ReturnPosition();
-        }
-        await UniTask.CompletedTask;
+        if (controlCharacter == null) return;
+		// 操作キャラの実行処理
+		await controlCharacter.Execute();
     }
 
     /// <summary>
     /// 操作キャラクターのチェンジ
     /// </summary>
-    public void ChangeControlCharacter() {
-        if (_controlCharacter == _usePlayer) {
+    public async UniTask ChangeControlCharacter() {
+        // 操作キャラの入力を切る
+        controlCharacter.DisableInput();
+		// アニメーション再生
+		_usePlayer.anim.SetBool("change", true);
+        // チェンジ中待機
+        controlCharacter.changeMove = true;
+        while (controlCharacter.changeMove) {
+            await UniTask.DelayFrame(1);
+        }
+        if (controlCharacter == _usePlayer) {
+            // 幽霊をプレイヤーの場所へ
+            _unuseSpirit.transform.position = GetPlayerPosition();
             //幽霊を生成
             UseSpirit();
 			// コントロールを幽霊にする
-			_controlCharacter = _useSpirit;
-			// プレイヤーの入力を切る
-			_usePlayer.enabled = false;
-			// 幽霊の入力をとる
-			_useSpirit.enabled = true;
-            // アニメーション再生
-            _usePlayer.anim.SetBool("change", true);
+			controlCharacter = _useSpirit;
+            // 幽霊の入力をとる
+            controlCharacter.EnableInput();
 
 		}
-        else if (_controlCharacter == _useSpirit) {
+        else if (controlCharacter == _useSpirit) {
             //幽霊を未使用化
             UnuseSpirit();
 			// コントロールをプレイヤーにする
-			_controlCharacter = _usePlayer;
-			// 幽霊の入力を切る
-			_unuseSpirit.enabled = false;
+			controlCharacter = _usePlayer;
 			// プレイヤーの入力をとる
-			_usePlayer.enabled = true;
+			controlCharacter.EnableInput();
             // アニメーション終了
             _usePlayer.anim.SetBool("change", false);
 		}
+        await UniTask.CompletedTask;
     }
 
     /// <summary>
@@ -102,12 +106,9 @@ public class CharacterManager : MonoBehaviour {
         _usePlayer = _unusePlayer;
         _unusePlayer = null;
         _usePlayer.transform.SetParent(_useRoot);
+        if (controlCharacter == _usePlayer) return;
 		// コントロールをプレイヤーにする
-		_controlCharacter = _usePlayer;
-		// 幽霊の入力を切る
-		_unuseSpirit.enabled = false;
-		// プレイヤーの入力をとる
-		_usePlayer.enabled = true;
+		controlCharacter = _usePlayer;
 	}
     /// <summary>
     /// プレイヤーの未使用化
@@ -167,11 +168,13 @@ public class CharacterManager : MonoBehaviour {
     /// 片付け
     /// </summary>
     public void Teardown() {
+        controlCharacter.changeMove = false;
         _usePlayer.Teardown();
         if (_useSpirit == null) _unuseSpirit.Teardown();
         else _useSpirit.Teardown();
         UnusePlayer();
         UnuseSpirit();
+        
     }
 
 }

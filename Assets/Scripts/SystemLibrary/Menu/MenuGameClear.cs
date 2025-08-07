@@ -11,6 +11,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuGameClear : MenuBase {
+    //ボタンの配列
+    [SerializeField]
+    private Button[] _buttonList = null;
     // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
@@ -34,12 +37,14 @@ public class MenuGameClear : MenuBase {
         _isRetryStage = false;
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
+        await SetPushButtonState(_buttonList, true);
         while (!_isClose) {
             //ボタン入力処理
             await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
         }
         await _buttonInput.Teardown();
+        await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
         await Close();
         if (_isRetryStage) {

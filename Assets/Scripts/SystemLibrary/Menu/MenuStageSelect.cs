@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuStageSelect : MenuBase {
+    //ボタンの配列
+    [SerializeField]
+    private Button[] _buttonList = null;
     //最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
@@ -19,14 +22,16 @@ public class MenuStageSelect : MenuBase {
     }
     public override async UniTask Open() {
         await base.Open();
+        stageNum = eStageStage.Invalid;
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
-        stageNum = eStageStage.Invalid;
+        await SetPushButtonState(_buttonList, true);
         while (stageNum == eStageStage.Invalid) {
             await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
         }
         await _buttonInput.Teardown();
+        await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
         await Close();
     }

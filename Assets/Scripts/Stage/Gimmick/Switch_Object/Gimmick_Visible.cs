@@ -31,6 +31,7 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
         // èâä˙èÛë‘ÇìßñæÇ…ê›íË
         SetAlpha(Transparent);
         _collider.isTrigger = true;
+        Debug.Log("SetUp called");
     }
 
     /// <summary>
@@ -82,14 +83,14 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
     private void SetMaterialToTransparent(Material mat) {
         if (mat == null) return;
 
-        mat.SetFloat("_Mode", 3); // Transparent
+        //mat.SetFloat("_Mode", 3); // Transparent
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
         mat.SetInt("_ZWrite", 0);
         mat.DisableKeyword("_ALPHATEST_ON");
         mat.EnableKeyword("_ALPHABLEND_ON");
         mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        //mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
     }
 
     /// <summary>

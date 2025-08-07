@@ -8,6 +8,9 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+using static CommonModule;
 
 public class MenuBase : MonoBehaviour {
     // メニューオブジェクト
@@ -35,6 +38,20 @@ public class MenuBase : MonoBehaviour {
     /// <returns></returns>
     public virtual async UniTask Close() {
         _menuRoot.gameObject.SetActive(false);
+        await UniTask.CompletedTask;
+    }
+    /// <summary>
+    /// ボタンの状態を設定する（押せるか押せないか）
+    /// </summary>
+    /// <param name="setButton"></param>
+    /// <param name="setFlag"></param>
+    /// <returns></returns>
+    protected async UniTask SetPushButtonState(Button[] setButton, bool setFlag) {
+        if(IsEmpty(setButton)) return;
+        await UniTask.DelayFrame(5);
+        for (int i = 0, max = setButton.Length; i < max; i++) {
+            setButton[i].interactable = setFlag;
+        }
         await UniTask.CompletedTask;
     }
 }
