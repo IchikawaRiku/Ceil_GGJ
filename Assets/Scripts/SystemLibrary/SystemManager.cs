@@ -18,6 +18,7 @@ public class SystemManager : MonoBehaviour {
     private void Start() {
         // フレームレート固定
         Application.targetFrameRate = _FPS;
+        QualitySettings.vSyncCount = 1;
         //InputActionの初期化
         MyInputManager.Initialize();
         // システムオブジェクトの生成、初期化
