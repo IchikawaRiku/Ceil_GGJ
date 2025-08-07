@@ -92,11 +92,13 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other) {
+		if (GetGameReason() != eEndReason.Invalid) return;
 		if (other.CompareTag(_SWITCH_TAG)) {
 			canOnSwitch = true;
 		}
 		if (other.CompareTag(BULLET_TAG) && !changeMove) {
-			anim.Play("ghost_dissolve");
+            UniTask task = SoundManager.instance.PlaySE(8);
+            anim.Play("ghost_dissolve");
 			EndGameReason(eEndReason.Dead);
 			DisableInput();
 		}
@@ -140,12 +142,13 @@ public class SpiritCharacter : CharacterBase {
 		base.OnMove(context);
 	}
 
-	/// <summary>
-	///	ˆÚ“®“ü—Í
-	/// </summary>
-	/// <param name="context"></param>
-	public override void OnChangeSpirit(InputAction.CallbackContext context) {
-		base.OnChangeSpirit(context);
+    /// <summary>
+    ///	ˆÚ“®“ü—Í
+    /// </summary>
+    /// <param name="context"></param>
+    public override void OnChangeSpirit(InputAction.CallbackContext context) {
+        UniTask task = SoundManager.instance.PlaySE(5);
+        base.OnChangeSpirit(context);
 	}
 
 	/// <summary>
@@ -154,7 +157,8 @@ public class SpiritCharacter : CharacterBase {
 	/// <param name="context"></param>
 	public void OnSwitch(InputAction.CallbackContext context) {
 		if (!canOnSwitch) return;
-		SwitchUtility.Press();
+        UniTask task = SoundManager.instance.PlaySE(3);
+        SwitchUtility.Press();
 	}
 
 }

@@ -76,8 +76,10 @@ public class PlayerCharacter : CharacterBase {
 	/// </summary>
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other) {
-		if (other.CompareTag(BULLET_TAG)) {
-			anim.Play("boy_down_back");
+        if (GetGameReason() != eEndReason.Invalid) return;
+        if (other.CompareTag(BULLET_TAG)) {
+            UniTask task = SoundManager.instance.PlaySE(8);
+            anim.Play("boy_down_back");
 			EndGameReason(eEndReason.Dead);
 			DisableInput();
 		}
@@ -111,12 +113,22 @@ public class PlayerCharacter : CharacterBase {
 		base.OnMove(context);
 	}
 
-	/// <summary>
-	/// ƒWƒƒƒ“ƒv‚Ì“ü—Í
-	/// </summary>
-	public void OnJump(InputAction.CallbackContext context) {
+    /// <summary>
+    /// —H‘Ì—£’E‚Ì“ü—Í
+    /// </summary>
+    /// <param name="context"></param>
+    public override void OnChangeSpirit(InputAction.CallbackContext context) {
+        UniTask task = SoundManager.instance.PlaySE(5);
+        base.OnChangeSpirit(context);
+    }
+
+    /// <summary>
+    /// ƒWƒƒƒ“ƒv‚Ì“ü—Í
+    /// </summary>
+    public void OnJump(InputAction.CallbackContext context) {
 		if (!GetTouchGround()) return;
-		rig.velocity = Vector3.up * _jumpPower;
+        UniTask task = SoundManager.instance.PlaySE(9);
+        rig.velocity = Vector3.up * _jumpPower;
 	}
 
     /// <summary>
