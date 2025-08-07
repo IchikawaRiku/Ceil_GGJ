@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class PartStanby : PartBase {
     public override async UniTask Execute() {
+        await FadeManager.instance.FadeOut();
         UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
         await UniTask.CompletedTask;
     }
