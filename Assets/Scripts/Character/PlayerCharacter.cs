@@ -22,10 +22,10 @@ public class PlayerCharacter : CharacterBase {
 	private LayerMask _groundLayer;
 	// ジャンプ力
 	private float _jumpPower = 5f;
-	// プレイヤーの座標から足元座標までの距離
-	private const float _FEET_DISTANCE = 0f;
 	// 地面判定用の半径
 	private const float _FEET_RADIUS = 0.05f;
+	// 壁判定用の箱サイズ
+	private readonly Vector3 _WALL_SIZE = new Vector3(0.1f, 0.5f, 1);
 
 	public override async UniTask Initialize() {
 		await base.Initialize();
@@ -43,32 +43,50 @@ public class PlayerCharacter : CharacterBase {
 		// 移動処理
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
 		transform.position += moveValue;
-		if (moveValue.x != 0 && GetTouchGround()) anim.SetBool("run", true);
-		else anim.SetBool("run", false);
+		if (moveValue.x != 0 && GetTouchGround()) {
+			anim.SetBool("run", true);
+			// 壁当たり判定
+			if (GetTouchWall()) {
+				anim.SetBool("push", true);
+			}
+		}
+		else {
+			anim.SetBool("run", false);
+			anim.SetBool("push", false);
+		}
 		// ジャンプアニメーション
 		if (GetTouchGround()) anim.SetBool("jump", false);
         else anim.SetBool("jump", true);
 	}
-
-	/*
+	
 	private void OnDrawGizmos() {
 		Vector3 position = transform.position;
-		position.y -= _FEET_DISTANCE;
-		bool hit = Physics.CheckSphere(position, _FEET_RADIUS, _groundLayer);
+		position.x += 0.4f;
+		position.y += 0.6f;
+		bool hit = Physics.CheckBox(position, _WALL_SIZE);
 		Color hitColor = Color.red;
 		Color noHitColor = Color.green;
 		Gizmos.color = hit ? hitColor : noHitColor;
-		Gizmos.DrawWireSphere(position, _FEET_RADIUS);
+		Gizmos.DrawWireCube(position, _WALL_SIZE);
 	}
-	*/
+	
 
 	/// <summary>
 	/// 地面触れ判定
 	/// </summary>
 	private bool GetTouchGround() {
 		Vector3 position = transform.position;
-        position.y -= _FEET_DISTANCE;
 		return Physics.CheckSphere(position, _FEET_RADIUS, _groundLayer);		
+	}
+
+	/// <summary>
+	/// 壁触れ判定
+	/// </summary>
+	private bool GetTouchWall() {
+		Vector3 position = transform.position;
+		position.x += 0.4f;
+		position.y += 0.6f;
+		return Physics.CheckBox(position, _WALL_SIZE);
 	}
 
 	/// <summary>
