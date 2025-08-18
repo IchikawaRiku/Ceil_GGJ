@@ -73,6 +73,7 @@ public class VerticalMovingPlatform : GimmickBase {
 
         // ‘Ò‹@
         await UniTask.Delay((int)(waitTime * 1000));
+
         // ˆÚ“®•ûŒü‚ğ”½“]
         _movingUp = !_movingUp;
         // ‘Ò‹@I—¹

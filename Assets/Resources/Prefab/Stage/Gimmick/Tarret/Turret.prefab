@@ -51,6 +51,7 @@ MonoBehaviour:
   fireInterval: 0.2
   detectionRange: 10
   playerTransform: {fileID: 0}
+  _turret: {fileID: 1892258612235897565}
 --- !u!65 &202683317335573908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -183,5 +184,10 @@ PrefabInstance:
 --- !u!4 &1892258611787062887 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3330217183687215775, guid: cd40cab47ac214e4782fe0898644945c, type: 3}
+  m_PrefabInstance: {fileID: 3780184528525055224}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1892258612235897565 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3330217183330917925, guid: cd40cab47ac214e4782fe0898644945c, type: 3}
   m_PrefabInstance: {fileID: 3780184528525055224}
   m_PrefabAsset: {fileID: 0}
