@@ -17,6 +17,10 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
     private Vector2 _prevInputDir = Vector2.zero;
     // 一度押されたか判別するフラグ
     private bool _isNeutral = false;
+    //水平方向の入力
+    private int _horizontalDir = 0; 
+    //一度目の入力フラグ
+    private bool _isFirstPress = false; 
     // InputAction
     private MyInput _inputAction = null;
 
@@ -49,10 +53,12 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
         bool isSameHorizotal = IsSameHorizotal(currentInputDir, _prevInputDir);
         //入力が同じ方向で、かつ一度離された後ならボタンの処理実行
         if (_isNeutral && isSameHorizotal && currentButton == prevButton) {
-            if(!currentButton.CompareTag("SettingVolumeButton")) return;
-            currentButton.onClick.Invoke();
-            UniTask task = SoundManager.instance.PlaySE(0);
-            await UniTask.Delay(200);
+            // 二回目の横入力以降なら実行
+            if (currentButton.CompareTag("SettingVolumeButton")) {
+                currentButton.onClick.Invoke();
+                UniTask task = SoundManager.instance.PlaySE(0);
+                await UniTask.Delay(200);
+            }
         }
         //入力、ボタンの更新
         UpdateInputState(currentInputDir);
@@ -82,10 +88,28 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
     private bool IsSameHorizotal(Vector2 currentDir, Vector2 prevDir) {
         // InputSystemのVectorは左右入力時にも上下成分が出てしまうことがあったため、
         // 左右成分の方が強いときのみ左右として判定
-        if (Mathf.Abs(currentDir.x) <= Mathf.Abs(currentDir.y)) return false;
+        if (Mathf.Abs(currentDir.x) <= Mathf.Abs(currentDir.y)) {
+            _horizontalDir = 0;
+            _isFirstPress = false;
+            return false;
+        }
+        int dir = (int)Mathf.Sign(currentDir.x); // -1 = 左, 1 = 右
 
-        return Mathf.Sign(currentDir.x) != 0 &&
-            Mathf.Sign(currentDir.x) == Mathf.Sign(prevDir.x);
+        // 方向が変わったら初回無視フラグをリセット
+        if (dir != _horizontalDir) {
+            _horizontalDir = dir;
+            _isFirstPress = false;
+            return false;
+        }
+
+        // 同じ方向なら初回だけ無視
+        if (!_isFirstPress) {
+            _isFirstPress = true;
+            return false;
+        }
+
+        // 2回目以降は true
+        return true;
     }
     /// <summary>
     /// 前回の入力やボタン状態を更新
@@ -95,12 +119,15 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
         // 入力が新しい方向なら更新
         if (inputDir != _prevInputDir) {
             _prevInputDir = inputDir;
-            _isNeutral = false;
+            // 横入力が出たときだけ中立解除
+            if (Mathf.Abs(inputDir.x) > Mathf.Abs(inputDir.y)) {
+                _isNeutral = false;
+            }
         }
         // ボタン情報の更新
         if(currentButton != prevButton) {
             UniTask task = SoundManager.instance.PlaySE(0);
+            prevButton = currentButton;
         }
-        prevButton = currentButton;
     }
 }
