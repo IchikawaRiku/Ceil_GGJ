@@ -48,6 +48,12 @@ public class Gimmick_Bullet : MonoBehaviour {
     public void Deactivate() {
         _isActive = false;
         gameObject.SetActive(false);
+
+        // e‚ğBulletPool‚É–ß‚·
+        transform.SetParent(BulletPool.Instance.transform);
+
+        // ƒv[ƒ‹‚É–ß‚·
+        BulletPool.Instance.ReturnBullet(this);
     }
 
     /// <summary>

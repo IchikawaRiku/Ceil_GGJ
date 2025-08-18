@@ -38,16 +38,23 @@ public class BulletPool : MonoBehaviour {
     /// 弾をプールに戻す
     /// </summary>
     public void ReturnBullet(Gimmick_Bullet bullet) {
-        bullet.Deactivate();
+        //bullet.Deactivate();
         bulletPool.Enqueue(bullet);
     }
 
     /// <summary>
     /// 弾を生成してプールに追加
     /// </summary>
-    private void CreateBullet() {
-        Gimmick_Bullet newBullet = Instantiate(bulletPrefab, transform);
+    private void CreateBullet() {    // 親なしで生成
+        Gimmick_Bullet newBullet = Instantiate(bulletPrefab);
+
+        // プールの子として設定（必ずBulletPoolの下に置く）
+        newBullet.transform.SetParent(transform);
+
+        // 非アクティブ化
         newBullet.gameObject.SetActive(false);
+
+        // プールに追加
         bulletPool.Enqueue(newBullet);
     }
 }

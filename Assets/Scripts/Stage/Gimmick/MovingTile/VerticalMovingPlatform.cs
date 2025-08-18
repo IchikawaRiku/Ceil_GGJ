@@ -72,9 +72,7 @@ public class VerticalMovingPlatform : GimmickBase {
         //rigidBody.velocity = Vector3.zero;
 
         // ‘Ò‹@
-        await UniTask.Delay(System.TimeSpan.FromSeconds(waitTime),
-                            cancellationToken: this.GetCancellationTokenOnDestroy());
-
+        await UniTask.Delay((int)(waitTime * 1000));
         // ˆÚ“®•ûŒü‚ğ”½“]
         _movingUp = !_movingUp;
         // ‘Ò‹@I—¹
