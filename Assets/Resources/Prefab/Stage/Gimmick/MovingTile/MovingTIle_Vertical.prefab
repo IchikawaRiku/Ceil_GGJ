@@ -170,7 +170,6 @@ MonoBehaviour:
   moveSpeed: {x: 0, y: 1, z: 0}
   waitTime: 2
   rigidBody: {fileID: 1387804992149901027}
-  detector: {fileID: 2196599859525062439}
 --- !u!65 &5978779568222295413
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 右方向に移動し、初期位置に戻る左右移動床
+/// 左右方向に移動する床
 /// </summary>
 public class HorizontalMovingPlatform : GimmickBase {
     [SerializeField] private float moveDistance = 5f;               // 右方向に移動する距離
