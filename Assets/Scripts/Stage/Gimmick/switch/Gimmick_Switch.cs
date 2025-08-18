@@ -43,7 +43,7 @@ public class Gimmick_Switch : GimmickBase {
         // ”ÍˆÍ“à‚Ì‘SCollider‚ğæ“¾
         Collider[] hits = Physics.OverlapSphere(transform.position, disableRadius);
 
-        // ‚Ô‚ñ‚Ü‚í`‚·
+        
         foreach (var hit in hits) {
             // ’â~‘ÎÛ
             if (hit.TryGetComponent(out IDisablable disablable)) {
