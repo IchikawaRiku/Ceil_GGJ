@@ -61,15 +61,15 @@ public class PlayerCharacter : CharacterBase {
 	
 	private void OnDrawGizmos() {
 		Vector3 position = transform.position;
-		position.x += 0.4f;
-		position.y += 0.6f;
+		if (transform.eulerAngles.y == 90) position.x += 0.4f;
+		else position.x -= 0.4f;
+		position.y += 0.7f;
 		bool hit = Physics.CheckBox(position, _WALL_SIZE);
 		Color hitColor = Color.red;
 		Color noHitColor = Color.green;
 		Gizmos.color = hit ? hitColor : noHitColor;
 		Gizmos.DrawWireCube(position, _WALL_SIZE);
 	}
-	
 
 	/// <summary>
 	/// ínñ êGÇÍîªíË
@@ -84,8 +84,9 @@ public class PlayerCharacter : CharacterBase {
 	/// </summary>
 	private bool GetTouchWall() {
 		Vector3 position = transform.position;
-		position.x += 0.4f;
-		position.y += 0.6f;
+		if (transform.eulerAngles.y == 90) position.x += 0.4f;
+		else position.x -= 0.4f;
+		position.y += 0.7f;
 		return Physics.CheckBox(position, _WALL_SIZE);
 	}
 
