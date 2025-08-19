@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 943179294503671231}
   - component: {fileID: 7034025558893196969}
   - component: {fileID: 7003492318945300060}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveDistance: 2
   moveSpeed: {x: 2, y: 0, z: 0}
+  waitTime: 2
   rigidBody: {fileID: 8571287376236585424}
   detector: {fileID: 7003492318945300060}
 --- !u!54 &8571287376236585424

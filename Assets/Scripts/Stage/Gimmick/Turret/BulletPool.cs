@@ -15,7 +15,12 @@ public class BulletPool : MonoBehaviour {
     private Queue<Gimmick_Bullet> bulletPool = new Queue<Gimmick_Bullet>();
 
     private void Awake() {
+        if (Instance != null && Instance != this) {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        //DontDestroyOnLoad(gameObject);
 
         // èâä˙íeê∂ê¨
         for (int i = 0; i < initialPoolSize; i++) {

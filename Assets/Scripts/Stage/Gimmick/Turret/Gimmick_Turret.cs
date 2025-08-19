@@ -67,4 +67,12 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
     public void Disable() {
         _canFire = false;
     }
+
+    /// <summary>
+    /// •Ğ•t‚¯ˆ—
+    /// </summary>
+    public override void Teardown() {
+        _canFire = true;
+    }
+
 }
