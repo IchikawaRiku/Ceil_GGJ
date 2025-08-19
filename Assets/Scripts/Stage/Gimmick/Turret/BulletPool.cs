@@ -3,25 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 弾のプーリング
+/// 弾のプーリング（ステージごとに独立して存在）
 /// </summary>
 public class BulletPool : MonoBehaviour {
-    // 自身への参照
-    public static BulletPool Instance { get; private set; }
-
-    [SerializeField] private Gimmick_Bullet bulletPrefab;      // 弾のプレハブ
-    private int initialPoolSize = 20; // 初期生成数
+    [SerializeField] private Gimmick_Bullet bulletPrefab;   // 弾のプレハブ
+    [SerializeField] private int initialPoolSize = 20;      // 初期生成数
 
     private Queue<Gimmick_Bullet> bulletPool = new Queue<Gimmick_Bullet>();
 
     private void Awake() {
-        if (Instance != null && Instance != this) {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        //DontDestroyOnLoad(gameObject);
-
         // 初期弾生成
         for (int i = 0; i < initialPoolSize; i++) {
             CreateBullet();
@@ -35,7 +25,6 @@ public class BulletPool : MonoBehaviour {
         if (bulletPool.Count == 0) {
             CreateBullet();
         }
-
         return bulletPool.Dequeue();
     }
 
@@ -43,23 +32,15 @@ public class BulletPool : MonoBehaviour {
     /// 弾をプールに戻す
     /// </summary>
     public void ReturnBullet(Gimmick_Bullet bullet) {
-        //bullet.Deactivate();
         bulletPool.Enqueue(bullet);
     }
 
     /// <summary>
     /// 弾を生成してプールに追加
     /// </summary>
-    private void CreateBullet() {    // 親なしで生成
-        Gimmick_Bullet newBullet = Instantiate(bulletPrefab);
-
-        // プールの子として設定（必ずBulletPoolの下に置く）
-        newBullet.transform.SetParent(transform);
-
-        // 非アクティブ化
+    private void CreateBullet() {
+        Gimmick_Bullet newBullet = Instantiate(bulletPrefab, transform);
         newBullet.gameObject.SetActive(false);
-
-        // プールに追加
         bulletPool.Enqueue(newBullet);
     }
 }

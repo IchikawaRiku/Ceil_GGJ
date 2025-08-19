@@ -9,9 +9,10 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
     [SerializeField] private Transform firePoint;             // 弾の発射位置
     [SerializeField] private float fireInterval = 0.2f;       // 発射レート
     [SerializeField] private float detectionRange = 10f;      // 撃ち始める距離
-    [SerializeField] private Transform playerTransform;       // プレイヤーのTransform（Inspectorでセット or 自動取得）
+    [SerializeField] private Transform playerTransform;       // プレイヤーのTransform
+    [SerializeField] private BulletPool bulletPool;           // 使用するBulletPool（ステージごとに個別）
 
-    private float _timer;
+    private float _timer;                                     // 発射間隔用タイマー
     private bool _canFire = true;                             // 発射可能フラグ
 
     /// <summary>
@@ -38,12 +39,14 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
         // プレイヤーの座標を取得
         Vector3 playerPos = CharacterUtility.GetPlayerPosition();
         if (playerPos == Vector3.negativeInfinity) return;
+
         // プレイヤーが近くにいるか
         float distance = Vector3.Distance(transform.position, playerPos);
         if (distance > detectionRange) return;
 
         _timer += Time.deltaTime;
 
+        // 発射間隔が経過したら撃つ
         if (_timer >= fireInterval) {
             Fire();
             _timer = 0f;
@@ -54,12 +57,14 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
     /// 撃つ
     /// </summary>
     private void Fire() {
-        var bullet = BulletPool.Instance.GetBullet();
+        if (bulletPool == null) return;
+
+        var bullet = bulletPool.GetBullet();
         bullet.transform.position = firePoint.position;
         bullet.transform.rotation = firePoint.rotation;
-        bullet.Fire();
+        // 撃つ時に使用するプールを渡す
+        bullet.Fire(bulletPool);
     }
-
 
     /// <summary>
     /// 撃たない
@@ -72,7 +77,6 @@ public class Gimmick_Turret : GimmickBase, IDisablable {
     /// 片付け処理
     /// </summary>
     public override void Teardown() {
-        _canFire = true;
+        _canFire = false;
     }
-
 }

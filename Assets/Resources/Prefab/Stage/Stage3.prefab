@@ -1347,6 +1347,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5836040989861938469, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 576300004602912093}
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret (6)
@@ -1687,6 +1691,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5836040989861938469, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 576300004602912093}
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret
@@ -2588,6 +2596,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5836040989861938469, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 576300004602912093}
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret (5)
@@ -3064,6 +3076,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5836040989861938469, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 576300004602912093}
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret (4)
@@ -4103,6 +4119,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1299541f233c59449b9462e75c82dfe, type: 3}
+--- !u!114 &576300004602912093 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3582830097324775227, guid: e1299541f233c59449b9462e75c82dfe, type: 3}
+  m_PrefabInstance: {fileID: 3911280827903150694}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28b33cdd2885983488d0c01248224771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5019625053268708358 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8353864311525672544, guid: e1299541f233c59449b9462e75c82dfe, type: 3}
@@ -4290,6 +4317,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5836040989861938469, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 576300004602912093}
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret (1)
@@ -4445,6 +4476,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5836040989861938469, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 576300004602912093}
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret (2)
@@ -7028,6 +7063,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5836040989861938469, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 576300004602912093}
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret (7)
