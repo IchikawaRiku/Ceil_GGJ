@@ -39,11 +39,11 @@ public class Gimmick_PushBox : GimmickBase {
         }
     }
 
-    // 今は使われていない
+    // 使用しない
     protected override void OnUpdate() {
     }
 
-    // 物理処理用（固定時間ごとに呼ばれる）
+    // 物理処理用
     private void FixedUpdate() {
         CheckGround();  // 地面判定を毎回行う
 

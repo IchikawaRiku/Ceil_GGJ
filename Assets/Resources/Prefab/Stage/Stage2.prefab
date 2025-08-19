@@ -1354,7 +1354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4176065260191840976, guid: c3553fe4403871042a019836282f312f, type: 3}
       propertyPath: moveDistance
-      value: 9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8775758084268085040, guid: c3553fe4403871042a019836282f312f, type: 3}
       propertyPath: m_Name
@@ -3284,7 +3284,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2808328719181677829, guid: ab2d27ceb859dc24990bc69685a89018, type: 3}
       propertyPath: moveDistance
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6733044146011845689, guid: ab2d27ceb859dc24990bc69685a89018, type: 3}
       propertyPath: m_LocalScale.x
