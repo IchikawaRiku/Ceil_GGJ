@@ -36,6 +36,8 @@ public class CharacterBase : MonoBehaviour {
 	private const float _DIRECTION_ANGLE = 90;
     // ステージギミックの弾のタグ
     protected const string BULLET_TAG = "bullet";
+	// ステージギミックのオブジェクトタグ
+    protected const string OBJECT_TAG = "Obstacl";
 
 	/// <summary>
 	/// 初期化

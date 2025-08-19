@@ -18,8 +18,8 @@ using static MainGameProcessor;
 public class PlayerCharacter : CharacterBase {
 	//Animator animator;
 
-	// 地面のレイヤー
-	private LayerMask _groundLayer;
+	// オブジェクトのレイヤー
+	private LayerMask _objectLayer;
 	// ジャンプ力
 	private float _jumpPower = 5f;
 	// 地面判定用の半径
@@ -29,7 +29,7 @@ public class PlayerCharacter : CharacterBase {
 
 	public override async UniTask Initialize() {
 		await base.Initialize();
-		_groundLayer = LayerMask.GetMask("Jump");
+		_objectLayer = LayerMask.GetMask("Jump");
 		//animator = GetComponent<Animator>();
 	}
 
@@ -64,7 +64,7 @@ public class PlayerCharacter : CharacterBase {
 		if (transform.eulerAngles.y == 90) position.x += 0.4f;
 		else position.x -= 0.4f;
 		position.y += 0.7f;
-		bool hit = Physics.CheckBox(position, _WALL_SIZE);
+		bool hit = Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _objectLayer);
 		Color hitColor = Color.red;
 		Color noHitColor = Color.green;
 		Gizmos.color = hit ? hitColor : noHitColor;
@@ -76,7 +76,7 @@ public class PlayerCharacter : CharacterBase {
 	/// </summary>
 	private bool GetTouchGround() {
 		Vector3 position = transform.position;
-		return Physics.CheckSphere(position, _FEET_RADIUS, _groundLayer);		
+		return Physics.CheckSphere(position, _FEET_RADIUS, _objectLayer);		
 	}
 
 	/// <summary>
@@ -87,7 +87,7 @@ public class PlayerCharacter : CharacterBase {
 		if (transform.eulerAngles.y == 90) position.x += 0.4f;
 		else position.x -= 0.4f;
 		position.y += 0.7f;
-		return Physics.CheckBox(position, _WALL_SIZE);
+		return Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _objectLayer);
 	}
 
 	/// <summary>

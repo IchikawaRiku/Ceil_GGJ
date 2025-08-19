@@ -17,6 +17,8 @@ using static MainGameProcessor;
 public class SpiritCharacter : CharacterBase {
 	// スイッチを押せるか否か
 	private bool canOnSwitch = false;
+	// スイッチオンのアニメーション中
+	private bool switchAnim = false;
 	// スピードの倍率
 	private const float _SPEED_LATE = 1.9f;
 	// 戻ってくる時の補間比率
@@ -158,7 +160,9 @@ public class SpiritCharacter : CharacterBase {
 	public void OnSwitch(InputAction.CallbackContext context) {
 		if (!canOnSwitch) return;
         UniTask task = SoundManager.instance.PlaySE(3);
-        SwitchUtility.Press();
+		anim.SetBool("switch", true);
+		switchAnim = true;
+		SwitchUtility.Press();
 	}
 
 }
