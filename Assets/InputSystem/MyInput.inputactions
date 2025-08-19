@@ -141,8 +141,8 @@
                 },
                 {
                     "name": "",
-                    "id": "ff492b1a-8b96-4171-a475-267ca7de03d0",
-                    "path": "<XInputController>/buttonWest",
+                    "id": "47f8f630-6d99-4a46-8f16-163c2aa1c1bf",
+                    "path": "<XInputController>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
