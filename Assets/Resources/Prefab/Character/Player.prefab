@@ -257,9 +257,17 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 206923d91fb07420ba467fc88521b2fb, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 206923d91fb07420ba467fc88521b2fb, type: 3}
+    - target: {fileID: 5866666021909216657, guid: 206923d91fb07420ba467fc88521b2fb, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: b393886f3cf9cb14d8259f9b0444e8aa, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 206923d91fb07420ba467fc88521b2fb, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6154110404765595711, guid: 206923d91fb07420ba467fc88521b2fb, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -485,7 +493,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 2298084563771986213}
-  moveSpeed: 5
-  moveInput: {x: 0, y: 0}
-  moveValue: {x: 0, y: 0, z: 0}
   input: {fileID: 0}
+  changeMove: 0
