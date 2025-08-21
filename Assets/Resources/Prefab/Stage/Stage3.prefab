@@ -419,7 +419,6 @@ MonoBehaviour:
   - {fileID: 6618309406759164436}
   - {fileID: 9074702198020410494}
   - {fileID: 5555881177342172644}
-  - {fileID: 9049643486450089618}
   - {fileID: 984767008985304604}
   - {fileID: 5222450143174882789}
   - {fileID: 4046770812183325993}
@@ -429,10 +428,10 @@ MonoBehaviour:
   - {fileID: 4772739033477462979}
   - {fileID: 4151080848270166579}
   - {fileID: 4567932170682463509}
-  - {fileID: 0}
+  - {fileID: 9049643486450089618}
   - {fileID: 4968380834539071304}
   - {fileID: 3242307959214363903}
-  - {fileID: 0}
+  - {fileID: 6049354304335744645}
   - {fileID: 261950050760006321}
   - {fileID: 8985228366157292260}
   - {fileID: 8649415726364116906}
@@ -442,7 +441,6 @@ MonoBehaviour:
   - {fileID: 3967787675449523129}
   - {fileID: 2736701562637437660}
   - {fileID: 7098375031995968565}
-  - {fileID: 6049354304335744645}
 --- !u!1001 &134005781752327354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -666,6 +664,10 @@ PrefabInstance:
     - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
       propertyPath: m_Name
       value: Turret (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8377958887955337812, guid: 22bf1bd824118444198b85a3bd790964, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

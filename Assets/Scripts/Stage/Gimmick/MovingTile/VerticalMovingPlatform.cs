@@ -9,7 +9,7 @@ public class VerticalMovingPlatform : GimmickBase {
     [SerializeField] private float moveDistance = 5f;          // 床が移動する距離
     [SerializeField] private Vector3 moveSpeed = Vector3.zero; // 移動速度
     [SerializeField] private float waitTime = 2f;              // 折り返し地点の待機時間
-
+    [SerializeField] private LayerMask attachableLayers;
     private Vector3 _startPosition;     // 床の初期位置
     private bool _movingUp = true;      // 現在の移動方向
     private bool _isWaiting = false;    // 待機中かどうか
@@ -86,7 +86,9 @@ public class VerticalMovingPlatform : GimmickBase {
     private void OnTriggerEnter(Collider other) {
         // Rigidbody を持っているオブジェクトだけ対象にする
         if (other.attachedRigidbody != null) {
-            other.transform.SetParent(transform);
+            if ((attachableLayers.value & (1 << other.gameObject.layer)) > 0) {
+                other.transform.SetParent(transform);
+            }
         }
     }
 
@@ -95,7 +97,9 @@ public class VerticalMovingPlatform : GimmickBase {
     /// </summary>
     private void OnTriggerExit(Collider other) {
         if (other.attachedRigidbody != null) {
-            other.transform.SetParent(null);
+            if ((attachableLayers.value & (1 << other.gameObject.layer)) > 0) {
+                other.transform.SetParent(null);
+            }
         }
     }
 
@@ -103,6 +107,6 @@ public class VerticalMovingPlatform : GimmickBase {
     /// 片付け処理
     /// </summary>
     public override void Teardown() {
-    
+
     }
 }

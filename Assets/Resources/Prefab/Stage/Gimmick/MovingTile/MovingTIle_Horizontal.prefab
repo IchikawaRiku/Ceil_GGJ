@@ -190,6 +190,9 @@ MonoBehaviour:
   moveDistance: 2
   moveSpeed: {x: 2, y: 0, z: 0}
   waitTime: 2
+  attachableLayers:
+    serializedVersion: 2
+    m_Bits: 64
   rigidBody: {fileID: 8571287376236585424}
   detector: {fileID: 7003492318945300060}
 --- !u!54 &8571287376236585424
