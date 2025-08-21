@@ -41,7 +41,11 @@ public class MenuInGameMenu : MenuBase {
         await _buttonInput.Teardown();
         await SetPushButtonState(_buttonList, true);
         await Close();
-        if( _menuSelect == eMenuSelect.Settings) await MenuManager.instance.Get<MenuSetting>().Open();
+        if (_menuSelect == eMenuSelect.Settings) {
+            await FadeManager.instance.FadeOut();
+            await MenuManager.instance.Get<MenuSetting>().Open();
+            await FadeManager.instance.FadeIn();
+        }
     }
     /// <summary>
     /// メニュー開閉フラグの変更
