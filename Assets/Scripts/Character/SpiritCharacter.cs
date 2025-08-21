@@ -43,6 +43,8 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Execute() {
 		await base.Execute();
+		// アニメーション中はスキップ
+		if (switchAnim) return;
 		// 向き変更
 		ChangeAngle();
 		moveValue = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
@@ -95,9 +97,7 @@ public class SpiritCharacter : CharacterBase {
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other) {
 		if (GetGameReason() != eEndReason.Invalid) return;
-		if (other.CompareTag(_SWITCH_TAG)) {
-			canOnSwitch = true;
-		}
+		if (other.CompareTag(_SWITCH_TAG)) canOnSwitch = true;
 		if (other.CompareTag(BULLET_TAG) && !changeMove) {
             UniTask task = SoundManager.instance.PlaySE(8);
             anim.Play("ghost_dissolve");
@@ -157,12 +157,35 @@ public class SpiritCharacter : CharacterBase {
 	/// スイッチの入力
 	/// </summary>
 	/// <param name="context"></param>
-	public void OnSwitch(InputAction.CallbackContext context) {
+	public async void OnSwitch(InputAction.CallbackContext context) {
 		if (!canOnSwitch) return;
+		// 振り向くまで待つ
+		await TurnToSwitch();
         UniTask task = SoundManager.instance.PlaySE(3);
 		anim.SetBool("switch", true);
 		switchAnim = true;
 		SwitchUtility.Press();
 	}
 
+	/// <summary>
+	/// スイッチを押すために振り向く
+	/// </summary>
+	private async UniTask TurnToSwitch() {
+		Vector3 rotation = transform.eulerAngles;
+		while (rotation.y > 0.1f || rotation.y < -0.1f) {
+			rotation.y *= 0.8f;
+			transform.eulerAngles = rotation;
+			await UniTask.DelayFrame(1);
+		}
+		rotation.y = 0;
+		transform.eulerAngles = rotation;
+	}
+
+	/// <summary>
+	/// スイッチアニメーションの終わり
+	/// </summary>
+	public void SwitchAnimationEnd() {
+		switchAnim = false;
+		anim.SetBool("switch", false);
+	}
 }
