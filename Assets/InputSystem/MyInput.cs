@@ -227,8 +227,8 @@ public partial class @MyInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""47f8f630-6d99-4a46-8f16-163c2aa1c1bf"",
-                    ""path"": ""<XInputController>/leftTrigger"",
+                    ""id"": ""99085695-6a53-4b95-b643-fcef8a02f0cd"",
+                    ""path"": ""<XInputController>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
