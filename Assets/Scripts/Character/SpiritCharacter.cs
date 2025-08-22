@@ -8,6 +8,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -159,11 +160,11 @@ public class SpiritCharacter : CharacterBase {
 	/// <param name="context"></param>
 	public async void OnSwitch(InputAction.CallbackContext context) {
 		if (!canOnSwitch) return;
+		switchAnim = true;
 		// 振り向くまで待つ
 		await TurnToSwitch();
         UniTask task = SoundManager.instance.PlaySE(3);
 		anim.SetBool("switch", true);
-		switchAnim = true;
 		SwitchUtility.Press();
 	}
 
@@ -177,15 +178,31 @@ public class SpiritCharacter : CharacterBase {
 			transform.eulerAngles = rotation;
 			await UniTask.DelayFrame(1);
 		}
-		rotation.y = 0;
-		transform.eulerAngles = rotation;
+		//rotation.y = 0;
+		//transform.eulerAngles = rotation;
 	}
 
+	/// <summary>
+	/// 振り向きを戻す
+	/// </summary>
+	/// <returns></returns>
+	private async UniTask TurnBack() {
+        Vector3 rotation = transform.eulerAngles;
+        while (rotation.y < 90 && rotation.y > -90) {
+            rotation.y *= 1.2f;
+            transform.eulerAngles = rotation;
+            await UniTask.DelayFrame(1);
+        }
+        //rotation.y = 0;
+        //transform.eulerAngles = rotation;
+        switchAnim = false;
+    }
 	/// <summary>
 	/// スイッチアニメーションの終わり
 	/// </summary>
 	public void SwitchAnimationEnd() {
-		switchAnim = false;
 		anim.SetBool("switch", false);
+		UniTask task = TurnBack();
 	}
+
 }
