@@ -21,6 +21,6 @@ public interface IDestroyable {
 /// 可視状態を切り替え可能なギミックに共通するインターフェース
 /// </summary>
 public interface IVisibleToggleable {
-    // みちゃう
+    // 出現
     void ToggleVisibility();
 }
