@@ -13,14 +13,18 @@ using static CommonModule;
 
 public class PartManager : SystemObject {
     public static PartManager instance { get; private set; } = null;
-
+    // オリジナルパートリスト
     [SerializeField]
     private PartBase[] _partOriginList = null;
-
+    // パートリスト
     private PartBase[] _partList = null;
-
+    // 現在のパート
     private PartBase _currentPart = null;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         instance = this;
         int partMax = (int)eGamePart.Max;

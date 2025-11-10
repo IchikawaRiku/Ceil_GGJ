@@ -10,16 +10,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartGameOver : PartBase {
+    /// <summary>
+    /// ‰Šú‰»ˆ—
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuGameOver>("Prefab/Menu/CanvasGameOver").Initialize();
     }
-
+    /// <summary>
+    /// Àsˆ—
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Execute() {
         SoundManager.instance.PlayBGM(2);
         await MenuManager.instance.Get<MenuGameOver>().Open();
     }
-
+    /// <summary>
+    /// •Ğ•t‚¯ˆ—
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Teardown() {
         await base.Teardown();
         SoundManager.instance.StopBGM();

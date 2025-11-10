@@ -10,12 +10,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartMainGame : PartBase {
+    // キャラクター管理クラス
     [SerializeField]
     private CharacterManager _characterManager = null;
+    // ステージ管理クラス
     [SerializeField]
     private StageManager _stageManager = null;
     //入力受付
     private MainGameProcessor _mainProcessor = null;
+
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuInGameMenu>("Prefab/Menu/CanvasInGameMenu").Initialize();
@@ -25,10 +32,18 @@ public class PartMainGame : PartBase {
         _mainProcessor = new MainGameProcessor();
         _mainProcessor.Initialize();
     }
+    /// <summary>
+    /// 準備前処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Setup() {
         await base.Setup();
         _mainProcessor.Setup();
     }
+    /// <summary>
+    /// 実行処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Execute() {
         SoundManager.instance.PlayBGM(1);
         eEndReason endReason = await _mainProcessor.Execute();
@@ -44,6 +59,10 @@ public class PartMainGame : PartBase {
                 break;
         }
     }
+    /// <summary>
+    /// 片付け処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Teardown() {
         await base.Teardown();
         SoundManager.instance.StopBGM();

@@ -31,6 +31,10 @@ public class SoundManager : SystemObject {
     // 入力受付タスク中断用トークン
     private CancellationToken _token;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         instance = this;
         await UniTask.CompletedTask;

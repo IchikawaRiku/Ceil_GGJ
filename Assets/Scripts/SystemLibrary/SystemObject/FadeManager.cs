@@ -13,10 +13,17 @@ using UnityEngine.UI;
 
 public class FadeManager : SystemObject {
     public static FadeManager instance { get; private set; } = null;
+    // フェードイメージ
     [SerializeField]
     private Image _fadeImage = null;
 
+    // デフォルトのフェード時間
     private const float _DEFAULT_FADE_DURATION = 1.0f;
+
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         instance = this;
         await UniTask.CompletedTask;
