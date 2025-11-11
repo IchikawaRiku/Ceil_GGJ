@@ -26,10 +26,18 @@ public class MenuTitle : MenuBase {
     //設定開閉フラグ
     private bool _isSelect = false;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
     }
+    /// <summary>
+    /// 開く
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
         _isClose = false;
@@ -63,15 +71,24 @@ public class MenuTitle : MenuBase {
         UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
     }
+    /// <summary>
+    /// 設定メニュー移行
+    /// </summary>
     public void ToMenuSetting() {
         UniTask task = SoundManager.instance.PlaySE(1);
         _isSelect = true;
     }
+    /// <summary>
+    /// ゲーム終了処理
+    /// </summary>
     public void EndGame() {
         //UniTask task = SoundManager.instance.PlaySE(1);
         _isClose = true;
         _isGameEnd = true;
     }
+    /// <summary>
+    /// アプリケーションの終了処理
+    /// </summary>
     private void QuitApp() {
 #if UNITY_EDITOR
         // エディターの場合は再生モードを停止

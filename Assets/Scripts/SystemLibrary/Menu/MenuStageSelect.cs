@@ -11,15 +11,24 @@ public class MenuStageSelect : MenuBase {
     //最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
-    //ボタン操作入力処理
-    private AcceptMenuButtonInput _buttonInput = null;
     //ステージ番号
     public eStageStage stageNum { get; private set; } = eStageStage.Invalid;
 
+    //ボタン操作入力処理
+    private AcceptMenuButtonInput _buttonInput = null;
+
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
     }
+    /// <summary>
+    /// 開く
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
         stageNum = eStageStage.Invalid;
@@ -34,9 +43,6 @@ public class MenuStageSelect : MenuBase {
         await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
         await Close();
-    }
-    public override async UniTask Close() {
-        await base.Close();
     }
     /// <summary>
     /// チュートリアルステージ選択
@@ -66,6 +72,9 @@ public class MenuStageSelect : MenuBase {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageStage.Stage3;
     }
+    /// <summary>
+    /// タイトル画面へ戻る
+    /// </summary>
     public void ReturnTitle() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageStage.Max;

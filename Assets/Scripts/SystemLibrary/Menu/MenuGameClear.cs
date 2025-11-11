@@ -26,10 +26,18 @@ public class MenuGameClear : MenuBase {
     //ステージリトライフラグ
     private bool _isRetryStage = false;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
     }
+    /// <summary>
+    /// 開く
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
         _isClose = false;
@@ -38,15 +46,25 @@ public class MenuGameClear : MenuBase {
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
+        //ボタン入力処理
         while (!_isClose) {
-            //ボタン入力処理
             await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
         }
+        // ボタンの片付け処理
         await _buttonInput.Teardown();
+        // ボタンの状態をリセットする
         await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
         await Close();
+    }
+    /// <summary>
+    /// 閉じる
+    /// </summary>
+    /// <returns></returns>
+    public override async UniTask Close() {
+        await base.Close();
+        // フラグによってシーンを変える
         if (_isRetryStage) {
             await StageManager.instance.RetryCurrentStage();
             UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);

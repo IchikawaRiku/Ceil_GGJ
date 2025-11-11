@@ -25,10 +25,18 @@ public class MenuGameOver : MenuBase {
     //ステージリトライフラグ
     private bool _isRetryStage = false;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
     }
+    /// <summary>
+    /// 開く
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
         _isClose = false;

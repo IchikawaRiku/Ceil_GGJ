@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SystemManager : MonoBehaviour {
+    // システムオブジェクトリスト
     [SerializeField]
     private SystemObject[] _systemObjectList = null;
     // 固定フレームレート
@@ -24,7 +25,10 @@ public class SystemManager : MonoBehaviour {
         // システムオブジェクトの生成、初期化
         UniTask task = Initialize();
     }
-
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     private async UniTask Initialize() {
         for (int i = 0, max = _systemObjectList.Length; i < max; i++) {
             if (_systemObjectList[i] == null) continue;

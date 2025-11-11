@@ -37,6 +37,10 @@ public class MenuSetting : MenuBase {
     // SEの音量データ
     private float _seVolumeData = -1;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         _inputAction = MyInputManager.inputAction;
@@ -44,7 +48,9 @@ public class MenuSetting : MenuBase {
         _isClose = false;
         SetupData();
     }
-
+    /// <summary>
+    /// データの設定
+    /// </summary>
     private void SetupData() {
         UserData userData = UserDataManager.userData;
         SetBGMVolume(userData.bgmVolume);
@@ -52,6 +58,10 @@ public class MenuSetting : MenuBase {
         SetBGMVolumeData(_bgmVolumeData);
         SetSEVolumeData(_seVolumeData);
     }
+    /// <summary>
+    /// 開く
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
         await FadeManager.instance.FadeIn();

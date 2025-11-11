@@ -10,6 +10,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartTitle : PartBase {
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuTitle>("Prefab/Menu/CanvasTitle").Initialize();
@@ -17,6 +21,10 @@ public class PartTitle : PartBase {
         await MenuManager.instance.Get<MenuSetting>("Prefab/Menu/CanvasSettings").Initialize();
         await MenuManager.instance.Get<MenuCredit>("Prefab/Menu/CanvasCredit").Initialize();
     }
+    /// <summary>
+    /// 実行処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Execute() {
         SoundManager.instance.PlayBGM(0);
         // タイトルメニュー表示]
@@ -31,7 +39,10 @@ public class PartTitle : PartBase {
             UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);
         }
     }
-
+    /// <summary>
+    /// 片付け処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Teardown() {
         await base.Teardown();
         SoundManager.instance.StopBGM();

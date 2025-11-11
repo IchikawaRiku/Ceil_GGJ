@@ -18,11 +18,19 @@ public class MenuInGameMenu : MenuBase {
     //ƒ{ƒ^ƒ““ü—Íˆ—
     private AcceptMenuButtonInput _buttonInput = null;
 
+    /// <summary>
+    /// ‰Šú‰»ˆ—
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         await base.Initialize();
         _inputAction = MyInputManager.inputAction;
         _buttonInput = new AcceptMenuButtonInput();
     }
+    /// <summary>
+    /// ŠJ‚­
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
         _menuSelect = eMenuSelect.Invalid;

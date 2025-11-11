@@ -16,10 +16,17 @@ using UnityEngine;
 
 public class UserDataManager : SystemObject {
     public static UserDataManager instance { get; private set; } = null;
+    // ユーザーデータ
     public static UserData userData { get; private set; } = null;
+    // 保存するファイル拡張子
     private string _userFileName = "/GGJ.U";
+    // ファイルパス
     private string _filePath = null;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         instance = this;
         // StringBuilderの宣言

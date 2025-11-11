@@ -10,6 +10,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PartStanby : PartBase {
+    /// <summary>
+    /// Àsˆ—
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Execute() {
         await FadeManager.instance.FadeOut();
         UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
