@@ -6,7 +6,7 @@ using UnityEngine;
 /// スイッチギミック：押されると近くのギミックを停止する
 /// </summary>
 public class Gimmick_Switch : GimmickBase {
-    [SerializeField] private float disableRadius; // 停止範囲の半径
+    [SerializeField] private float disableRadius;       // 停止範囲の半径
     private bool _isPressed = false;                    // 押されたかどうかのフラグ
 
     /// <summary>
