@@ -17,6 +17,8 @@ using static MainGameProcessor;
 
 public class PlayerCharacter : CharacterBase {
 	//Animator animator;
+	[SerializeField]
+	Rigidbody rb;
 
 	// オブジェクトのレイヤー
 	private LayerMask _objectLayer;
@@ -42,7 +44,7 @@ public class PlayerCharacter : CharacterBase {
 		if (!anim.GetBool("change")) ChangeAngle();
 		// 移動処理
 		moveValue = new Vector3(moveInput.x, 0f, 0f) * moveSpeed * Time.deltaTime;
-		transform.position += moveValue;
+		rb.MovePosition(rb.position + moveValue);
 		if (moveValue.x != 0 && GetTouchGround()) {
 			anim.SetBool("run", true);
 			// 壁当たり判定

@@ -109,7 +109,7 @@ public class CharacterBase : MonoBehaviour {
 		if (moveInput.x > 0) rotation.y = _DIRECTION_ANGLE;
 		else if (moveInput.x < 0) rotation.y = -_DIRECTION_ANGLE;
 		transform.eulerAngles = rotation;
-	}
+    }
 
 	/// <summary>
 	/// •Ð•t‚¯

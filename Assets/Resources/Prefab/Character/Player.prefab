@@ -495,3 +495,4 @@ MonoBehaviour:
   anim: {fileID: 2298084563771986213}
   input: {fileID: 0}
   changeMove: 0
+  rb: {fileID: 724418296339683481}

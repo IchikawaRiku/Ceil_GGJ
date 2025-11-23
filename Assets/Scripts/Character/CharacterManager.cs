@@ -78,6 +78,8 @@ public class CharacterManager : MonoBehaviour {
         if (controlCharacter == _usePlayer) {
             // 幽霊をプレイヤーの場所へ
             _unuseSpirit.transform.position = GetPlayerPosition();
+            // 幽霊の向きをプレイヤーに合わせる
+            _unuseSpirit.transform.rotation = GetPlayerRotation();
             //幽霊を生成
             UseSpirit();
 			// コントロールを幽霊にする
@@ -145,6 +147,15 @@ public class CharacterManager : MonoBehaviour {
         if (_usePlayer == null) return Vector3.zero;
         Vector3 position = _usePlayer.transform.position;
         return position;
+    }
+
+    /// <summary>
+    /// プレイヤーの角度取得
+    /// </summary>
+    public Quaternion GetPlayerRotation() {
+        if (_usePlayer == null) return Quaternion.identity;
+        Quaternion rotation = _usePlayer.transform.rotation;
+        return rotation;
     }
 
     /// <summary>
