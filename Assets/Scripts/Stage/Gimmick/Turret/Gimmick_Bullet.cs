@@ -1,3 +1,8 @@
+/*
+ *  @file   Gimmick_Bullet.cs
+ *  @brief  タレットの弾発射クラス
+ *  @author oorui
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,3 +1,9 @@
+/*
+ *  @file   goalObject.cs
+ *  @brief  ゴールオブジェクト
+ *  @author oorui
+ */
+
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,7 +29,10 @@ public class goalObject : GimmickBase {
     protected override void OnUpdate() {
     }
 
-
+    /// <summary>
+    /// 触れたとき
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.layer == 6) {
             isGoal = true;

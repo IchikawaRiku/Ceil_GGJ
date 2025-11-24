@@ -1,3 +1,8 @@
+/*
+ *  @file   Gimmick_Visible.cs
+ *  @brief  不透明化ギミック
+ *  @author oorui
+ */
 using System.Collections;
 using UnityEngine;
 
@@ -15,6 +20,7 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
     private Material _material;
     private Coroutine _fadeCoroutine;
     private Collider _collider;
+    private const string COLOR = "color";
 
     private const float Transparent = 0f;
     private const float Opaque = 1f;
@@ -31,7 +37,6 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
         // 初期状態を透明に設定
         SetAlpha(Transparent);
         _collider.isTrigger = true;
-        Debug.Log("SetUp called");
     }
 
     /// <summary>
@@ -47,7 +52,8 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
     /// 指定したアルファ値まで徐々にフェードする処理。
     /// </summary>
     private IEnumerator FadeToAlpha(float targetAlpha) {
-        if (!_material.HasProperty("_Color")) yield break;
+        // マテリアルが色をもっていなければ
+        if (!_material.HasProperty(COLOR)) yield break;
 
         float time = 0f;
         Color color = _material.color;
@@ -70,7 +76,7 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
     /// アルファ値を即座に設定（初期化用）
     /// </summary>
     private void SetAlpha(float alpha) {
-        if (_material.HasProperty("_Color")) {
+        if (_material.HasProperty(COLOR)) {
             Color color = _material.color;
             color.a = alpha;
             _material.color = color;
@@ -78,19 +84,17 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
     }
 
     /// <summary>
-    /// マテリアルが透明描画できるように設定変更（Standard Shader想定）
+    /// スタンダードシェーダーのマテリアルが透明描画できるように設定変更
     /// </summary>
     private void SetMaterialToTransparent(Material mat) {
         if (mat == null) return;
 
-        //mat.SetFloat("_Mode", 3); // Transparent
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
         mat.SetInt("_ZWrite", 0);
         mat.DisableKeyword("_ALPHATEST_ON");
         mat.EnableKeyword("_ALPHABLEND_ON");
         mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        //mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
     }
 
     /// <summary>

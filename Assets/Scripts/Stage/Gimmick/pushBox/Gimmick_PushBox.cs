@@ -1,3 +1,10 @@
+/*
+ *  @file   Gimmick_PushBox.cs
+ *  @brief  ‚¨‚·” 
+ *  @author oorui
+ */
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

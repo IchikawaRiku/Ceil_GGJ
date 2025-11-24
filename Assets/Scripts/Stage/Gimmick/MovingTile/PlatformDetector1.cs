@@ -1,3 +1,9 @@
+/*
+ *  @file   PlatformDetector1.cs
+ *  @brief  ˆÚ“®‚·‚é°‚Ìæ‚¹‚é‘ÎÛ
+ *  @author oorui
+ */
+
 using UnityEngine;
 using System;
 

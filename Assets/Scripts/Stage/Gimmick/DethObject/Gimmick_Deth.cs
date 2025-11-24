@@ -1,3 +1,9 @@
+/*
+ *  @file   Gimmick_Deth.cs
+ *  @brief  落下時処理
+ *  @author oorui
+ */
+
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +24,7 @@ public class Gimmick_Deth : GimmickBase {
     }
 
     /// <summary>
-    /// 更新(使わない)
+    /// 更新
     /// </summary>
     protected override void OnUpdate() {
     }
@@ -29,7 +35,7 @@ public class Gimmick_Deth : GimmickBase {
     /// </summary>
     /// <param name="collision"></param>
     private void OnTriggerEnter(Collider collision) {
-        // プレイヤーだったら
+        // プレイヤーだったら死亡判定
         if (collision.gameObject.layer == 6) {
             // SE再生
             UniTask task = SoundManager.instance.PlaySE(6);

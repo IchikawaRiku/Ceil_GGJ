@@ -1,3 +1,9 @@
+/*
+ *  @file   HorizontalMovingPlatform.cs
+ *  @brief  ¶‰E‚ÉˆÚ“®‚·‚é°
+ *  @author oorui
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;

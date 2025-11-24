@@ -1,3 +1,8 @@
+/*
+ *  @file   Gimmick_Break.cs
+ *  @brief  ‰ó‚ê‚éƒMƒ~ƒbƒN
+ *  @author oorui
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

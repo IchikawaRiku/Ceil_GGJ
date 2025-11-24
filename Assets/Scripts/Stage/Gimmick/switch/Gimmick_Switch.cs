@@ -1,5 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+/*
+ *  @file   Gimmick_Switch.cs
+ *  @brief  スイッチの動作
+ *  @author oorui
+ */
+
 using UnityEngine;
 
 /// <summary>

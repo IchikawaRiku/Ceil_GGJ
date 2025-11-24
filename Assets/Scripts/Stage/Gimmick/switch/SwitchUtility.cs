@@ -1,3 +1,9 @@
+/*
+ *  @file   SwitchUtility.cs
+ *  @brief  ギミックの実行クラス
+ *  @author oorui
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

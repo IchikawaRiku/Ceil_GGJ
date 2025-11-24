@@ -1,3 +1,9 @@
+/*
+ *  @file   VerticalMovingPlatform.cs
+ *  @brief  上下移動する床
+ *  @author oorui
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
@@ -26,6 +32,7 @@ public class VerticalMovingPlatform : GimmickBase {
 
     // 準備処理
     public override void SetUp() {
+        // 初期位置をスタート位置に設定
         transform.position = _startPosition;
         _movingUp = true;
         _isWaiting = false;

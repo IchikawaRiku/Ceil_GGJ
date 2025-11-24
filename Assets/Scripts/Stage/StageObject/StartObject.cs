@@ -1,3 +1,8 @@
+/*
+ *  @file   StartObject.cs
+ *  @brief  プレイヤーを生成するオブジェクト
+ *  @author oorui
+ */
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,3 +1,9 @@
+/*
+ *  @file   StageManager.cs
+ *  @brief  ステージの管理クラス
+ *  @author oorui
+ */
+
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;

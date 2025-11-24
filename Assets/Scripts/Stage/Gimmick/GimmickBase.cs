@@ -1,3 +1,9 @@
+/*
+ *  @file   GimmickBase.cs
+ *  @brief  ギミックの基底クラス
+ *  @author oorui
+ */
+
 using UnityEngine;
 
 /// <summary>

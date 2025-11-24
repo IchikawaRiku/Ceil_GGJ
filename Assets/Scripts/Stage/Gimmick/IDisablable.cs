@@ -1,9 +1,15 @@
+/*
+ *  @file   UDusakebe.cs
+ *  @brief  ギミックのインターフェース
+ *  @author oorui
+ */
+
 
 /// <summary>
 /// 停止可能なギミックに共通するインターフェース
 /// </summary>
 public interface IDisablable {
-    
+
     // ギミックを停止する
     void Disable();
 }

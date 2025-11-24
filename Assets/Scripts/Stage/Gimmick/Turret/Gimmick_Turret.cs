@@ -1,3 +1,9 @@
+/*
+ *  @file   Gimmick_Turret.cs
+ *  @brief  タレット本体
+ *  @author oorui
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
