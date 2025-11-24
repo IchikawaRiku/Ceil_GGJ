@@ -16,6 +16,8 @@ using UnityEngine.Rendering;
 using static MainGameProcessor;
 
 public class SpiritCharacter : CharacterBase {
+	[SerializeField]
+	private Material material;
 	// スイッチを押せるか否か
 	private bool canOnSwitch = false;
 	// スイッチオンのアニメーション中
