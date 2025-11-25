@@ -39,6 +39,11 @@ public class SpiritCharacter : CharacterBase {
 	public override async UniTask Initialize() {
 		await base.Initialize();
 		moveSpeed = MOVE_SPEED_MAX * _SPEED_LATE;
+		
+		// ç≈èâÇÕìßñæÇ…ÇµÇƒÇ®Ç≠
+		Color color = material.color;
+		color.a = 0;
+		material.color = color;
 	}
 
 	/// <summary>
@@ -92,6 +97,10 @@ public class SpiritCharacter : CharacterBase {
 	public void ReturnPosition() {
 		//transform.position = CharacterManager.instance.GetPlayerPosition();
 		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), _RETURN_LATE);
+	}
+
+	private void SpritFadeIn() {
+
 	}
 
 	/// <summary>
