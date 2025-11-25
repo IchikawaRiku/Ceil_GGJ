@@ -258,10 +258,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: -9158589776548455277}
-  moveSpeed: 5
-  moveInput: {x: 0, y: 0}
-  moveValue: {x: 0, y: 0, z: 0}
   input: {fileID: 0}
+  changeMove: 0
+  material: {fileID: 2100000, guid: d11e6205c7cc9470aacd9fde3100bfe2, type: 2}
 --- !u!95 &-9158589776548455277
 Animator:
   serializedVersion: 5

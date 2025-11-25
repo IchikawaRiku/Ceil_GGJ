@@ -16,6 +16,8 @@ using UnityEngine.Rendering;
 using static MainGameProcessor;
 
 public class SpiritCharacter : CharacterBase {
+	[SerializeField]
+	private Material material;
 	// スイッチを押せるか否か
 	private bool canOnSwitch = false;
 	// スイッチオンのアニメーション中
@@ -44,8 +46,8 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Execute() {
 		await base.Execute();
-		// アニメーション中はスキップ
-		if (switchAnim) return;
+        // アニメーション中はスキップ
+        if (switchAnim) return;
 		// 向き変更
 		ChangeAngle();
 		moveValue = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
