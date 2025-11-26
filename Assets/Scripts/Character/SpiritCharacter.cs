@@ -99,8 +99,30 @@ public class SpiritCharacter : CharacterBase {
 		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), _RETURN_LATE);
 	}
 
-	private void SpritFadeIn() {
+	/// <summary>
+	/// 出現フェード
+	/// </summary>
+	/// <returns></returns>
+	public async UniTask SpritFadeIn() {
+		while (material.color.a < 1) {
+			Color color = material.color;
+			color.a += 0.1f;
+			material.color = color;
+			await UniTask.Yield();
+		}
+	}
 
+	/// <summary>
+	/// 消滅フェード
+	/// </summary>
+	/// <returns></returns>
+	public async UniTask SpritFadeOut() {
+		while (material.color.a > 0) {
+			Color color = material.color;
+			color.a -= 0.1f;
+			material.color = color;
+			await UniTask.Yield();
+		}
 	}
 
 	/// <summary>
