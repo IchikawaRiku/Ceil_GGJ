@@ -37,6 +37,7 @@ public class goalObject : GimmickBase {
         if (collision.gameObject.layer == 6) {
             isGoal = true;
             UniTask task = SoundManager.instance.PlaySE(7);
+            EffectManager.Instance.Play(2, gameObject.transform.position);
             EndGameReason(eEndReason.Clear);
 
         }
