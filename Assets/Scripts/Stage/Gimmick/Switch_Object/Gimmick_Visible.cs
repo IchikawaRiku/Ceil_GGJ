@@ -20,7 +20,7 @@ public class Gimmick_Visible : GimmickBase, IVisibleToggleable {
     private Material _material;
     private Coroutine _fadeCoroutine;
     private Collider _collider;
-    private const string COLOR = "color";
+    private const string COLOR = "_Color";
 
     private const float Transparent = 0f;
     private const float Opaque = 1f;

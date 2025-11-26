@@ -68,5 +68,6 @@ public class PartMainGame : PartBase {
         SoundManager.instance.StopBGM();
         _mainProcessor.Teardown();
         _characterManager.Teardown();
+        EffectManager.Instance.StopAll();
     }
 }

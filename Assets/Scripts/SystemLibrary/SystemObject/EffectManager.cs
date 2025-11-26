@@ -16,7 +16,7 @@ public class EffectManager : SystemObject {
 
     [System.Serializable]
     public class EffectEntry {
-        public string name;                // 識別用の名前
+        public int id;                     // 識別用のID
         public GameObject prefab;          // 実際のエフェクトのひな型
         public int initialPoolSize = 5;    // あらかじめ確保しておく数
         public float autoReturnTime = -1f; // プールに戻すタイミング
@@ -29,13 +29,29 @@ public class EffectManager : SystemObject {
     private Transform poolRoot; // プールをまとめる親のオブジェクト
 
     // エフェクトのPrefabを名前で管理
-    private readonly Dictionary<string, GameObject> effectPrefab = new();
+    private readonly Dictionary<int, GameObject> effectPrefab = new();
 
     // 使い回し用の待機エフェクト
-    private readonly Dictionary<string, Queue<GameObject>> effectPool = new();
+    private readonly Dictionary<int, Queue<GameObject>> effectPool = new();
 
     // 現在使用中のエフェクト
-    private readonly List<(string name, GameObject instance)> activeEffectList = new();
+    private readonly List<(int id, GameObject instance)> activeEffectList = new();
+
+    private void Awake() {
+        // インスタンスが重複していたら削除する
+        if (Instance != null) {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
+        // 親が設定されていなければ自動で作成する
+        if (poolRoot == null) {
+            var poolRootObj = new GameObject("EffectPoolRoot");
+            poolRootObj.transform.SetParent(transform);
+            poolRoot = poolRootObj.transform;
+        }
+    }
 
     /// <summary>
     /// 初期化処理
@@ -43,6 +59,14 @@ public class EffectManager : SystemObject {
     /// <returns></returns>
     /// <exception cref="System.NotImplementedException"></exception>
     public override async UniTask Initialize() {
+        Instance = this;
+        // poolRoot が確実に存在するようにする
+        if (poolRoot == null) {
+            var poolRootObj = new GameObject("EffectPoolRoot");
+            poolRootObj.transform.SetParent(transform);
+            poolRoot = poolRootObj.transform;
+        }
+
         // エフェクトのプールを作成
         InitializePools();
 
@@ -54,20 +78,19 @@ public class EffectManager : SystemObject {
     private void InitializePools() {
         // 登録されたエフェクトリストを見る
         foreach (var entry in effectEntries) {
-            // Prefab、名前が泣ければ生成しない
-            if (string.IsNullOrEmpty(entry.name) || entry.prefab == null) {
-                continue;
-            }
+            // Prefab、IDが泣ければ生成しない
+            if (entry.id <= 0 || entry.prefab == null) continue;
 
-            // 名前ごとにエフェクトを保存
-            effectPrefab[entry.name] = entry.prefab;
+            // IDごとにエフェクトを保存
+            effectPrefab[entry.id] = entry.prefab;
 
             // すでにプールがあるなら作らない
-            if (effectPool.ContainsKey(entry.name)) continue;
+            if (effectPool.ContainsKey(entry.id)) continue;
 
             // プールを表示する親オブジェクトの作成
             var queue = new Queue<GameObject>();
-            var effectParent = new GameObject($"Pool_{entry.name}");
+            // Hieralkey上に表示
+            var effectParent = new GameObject($"Pool_{entry.id}");
             effectParent.transform.SetParent(poolRoot);
 
             // 初期生成分生成し、非表示
@@ -78,50 +101,48 @@ public class EffectManager : SystemObject {
             }
 
             // 待機エフェクトリストに保存
-            effectPool[entry.name] = queue;
+            effectPool[entry.id] = queue;
         }
     }
 
     // エフェクトを指定位置で再生する
-    public GameObject Play(string effectName, Vector3 position, bool autoReturn = true) {
-        if (!effectPool.ContainsKey(effectName)) {
-            return null;
-        }
+    public GameObject Play(int effectId, Vector3 position, bool autoReturn = true) {
+        if (!effectPool.ContainsKey(effectId)) return null;
 
         GameObject obj;
         // プールから取り出す
-        if (effectPool[effectName].Count > 0) {
-            obj = effectPool[effectName].Dequeue();
+        if (effectPool[effectId].Count > 0) {
+            obj = effectPool[effectId].Dequeue();
         }
         else {
             // 新しく生成する
-            obj = Instantiate(effectPrefab[effectName], poolRoot);
+            obj = Instantiate(effectPrefab[effectId], poolRoot);
         }
 
         obj.transform.position = position;
         obj.SetActive(true);
-        activeEffectList.Add((effectName, obj));
+        activeEffectList.Add((effectId, obj));
 
         // 一定時間後にエフェクト停止
         if (autoReturn) {
             // EffectEntry から時間を取る
-            var entry = System.Array.Find(effectEntries, e => e.name == effectName);
+            var entry = System.Array.Find(effectEntries, e => e.id == effectId);
             float delay = entry != null && entry.autoReturnTime > 0 ? entry.autoReturnTime : 2f;
-            _ = ReturnToPoolAfterTime(effectName, obj, delay);
+            _ = ReturnToPoolAfterTime(effectId, obj, delay);
         }
 
         return obj;
     }
 
     // 一定時間後に自動でプールへ戻す
-    private async UniTaskVoid ReturnToPoolAfterTime(string effectName, GameObject obj, float delay) {
+    private async UniTaskVoid ReturnToPoolAfterTime(int effectId, GameObject obj, float delay) {
         await UniTask.Delay(System.TimeSpan.FromSeconds(delay));
         if (obj == null || obj.Equals(null)) return;
-        Stop(effectName, obj);
+        Stop(effectId, obj);
     }
 
     // 指定のエフェクトを停止してプールへ戻す
-    public void Stop(string effectName, GameObject obj) {
+    public void Stop(int effectId, GameObject obj) {
         if (obj == null) return;
 
         // 表示 OFF
@@ -131,8 +152,8 @@ public class EffectManager : SystemObject {
         activeEffectList.RemoveAll(e => e.instance == obj);
 
         // プールへ戻す
-        if (effectPool.ContainsKey(effectName)) {
-            effectPool[effectName].Enqueue(obj);
+        if (effectPool.ContainsKey(effectId)) {
+            effectPool[effectId].Enqueue(obj);
         }
         else {
             Destroy(obj);

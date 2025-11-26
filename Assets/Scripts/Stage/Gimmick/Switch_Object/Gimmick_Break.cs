@@ -37,6 +37,10 @@ public class Gimmick_Break : GimmickBase, IDestroyable {
     /// </summary>
     /// <exception cref="System.NotImplementedException"></exception>
     public void DestroyGimmick() {
+        var pos = transform.position;
+        pos.z -= 2f;
+        // エフェクトを再生
+        EffectManager.Instance.Play(1, pos);
         // 消す
         gameObject.SetActive(false);
     }
