@@ -44,10 +44,13 @@ public class Gimmick_Switch : GimmickBase {
         // 押した判定にする
         _isPressed = true;
 
+        // エフェクト再生
+        EffectManager.Instance.Play(3, transform.position);
+
         // 範囲内の全Colliderを取得
         Collider[] hits = Physics.OverlapSphere(transform.position, disableRadius);
 
-        
+
         foreach (var hit in hits) {
             // 停止対象
             if (hit.TryGetComponent(out IDisablable disablable)) {

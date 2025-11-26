@@ -53,4 +53,8 @@ MonoBehaviour:
     prefab: {fileID: 4379871045741112983, guid: a4ede904ce3032746bd0c51bf711555a, type: 3}
     initialPoolSize: 1
     autoReturnTime: -1
+  - id: 3
+    prefab: {fileID: 5215988172048236662, guid: e3ef817b47b9ad7489fdd2d71ad02152, type: 3}
+    initialPoolSize: 1
+    autoReturnTime: -1
   poolRoot: {fileID: 0}
