@@ -86,9 +86,12 @@ public class CharacterManager : MonoBehaviour {
 			controlCharacter = _useSpirit;
             // 幽霊の入力をとる
             controlCharacter.EnableInput();
-
+            // 幽霊の出現
+            await _useSpirit.SpritFadeIn();
 		}
         else if (controlCharacter == _useSpirit) {
+            // 幽霊の消滅
+            await _useSpirit.SpritFadeOut();
             //幽霊を未使用化
             UnuseSpirit();
 			// コントロールをプレイヤーにする

@@ -39,6 +39,11 @@ public class SpiritCharacter : CharacterBase {
 	public override async UniTask Initialize() {
 		await base.Initialize();
 		moveSpeed = MOVE_SPEED_MAX * _SPEED_LATE;
+		
+		// 最初は透明にしておく
+		Color color = material.color;
+		color.a = 0;
+		material.color = color;
 	}
 
 	/// <summary>
@@ -92,6 +97,32 @@ public class SpiritCharacter : CharacterBase {
 	public void ReturnPosition() {
 		//transform.position = CharacterManager.instance.GetPlayerPosition();
 		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), _RETURN_LATE);
+	}
+
+	/// <summary>
+	/// 出現フェード
+	/// </summary>
+	/// <returns></returns>
+	public async UniTask SpritFadeIn() {
+		while (material.color.a < 1) {
+			Color color = material.color;
+			color.a += 0.1f;
+			material.color = color;
+			await UniTask.Yield();
+		}
+	}
+
+	/// <summary>
+	/// 消滅フェード
+	/// </summary>
+	/// <returns></returns>
+	public async UniTask SpritFadeOut() {
+		while (material.color.a > 0) {
+			Color color = material.color;
+			color.a -= 0.1f;
+			material.color = color;
+			await UniTask.Yield();
+		}
 	}
 
 	/// <summary>
