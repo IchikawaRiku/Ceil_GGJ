@@ -11,6 +11,11 @@ public class MenuStageSelect : MenuBase {
     //最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
+    [SerializeField]
+    private MoonMove _moon = null;
+    [SerializeField]
+    private CloudMove _cloud = null;
+
     //ステージ番号
     public eStageStage stageNum { get; private set; } = eStageStage.Invalid;
 
@@ -24,6 +29,8 @@ public class MenuStageSelect : MenuBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
+        _moon?.Initialize();
+        _cloud?.Initialize();
     }
     /// <summary>
     /// 開く
@@ -35,6 +42,10 @@ public class MenuStageSelect : MenuBase {
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
+        _moon?.Setup();
+        _cloud?.Setup();
+        UniTask moonMoveTask = _moon.Execute();
+        UniTask cloudMoveTask = _cloud.Execute();
         while (stageNum == eStageStage.Invalid) {
             await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
@@ -42,6 +53,8 @@ public class MenuStageSelect : MenuBase {
         await _buttonInput.Teardown();
         await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
+        _moon?.Teardown();
+        _cloud?.Teardown();
         await Close();
     }
     /// <summary>

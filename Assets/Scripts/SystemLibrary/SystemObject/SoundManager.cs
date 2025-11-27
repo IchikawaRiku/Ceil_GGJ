@@ -99,4 +99,8 @@ public class SoundManager : SystemObject {
             }
         }
     }
+
+    public AudioSource GetBGMSource() {
+        return _bgmAudioSource;
+    }
 }

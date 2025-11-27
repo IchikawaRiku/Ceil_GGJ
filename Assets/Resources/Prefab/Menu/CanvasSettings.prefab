@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 3293055830828157362}
   - component: {fileID: 563096587417070231}
   - component: {fileID: 6122832586848202744}
-  - component: {fileID: 3295637709311446075}
+  - component: {fileID: 7187841606260136060}
   m_Layer: 5
   m_Name: CloudImage
   m_TagString: Untagged
@@ -164,8 +164,8 @@ RectTransform:
   m_GameObject: {fileID: 569075081192583552}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1.1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5866089478161796994}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3295637709311446075
+--- !u!114 &7187841606260136060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,9 +221,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 569075081192583552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ecb7b70423b8fb40a89d6105c11186b, type: 3}
+  m_Script: {fileID: 11500000, guid: e38cd30a86d766d498af91b662e0ff22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentPos: {x: 0, y: 0, z: 0}
+  _targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &596759011659948657
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +275,7 @@ GameObject:
   - component: {fileID: 3390390807891128547}
   - component: {fileID: 3267687661277768771}
   - component: {fileID: 2889649682173344347}
+  - component: {fileID: 1979269283220783902}
   m_Layer: 5
   m_Name: MoonImage
   m_TagString: Untagged
@@ -296,7 +299,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -315, y: 130}
+  m_AnchoredPosition: {x: -320, y: 150}
   m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3267687661277768771
@@ -337,6 +340,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1979269283220783902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924757738334341596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a53f562453713734b8a900e747c8eb98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2157220580591379621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1344,6 +1359,8 @@ MonoBehaviour:
   _bgmVolumeText: {fileID: 1437103594531755741}
   _seVolumeText: {fileID: 8964377129521452981}
   _initSelectButton: {fileID: 5195070352869845672}
+  _moon: {fileID: 1979269283220783902}
+  _cloud: {fileID: 7187841606260136060}
 --- !u!1 &6352793670931551602
 GameObject:
   m_ObjectHideFlags: 0

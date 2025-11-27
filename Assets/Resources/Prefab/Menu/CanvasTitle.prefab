@@ -168,7 +168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 121}
+  m_AnchoredPosition: {x: 0, y: 120}
   m_SizeDelta: {x: 716.8, y: 358.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3212790522046796897
@@ -431,6 +431,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecb7b70423b8fb40a89d6105c11186b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentPos: {x: 0, y: 0, z: 0}
+  _targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1623563356873891517
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,6 +637,8 @@ MonoBehaviour:
   - {fileID: 5268185417763610324}
   _initSelectButton: {fileID: 6551153265248348729}
   _ghost: {fileID: 7465336207885550986}
+  _moon: {fileID: 8041490256087434784}
+  _cloud: {fileID: 7347320337999673375}
 --- !u!1 &4048239006811271257
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,7 +675,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -130}
+  m_AnchoredPosition: {x: 0, y: -120}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4937219825008687348
@@ -804,7 +808,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -60}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6823640097102831293
@@ -912,7 +916,7 @@ GameObject:
   - component: {fileID: 2755296248833141444}
   - component: {fileID: 1235155451204854067}
   - component: {fileID: 8589929050259596957}
-  - component: {fileID: 443245629363501571}
+  - component: {fileID: 8041490256087434784}
   m_Layer: 5
   m_Name: MoonImage
   m_TagString: Untagged
@@ -977,7 +981,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &443245629363501571
+--- !u!114 &8041490256087434784
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -986,7 +990,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5213315166650664420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ecb7b70423b8fb40a89d6105c11186b, type: 3}
+  m_Script: {fileID: 11500000, guid: a53f562453713734b8a900e747c8eb98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5673371186906142784
@@ -1025,7 +1029,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -200}
+  m_AnchoredPosition: {x: 0, y: -190}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5274414922195322131
@@ -1267,7 +1271,7 @@ GameObject:
   - component: {fileID: 3602753224686214246}
   - component: {fileID: 2413371989060271969}
   - component: {fileID: 6558781539369942437}
-  - component: {fileID: 3751474646746619911}
+  - component: {fileID: 7347320337999673375}
   m_Layer: 5
   m_Name: CloudImage
   m_TagString: Untagged
@@ -1284,15 +1288,15 @@ RectTransform:
   m_GameObject: {fileID: 8461660198978103264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5863381478414150806}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1066, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2413371989060271969
 CanvasRenderer:
@@ -1332,7 +1336,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3751474646746619911
+--- !u!114 &7347320337999673375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1341,6 +1345,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8461660198978103264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ecb7b70423b8fb40a89d6105c11186b, type: 3}
+  m_Script: {fileID: 11500000, guid: e38cd30a86d766d498af91b662e0ff22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentPos: {x: 0, y: 0, z: 0}
+  _targetPos: {x: 0, y: 0, z: 0}

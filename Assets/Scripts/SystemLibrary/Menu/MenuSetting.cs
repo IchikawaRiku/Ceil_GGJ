@@ -26,6 +26,11 @@ public class MenuSetting : MenuBase {
     // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
+    [SerializeField]
+    private MoonMove _moon = null;
+    [SerializeField]
+    private CloudMove _cloud = null;
+
     // ボタンの入力受付
     private AcceptSettingsButtonInput _buttonInput = null;
     // InputAction
@@ -45,6 +50,8 @@ public class MenuSetting : MenuBase {
         await base.Initialize();
         _inputAction = MyInputManager.inputAction;
         _buttonInput = new AcceptSettingsButtonInput();
+        _moon?.Initialize();
+        _cloud?.Initialize();
         _isClose = false;
         SetupData();
     }
@@ -68,6 +75,10 @@ public class MenuSetting : MenuBase {
         _inputAction.Player.Pause.Enable();
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
+        _moon?.Setup();
+        _cloud?.Setup();
+        UniTask moonMoveTask = _moon.Execute();
+        UniTask cloudMoveTask = _cloud.Execute();
         while (true) {
             await _buttonInput.AcceptInput();
             if(_isClose || _inputAction.Player.Pause.WasPressedThisFrame()) break;
@@ -79,6 +90,8 @@ public class MenuSetting : MenuBase {
         await _buttonInput.Teardown();
         await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
+        _moon?.Teardown();
+        _cloud?.Teardown();
         await Close();
     }
     /// <summary>

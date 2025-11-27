@@ -1,14 +1,16 @@
 /*
- *  @file   GhostMove.cs
- *  @brief  —H—ì‚ÌˆÚ“®
+ *  @file   CloudMove.cs
+ *  @brief  ‰_‚ÌˆÚ“®
  *  @author Seki
- *  @date   2025/11/25
+ *  @date   2025/11/27
  */
 using Cysharp.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class GhostMove : MonoBehaviour {
+public class CloudMove : MonoBehaviour {
     [SerializeField]
     private Vector3 _currentPos;
     [SerializeField]
@@ -22,8 +24,8 @@ public class GhostMove : MonoBehaviour {
     /// ‰Šú‰»ˆ—
     /// </summary>
     public void Initialize() {
-        _currentPos = new Vector3(0, 120, 0);
-        _targetPos = new Vector3(150, 140, 0);
+        _currentPos = Vector3.zero;
+        _targetPos = new Vector3(0, 30, 0);
     }
     /// <summary>
     /// €”õ‘Oˆ—
@@ -48,7 +50,7 @@ public class GhostMove : MonoBehaviour {
             float t = Mathf.PingPong(elapsedTime / duration, 1f);
 
             // Slerp ‚Å•âŠÔ
-            transform.localPosition = Vector3.Slerp(_currentPos, _targetPos, t);
+            transform.localPosition = Vector3.Lerp(_currentPos, _targetPos, t);
 
             await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
         }
@@ -60,4 +62,5 @@ public class GhostMove : MonoBehaviour {
         _isClose = true;
         transform.localPosition = _currentPos;
     }
+
 }

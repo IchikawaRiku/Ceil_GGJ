@@ -18,8 +18,15 @@ public class MenuTitle : MenuBase {
     // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
+    // 幽霊画像
     [SerializeField]
     private GhostMove _ghost = null;
+    // 月画像
+    [SerializeField]
+    private MoonMove _moon = null;
+    // 雲画像
+    [SerializeField]
+    private CloudMove _cloud = null;
 
     //ボタン入力受付
     private AcceptMenuButtonInput _buttonInput = null;
@@ -39,7 +46,9 @@ public class MenuTitle : MenuBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
-        _ghost.Initialize(new Vector3 (0, 120, 0));
+        _ghost?.Initialize();
+        _moon?.Initialize();
+        _cloud?.Initialize();
     }
     /// <summary>
     /// 開く
@@ -51,11 +60,15 @@ public class MenuTitle : MenuBase {
         _isClose = false;
         _isGameEnd = false;
         _isSelect = false;
-        _ghost.Setup();
+        _ghost?.Setup();
+        _moon?.Setup();
+        _cloud?.Setup();
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
-        UniTask task = _ghost.Execute();
+        UniTask ghostMoveTask = _ghost.Execute();
+        UniTask moonMoveTask = _moon.Execute();
+        UniTask cloudMoveTask = _cloud.Execute();
         while (!_isClose) {
             await _buttonInput.AcceptInput();
             if (_isSelect) {
@@ -72,7 +85,9 @@ public class MenuTitle : MenuBase {
         await SetPushButtonState(_buttonList, false);
         if (_isGameEnd) QuitApp();
         await FadeManager.instance.FadeOut();
-        _ghost.Teardown();
+        _ghost?.Teardown();
+        _moon?.Teardown();
+        _cloud?.Teardown();
         await Close();
     }
     /// <summary>
