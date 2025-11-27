@@ -12,7 +12,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
-
+using UnityEngine.UIElements;
 using static MainGameProcessor;
 
 public class SpiritCharacter : CharacterBase {
@@ -22,6 +22,8 @@ public class SpiritCharacter : CharacterBase {
 	private bool canOnSwitch = false;
 	// スイッチオンのアニメーション中
 	private bool switchAnim = false;
+	// フェードイン中
+	private bool fadeIn = false;
 	// スピードの倍率
 	private const float _SPEED_LATE = 1.9f;
 	// 戻ってくる時の補間比率
@@ -61,9 +63,8 @@ public class SpiritCharacter : CharacterBase {
 		transform.position += moveValue;
 		if (changeMove) {
 			ReturnPosition();
-			if (Vector3.Distance(transform.position, CharacterManager.instance.GetPlayerPosition())
-				< _PLAYER_CHANGE_DISTANCE) 
-				changeMove = false;
+			if (Vector3.Distance(transform.position, CharacterManager.instance.GetPlayerPosition()) < _PLAYER_CHANGE_DISTANCE)
+				changeMove = false; 
 		}
 	}
 
@@ -95,7 +96,6 @@ public class SpiritCharacter : CharacterBase {
 	/// 元の位置に戻る
 	/// </summary>
 	public void ReturnPosition() {
-		//transform.position = CharacterManager.instance.GetPlayerPosition();
 		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), _RETURN_LATE);
 	}
 
@@ -104,12 +104,14 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	/// <returns></returns>
 	public async UniTask SpritFadeIn() {
+		fadeIn = true;
 		while (material.color.a < 1) {
 			Color color = material.color;
-			color.a += 0.1f;
+			color.a += 0.05f;
 			material.color = color;
 			await UniTask.Yield();
 		}
+		fadeIn = false;
 	}
 
 	/// <summary>
@@ -119,7 +121,7 @@ public class SpiritCharacter : CharacterBase {
 	public async UniTask SpritFadeOut() {
 		while (material.color.a > 0) {
 			Color color = material.color;
-			color.a -= 0.1f;
+			color.a -= 0.05f;
 			material.color = color;
 			await UniTask.Yield();
 		}
@@ -178,11 +180,12 @@ public class SpiritCharacter : CharacterBase {
 		base.OnMove(context);
 	}
 
-    /// <summary>
-    ///	移動入力
-    /// </summary>
-    /// <param name="context"></param>
-    public override void OnChangeSpirit(InputAction.CallbackContext context) {
+	/// <summary>
+	///	幽体離脱の入力
+	/// </summary>
+	/// <param name="context"></param>
+	public override void OnChangeSpirit(InputAction.CallbackContext context) {
+		if (fadeIn) return;
         UniTask task = SoundManager.instance.PlaySE(5);
         base.OnChangeSpirit(context);
 	}
