@@ -7,6 +7,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,9 @@ public class MenuTitle : MenuBase {
     // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
+    [SerializeField]
+    private GhostMove _ghost = null;
+
     //ボタン入力受付
     private AcceptMenuButtonInput _buttonInput = null;
     //メニュー開閉フラグ
@@ -26,6 +30,8 @@ public class MenuTitle : MenuBase {
     //設定開閉フラグ
     private bool _isSelect = false;
 
+    private CancellationToken _token;
+
     /// <summary>
     /// 初期化処理
     /// </summary>
@@ -33,19 +39,23 @@ public class MenuTitle : MenuBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
+        _ghost.Initialize(new Vector3 (0, 120, 0));
     }
     /// <summary>
     /// 開く
     /// </summary>
     /// <returns></returns>
     public override async UniTask Open() {
+        _token = this.GetCancellationTokenOnDestroy();
         await base.Open();
         _isClose = false;
         _isGameEnd = false;
         _isSelect = false;
+        _ghost.Setup();
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
+        UniTask task = _ghost.Execute();
         while (!_isClose) {
             await _buttonInput.AcceptInput();
             if (_isSelect) {
@@ -57,11 +67,12 @@ public class MenuTitle : MenuBase {
                 _isSelect = false;
                 await SetPushButtonState(_buttonList, true);
             }
-            await UniTask.DelayFrame(1);
+            await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
         }
         await SetPushButtonState(_buttonList, false);
         if (_isGameEnd) QuitApp();
         await FadeManager.instance.FadeOut();
+        _ghost.Teardown();
         await Close();
     }
     /// <summary>

@@ -1,3 +1,9 @@
+/*
+ *  @file   MenuCredit.cs
+ *  @brief  クレジットクラス
+ *  @author Seki
+ *  @date   2025/8/22
+ */
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
