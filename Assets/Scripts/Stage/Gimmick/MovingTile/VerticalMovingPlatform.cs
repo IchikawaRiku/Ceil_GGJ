@@ -103,7 +103,7 @@ public class VerticalMovingPlatform : GimmickBase {
     // °‚©‚ç—£‚ê‚½‚Æ‚«‚Ìˆ—
     private void OnTriggerExit(Collider other) {
         if (other.attachedRigidbody != null && ((attachableLayers.value & (1 << other.gameObject.layer)) > 0)) {
-            // other.transform.SetParent(null);
+            
         }
     }
 
