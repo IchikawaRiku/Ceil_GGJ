@@ -84,10 +84,10 @@ public class CharacterManager : MonoBehaviour {
             UseSpirit();
 			// ƒRƒ“ƒgƒ[ƒ‹‚ğ—H—ì‚É‚·‚é
 			controlCharacter = _useSpirit;
-            // —H—ì‚Ì“ü—Í‚ğ‚Æ‚é
-            controlCharacter.EnableInput();
-            // —H—ì‚ÌoŒ»
-            await _useSpirit.SpritFadeIn();
+			// —H—ì‚Ì“ü—Í‚ğ‚Æ‚é
+			controlCharacter.EnableInput();
+			// —H—ì‚ÌoŒ»
+			await _useSpirit.SpritFadeIn();
 		}
         else if (controlCharacter == _useSpirit) {
             // —H—ì‚ÌÁ–Å

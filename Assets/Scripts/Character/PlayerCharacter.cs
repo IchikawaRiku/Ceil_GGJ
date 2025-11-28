@@ -156,6 +156,6 @@ public class PlayerCharacter : CharacterBase {
     /// 幽体離脱のアニメーションの終わり
     /// </summary>
     public void ChangeAnimationEnd() {
-        changeMove = false;
+		changeMove = false;
     }
 }
