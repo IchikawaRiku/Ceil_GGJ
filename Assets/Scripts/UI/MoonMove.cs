@@ -29,7 +29,7 @@ public class MoonMove : MonoBehaviour {
     /// </summary>
     public void Setup() {
         _isClose = false;
-
+        transform.localRotation *= Quaternion.Euler(0, 0, 0);
     }
     /// <summary>
     /// 実行処理
