@@ -41,4 +41,6 @@ public abstract class AcceptButtonBase {
             currentButton = prevButton;
         }
     }
+
+    public Button GetCurrentButton() { return currentButton; }
 }
