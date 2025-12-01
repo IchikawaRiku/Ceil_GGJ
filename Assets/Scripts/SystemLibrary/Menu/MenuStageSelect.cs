@@ -1,3 +1,9 @@
+/*
+ *  @file   MenuStageSelect.cs
+ *  @brief  ステージセレクトメニュー
+ *  @author Seki
+ *  @date   2025/8/1
+ */
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,10 +11,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuStageSelect : MenuBase {
-    //ボタンの配列
+    // ボタンの配列
     [SerializeField]
     private Button[] _buttonList = null;
-    //最初に選択されるボタン
+    // 最初に選択されるボタン
     [SerializeField]
     private Button _initSelectButton = null;
     [SerializeField]
@@ -16,11 +22,14 @@ public class MenuStageSelect : MenuBase {
     [SerializeField]
     private CloudMove _cloud = null;
 
-    //ステージ番号
+    // ステージ番号
     public eStageStage stageNum { get; private set; } = eStageStage.Invalid;
 
-    //ボタン操作入力処理
+    // ボタン操作入力処理
     private AcceptMenuButtonInput _buttonInput = null;
+
+    // ボタン移動制御クラス
+    private ButtonSelectMove _buttonMove = null;
 
     /// <summary>
     /// 初期化処理
@@ -29,6 +38,8 @@ public class MenuStageSelect : MenuBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
+
+        _buttonMove = new ButtonSelectMove(new Button[] { _buttonList[2], _buttonList[3], _buttonList[4] });
         _moon?.Initialize();
         _cloud?.Initialize();
     }
@@ -41,6 +52,8 @@ public class MenuStageSelect : MenuBase {
         stageNum = eStageStage.Invalid;
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
+        _buttonMove.Setup();
+
         await SetPushButtonState(_buttonList, true);
         _moon?.Setup();
         _cloud?.Setup();
@@ -48,6 +61,7 @@ public class MenuStageSelect : MenuBase {
         UniTask cloudMoveTask = _cloud.Execute();
         while (stageNum == eStageStage.Invalid) {
             await _buttonInput.AcceptInput();
+            _buttonMove.Execute(_buttonInput.GetCurrentButton());
             await UniTask.DelayFrame(1);
         }
         await _buttonInput.Teardown();
