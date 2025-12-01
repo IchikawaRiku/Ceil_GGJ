@@ -21,18 +21,20 @@ public class VerticalMovingPlatform : GimmickBase {
     [SerializeField] private Collider platformCollider = null; // 床の Collider
 
 
-    private Vector3 _startPosition;         // 床の初期位置
-    private bool _movingUp = true;          // 現在の移動方向（上方向かどうか）
-    private bool _isWaiting = false;        // 待機中かどうか
-    private Vector3 _prevPos;               // 前フレームの床の位置
-    private Vector3 _velocity;              // 床の移動量（プレイヤー補正用）
-    private static int waitTimeNum = 1000;  // 待機時間に掛ける値
+    private Vector3 _startPosition;             // 床の初期位置
+    private bool _movingUp = true;              // 現在の移動方向（上方向かどうか）
+    private bool _isWaiting = false;            // 待機中かどうか
+    private Vector3 _prevPos;                   // 前フレームの床の位置
+    private Vector3 _velocity;                  // 床の移動量（プレイヤー補正用）
+    private static int waitTimeNum = 1000;      // 待機時間に掛ける値
+    private static float toleranceNum = 0.01f;  // プレイヤーの少し上
 
     /// <summary>
     /// 初期化処理
     /// </summary>
     public override void Initialize() {
         _startPosition = transform.position;
+        // 床のコライダーがなければ取得
         if (platformCollider == null) {
             platformCollider = GetComponent<Collider>();
         }
@@ -87,12 +89,12 @@ public class VerticalMovingPlatform : GimmickBase {
         // 下方向に移動中にプレイヤーを検知する
         if (!_movingUp) {
 
-            // OverlapBox を使って床の範囲内にいる対象を取得
+            // 範囲内に入っている対象を探す
             Collider[] hits = Physics.OverlapBox(
-                platformCollider.bounds.center,
-                platformCollider.bounds.extents,
-                platformCollider.transform.rotation,
-                attachableLayers
+                platformCollider.bounds.center,     // 床コライダーの中心
+                platformCollider.bounds.extents,    // 床コライダーの半径
+                platformCollider.transform.rotation,// 床コライダーの回転
+                attachableLayers                    // 対象
             );
 
             // 真下にプレイヤーがいれば移動を止める
@@ -104,7 +106,11 @@ public class VerticalMovingPlatform : GimmickBase {
                 }
             }
         }
+        // 移動
+        VerticalMove();
+    }
 
+    private void VerticalMove() {
         // 現在のY座標
         float currentY = transform.position.y;
         // プレイヤーの現在のY座標
@@ -145,12 +151,13 @@ public class VerticalMovingPlatform : GimmickBase {
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerStay(Collider other) {
-        // Rigidbody を持っているか確認
+        // 対象がRigidbody を持っているか確認
         if (other.attachedRigidbody == null) return;
 
-        // 乗れるレイヤーか確認
+        // 乗れる対象か確認
         if ((attachableLayers.value & (1 << other.gameObject.layer)) == 0) return;
 
+        // 対象のRigidBodyをキャッシュ
         Rigidbody rb = other.attachedRigidbody;
 
         // プレイヤーの足元の高さ
@@ -160,7 +167,7 @@ public class VerticalMovingPlatform : GimmickBase {
         float platformTop = platformCollider.bounds.max.y;
 
         // 上方向への誤差
-        const float tolerance = 0.01f;
+        float tolerance = toleranceNum;
 
         // 床の上にいるかどうかのフラグ
         bool isOnTop = playerBottom >= platformTop - tolerance;
@@ -176,24 +183,17 @@ public class VerticalMovingPlatform : GimmickBase {
     /// 床の真下にプレイヤーがいるか判定する
     /// </summary>
     private bool IsPlayerUnderPlatform(Collider other) {
-        // プレイヤーの頭の高さ（上端）
+        // プレイヤーの頭の高さ
         float playerTop = other.bounds.max.y;
 
-        // 床の底面（下端）
+        // 床の底面
         float platformBottom = platformCollider.bounds.min.y;
 
-        // 少し余裕を持たせるための誤差値
-        const float tolerance = 0.01f;
+        // 対象の少し上
+        float tolerance = toleranceNum;
 
-        // プレイヤーの頭が床の底面より下にある → 床より下に存在
+        // 床より下に存在した場合
         return playerTop > platformBottom - tolerance;
-    }
-
-    // 床から離れたときの処理
-    private void OnTriggerExit(Collider other) {
-        if (other.attachedRigidbody != null && ((attachableLayers.value & (1 << other.gameObject.layer)) > 0)) {
-
-        }
     }
 
     // 後片付け処理
