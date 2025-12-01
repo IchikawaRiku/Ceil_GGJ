@@ -31,7 +31,7 @@ public class SpiritCharacter : CharacterBase {
 	// 移動制限距離
 	private const float _PLAYER_LEAVE_MAX = 8;
 	// プレイヤーと交代する為の距離
-	private const float _PLAYER_CHANGE_DISTANCE = 0.1f;
+	private const float _PLAYER_CHANGE_DISTANCE = 0.35f;
 	// スイッチのタグ名
 	private const string _SWITCH_TAG = "switch";
 
@@ -53,8 +53,8 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Execute() {
 		await base.Execute();
-        // アニメーション中はスキップ
-        if (switchAnim) return;
+        // アニメーション中とフェード中はスキップ
+        if (switchAnim || fadeIn) return;
 		// 向き変更
 		ChangeAngle();
 		moveValue = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
@@ -109,6 +109,8 @@ public class SpiritCharacter : CharacterBase {
 			Color color = material.color;
 			color.a += 0.05f;
 			material.color = color;
+			transform.position -= transform.forward * 0.01f;
+			transform.position += transform.up * 0.01f;
 			await UniTask.Yield();
 		}
 		fadeIn = false;
@@ -119,10 +121,12 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	/// <returns></returns>
 	public async UniTask SpritFadeOut() {
+		Vector3 dir = CharacterManager.instance.GetPlayerPosition() - transform.position;
 		while (material.color.a > 0) {
 			Color color = material.color;
 			color.a -= 0.05f;
 			material.color = color;
+			transform.position += dir.normalized * 0.02f;
 			await UniTask.Yield();
 		}
 	}
