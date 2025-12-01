@@ -86,45 +86,42 @@ public class VerticalMovingPlatform : GimmickBase {
     /// 床の移動処理
     /// </summary>
     private void MovePlatform() {
-        // 下方向に移動中にプレイヤーを検知する
+        // 下に移動する時だけ判定する
         if (!_movingUp) {
-
-            // 範囲内に入っている対象を探す
-            Collider[] hits = Physics.OverlapBox(
-                platformCollider.bounds.center,     // 床コライダーの中心
-                platformCollider.bounds.extents,    // 床コライダーの半径
-                platformCollider.transform.rotation,// 床コライダーの回転
-                attachableLayers                    // 対象
-            );
-
-            // 真下にプレイヤーがいれば移動を止める
-            foreach (Collider hit in hits) {
-                if (IsPlayerUnderPlatform(hit)) {
-                    // 下方向にいかず、待機する
-                    WaitAndTurnAsync().Forget();
-                    return;
-                }
+            if (CheckPlayerUnderPlatform()) {
+                // プレイヤーが下にいる → 止める
+                WaitAndTurnAsync().Forget();
+                return;
             }
         }
-        // 移動
+
+        // 通常の移動
         VerticalMove();
     }
 
     private void VerticalMove() {
-        // 現在のY座標
+        // 現在の高さ
         float currentY = transform.position.y;
-        // プレイヤーの現在のY座標
+
+        // 上方向か下方向かで目標の位置を設定
         float targetY = _movingUp ? _startPosition.y + moveDistance : _startPosition.y;
 
+        // MoveTowards で次の位置を計算
         float nextY = Mathf.MoveTowards(currentY, targetY, moveSpeed.y * Time.deltaTime);
 
+        // 移動処理
         rigidBody.MovePosition(new Vector3(
             transform.position.x,
             nextY,
             transform.position.z
         ));
 
+        // 目的地に到達したかどうか
         if (Mathf.Approximately(nextY, targetY)) {
+            //停止した瞬間は床の速度を完全にゼロにする（押し上げ防止）
+            _velocity = Vector3.zero; // ← これが重要
+
+            // 待機処理へ
             WaitAndTurnAsync().Forget();
         }
     }
@@ -179,21 +176,34 @@ public class VerticalMovingPlatform : GimmickBase {
         rb.MovePosition(rb.position + _velocity);
     }
 
-    /// <summary>
-    /// 床の真下にプレイヤーがいるか判定する
-    /// </summary>
-    private bool IsPlayerUnderPlatform(Collider other) {
-        // プレイヤーの頭の高さ
-        float playerTop = other.bounds.max.y;
+    // 床の真下だけに判定領域をつくる
+    private bool CheckPlayerUnderPlatform() {
+        // 床のコライダーの bounds 取得
+        Bounds b = platformCollider.bounds;
 
-        // 床の底面
-        float platformBottom = platformCollider.bounds.min.y;
+        // 判定領域の中心
+        Vector3 center = new Vector3(
+            b.center.x,
+            b.min.y - 0.1f,
+            b.center.z
+        );
 
-        // 対象の少し上
-        float tolerance = toleranceNum;
+        // 判定領域のサイズ
+        Vector3 halfExtents = new Vector3(
+            b.extents.x,
+            0.05f,
+            b.extents.z
+        );
 
-        // 床より下に存在した場合
-        return playerTop > platformBottom - tolerance;
+        // 判定
+        Collider[] hits = Physics.OverlapBox(
+            center,
+            halfExtents,
+            platformCollider.transform.rotation,
+            attachableLayers
+        );
+
+        return hits.Length > 0;
     }
 
     // 後片付け処理
