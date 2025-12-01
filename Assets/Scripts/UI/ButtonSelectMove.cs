@@ -34,7 +34,6 @@ public class ButtonSelectMove {
     public ButtonSelectMove(Button[] setButtonList) {
         buttonList = setButtonList;
     }
-
     /// <summary>
     /// 準備前処理
     /// </summary>
@@ -48,18 +47,14 @@ public class ButtonSelectMove {
             AnimateLoop(_token.Token).Forget();
         }
     }
-
     /// <summary>
     /// 選択ボタン変更
     /// </summary>
     public void Execute(Button selectButton) {
-        if (selectButton == null || selectButton == currentButton)
-            return;
+        if (selectButton == null || selectButton == currentButton)return;
 
         currentButton = selectButton;
-
     }
-
     /// <summary>
     /// 終了処理
     /// </summary>
@@ -67,15 +62,21 @@ public class ButtonSelectMove {
         _token?.Cancel();
         _token = null;
     }
-
-    // ----------------------------
-    // フレームごとのアニメーション
-    // ----------------------------
+    /// <summary>
+    /// フレームごとのアニメーション
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     private async UniTask AnimateLoop(CancellationToken token) {
         while (!token.IsCancellationRequested) {
+            if (currentButton == null)break;
+
             int centerIndex = GetButtonIndex(currentButton);
 
             for (int i = 0; i < buttonList.Length; i++) {
+
+                if (buttonList[i] == null)continue;
+
                 Vector3 targetPos = GetPosFor(i - centerIndex);
                 float targetScale = GetScaleFor(i - centerIndex);
 
@@ -86,25 +87,28 @@ public class ButtonSelectMove {
                     Vector3.Lerp(buttonList[i].transform.localScale, Vector3.one * targetScale, animationSpeed);
             }
 
-            await UniTask.DelayFrame(1, PlayerLoopTiming.Update,cancellationToken: token);
+            await UniTask.DelayFrame(1, PlayerLoopTiming.Update, cancellationToken: token);
         }
     }
-
-    // ----------------------------
-    // 即座に適用（初期配置）
-    // ----------------------------
+    /// <summary>
+    /// ボタンの位置とスケールを即座に適用する処理
+    /// </summary>
+    /// <param name="center"></param>
     private void ApplyLayoutInstant(Button center) {
-        int centerIndex = GetButtonIndex(center);
+        if (center == null)return;
 
+        int centerIndex = GetButtonIndex(center);
         for (int i = 0; i < buttonList.Length; i++) {
+            if (buttonList[i] == null)　continue;
             buttonList[i].transform.localPosition = GetPosFor(i - centerIndex);
             buttonList[i].transform.localScale = Vector3.one * GetScaleFor(i - centerIndex);
         }
     }
-
-    // ----------------------------
-    // 座標と拡大率
-    // ----------------------------
+    /// <summary>
+    /// ボタンの位置に応じた座標の取得
+    /// </summary>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     private Vector3 GetPosFor(int offset) {
         if (offset == 0)
             return centerPos;
@@ -114,14 +118,27 @@ public class ButtonSelectMove {
             return upPos;
         return centerPos;
     }
-
+    /// <summary>
+    /// ボタンの位置に応じた拡大率の取得
+    /// </summary>
+    /// <param name="offset"></param>
+    /// <returns></returns>
     private float GetScaleFor(int offset) {
-        return (offset == 0) ? centerScale : elseScale;
-    }
+        if (offset == 0) {
+            return centerScale;
+        } 
 
-    private int GetButtonIndex(Button b) {
+        return elseScale;
+    }
+    /// <summary>
+    /// ボタンの取得
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    private int GetButtonIndex(Button button) {
+        if (button == null)return 0;
         for (int i = 0; i < buttonList.Length; i++) {
-            if (buttonList[i] == b)
+            if (buttonList[i] == button)
                 return i;
         }
         return 0;
