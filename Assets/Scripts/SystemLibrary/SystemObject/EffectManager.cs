@@ -8,6 +8,19 @@ using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// エフェクトIDをまとめて管理
+/// </summary>
+public static class EffectID {
+    public const int None = 0;
+
+    public const int _DESTROY = 1;  // 破壊オブジェクトのエフェクト
+    public const int _GOAL = 2;     // ゴール演出エフェクト
+    public const int _SWITCH = 3;   // スイッチエフェクト
+    public const int _BULLET = 4;   // 弾Hit時エフェクト
+
+}
+
 public class EffectManager : SystemObject {
 
     // 自身への参照可能なインスタンス
@@ -115,8 +128,25 @@ public class EffectManager : SystemObject {
             obj = effectPool[effectId].Dequeue();
         }
         else {
-            // 新しく生成する
-            obj = Instantiate(effectPrefab[effectId], poolRoot);
+            // 最も古く再生されたエフェクトを探して再利用する
+
+            // 使用中リストから同じIDのエフェクトを探す
+            var index = activeEffectList.FindIndex(e => e.id == effectId);
+
+            if (index != -1) {
+                // 見つかった場合そのエフェクトを停止＆再利用する
+                obj = activeEffectList[index].instance;
+
+                // 停止処理
+                Stop(effectId, obj);
+
+                // プールに戻ったので Dequeue し直して使用
+                obj = effectPool[effectId].Dequeue();
+            }
+            else {
+                // 同じIDの使用中エフェクトが存在しない
+                return null;
+            }
         }
 
         obj.transform.position = position;

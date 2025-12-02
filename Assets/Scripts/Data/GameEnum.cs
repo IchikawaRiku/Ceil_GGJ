@@ -58,3 +58,9 @@ public enum eMenuSelect {
     ReturnTitle,
     CloseMenu
 }
+
+public enum eEffectID {
+    Invalid = -1,
+    DestroyEffect = 1
+
+}

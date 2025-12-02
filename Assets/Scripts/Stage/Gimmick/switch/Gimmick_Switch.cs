@@ -45,7 +45,7 @@ public class Gimmick_Switch : GimmickBase {
         _isPressed = true;
 
         // エフェクト再生
-        EffectManager.Instance.Play(3, transform.position);
+        EffectManager.Instance.Play(EffectID._SWITCH, transform.position);
 
         // 範囲内の全Colliderを取得
         Collider[] hits = Physics.OverlapSphere(transform.position, disableRadius);

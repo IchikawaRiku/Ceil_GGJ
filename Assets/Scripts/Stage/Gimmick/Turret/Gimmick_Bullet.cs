@@ -68,6 +68,8 @@ public class Gimmick_Bullet : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         // 障害物を検知
         if (other.CompareTag("Obstacle")) {
+            // エフェクト再生
+            EffectManager.Instance.Play(EffectID._BULLET, transform.position);
             // 非アクティブにする
             Deactivate();
         }

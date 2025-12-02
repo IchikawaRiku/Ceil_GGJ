@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gimmick_Break : GimmickBase, IDestroyable {
-
     /// <summary>
     /// 初期化
     /// </summary>
@@ -40,7 +39,7 @@ public class Gimmick_Break : GimmickBase, IDestroyable {
         var pos = transform.position;
         pos.z -= 2f;
         // エフェクトを再生
-        EffectManager.Instance.Play(1, pos);
+        EffectManager.Instance.Play(EffectID._DESTROY, pos);
         // 消す
         gameObject.SetActive(false);
     }
