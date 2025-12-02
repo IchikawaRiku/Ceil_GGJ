@@ -2870,10 +2870,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7495866176141061083, guid: fbb3c5a98e424c74498a94868a056d46, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.22000054
+      value: 0.021
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2552434138862986301, guid: fbb3c5a98e424c74498a94868a056d46, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbb3c5a98e424c74498a94868a056d46, type: 3}
