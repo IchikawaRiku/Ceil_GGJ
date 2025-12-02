@@ -88,9 +88,10 @@ public class VerticalMovingPlatform : GimmickBase {
     private void MovePlatform() {
         // 下に移動する時だけ判定する
         if (!_movingUp) {
+            // プレイヤーが下にいた場合
             if (CheckPlayerUnderPlatform()) {
-                // プレイヤーが下にいる → 止める
-                WaitAndTurnAsync().Forget();
+                // 停止し、移動再開
+                WaitAndTurnAsync(false).Forget();
                 return;
             }
         }
@@ -118,11 +119,10 @@ public class VerticalMovingPlatform : GimmickBase {
 
         // 目的地に到達したかどうか
         if (Mathf.Approximately(nextY, targetY)) {
-            //停止した瞬間は床の速度を完全にゼロにする（押し上げ防止）
-            _velocity = Vector3.zero; // ← これが重要
-
+            // 速度を0にする
+            _velocity = Vector3.zero;
             // 待機処理へ
-            WaitAndTurnAsync().Forget();
+            WaitAndTurnAsync(true).Forget();
         }
     }
 
@@ -130,16 +130,22 @@ public class VerticalMovingPlatform : GimmickBase {
     /// 待機処理
     /// </summary>
     /// <returns></returns>
-    private async UniTaskVoid WaitAndTurnAsync() {
+    private async UniTaskVoid WaitAndTurnAsync(bool setValue) {
+        // すでに待機中なら処理しない
         if (_isWaiting) return;
 
-        // フラグを立てる
+        // 待機フラグON
         _isWaiting = true;
-        // 待機時間
+
+        // 指定時間待つ（移動停止）
         await UniTask.Delay((int)(waitTime * waitTimeNum));
 
-        // 移動方向を反転
-        _movingUp = !_movingUp;
+        // 反転が必要な場合のみ方向反転
+        if (setValue) {
+            _movingUp = !_movingUp;
+        }
+
+        // 待機フラグ解除
         _isWaiting = false;
     }
 
@@ -157,17 +163,10 @@ public class VerticalMovingPlatform : GimmickBase {
         // 対象のRigidBodyをキャッシュ
         Rigidbody rb = other.attachedRigidbody;
 
-        // プレイヤーの足元の高さ
-        float playerBottom = other.bounds.min.y;
-
-        // 床の上面の高さ
-        float platformTop = platformCollider.bounds.max.y;
-
-        // 上方向への誤差
-        float tolerance = toleranceNum;
-
-        // 床の上にいるかどうかのフラグ
-        bool isOnTop = playerBottom >= platformTop - tolerance;
+        float playerBottom = other.bounds.min.y;                // プレイヤーの足元の高さ
+        float platformTop = platformCollider.bounds.max.y;      // 床の上面の高さ
+        float tolerance = toleranceNum;                         // 上方向への誤差
+        bool isOnTop = playerBottom >= platformTop - tolerance; // 床の上にいるかどうかのフラグ
 
         // 床の上にいない場合は追従させない
         if (!isOnTop) return;
@@ -176,7 +175,10 @@ public class VerticalMovingPlatform : GimmickBase {
         rb.MovePosition(rb.position + _velocity);
     }
 
-    // 床の真下だけに判定領域をつくる
+    /// <summary>
+    /// 床の下に判定を作る
+    /// </summary>
+    /// <returns></returns>
     private bool CheckPlayerUnderPlatform() {
         // 床のコライダーの bounds 取得
         Bounds b = platformCollider.bounds;
