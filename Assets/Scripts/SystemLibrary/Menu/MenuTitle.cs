@@ -46,7 +46,7 @@ public class MenuTitle : MenuBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         _buttonInput = new AcceptMenuButtonInput();
-        _ghost?.Initialize();
+        _ghost?.Initialize(new Vector3(0, 120, 0), new Vector3(150, 140, 0));
         _moon?.Initialize();
         _cloud?.Initialize();
     }

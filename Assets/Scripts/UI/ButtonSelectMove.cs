@@ -12,19 +12,18 @@ using UnityEngine.UI;
 using System.Threading;
 
 public class ButtonSelectMove {
-
-    private Button[] buttonList;
-    private Button currentButton;
+    private Button[] _buttonList;
+    private Button _currentButton;
 
     // 固定座標
-    private Vector3 centerPos = new Vector3(0, -40, -200);
-    private Vector3 upPos = new Vector3(0, 80, 0);
-    private Vector3 downPos = new Vector3(0, -160, 0);
+    private Vector3 _centerPos;
+    private Vector3 _upPos;
+    private Vector3 _downPos;
 
-    private float centerScale = 1.1f;
-    private float elseScale = 0.8f;
+    private float _CENTER_SCALE = 1.1f;
+    private float _ELSE_SCALE = 0.8f;
 
-    private float animationSpeed = 0.2f; // 補間係数
+    private float _ANIM_SPEED = 0.2f; // 補間係数
 
     private CancellationTokenSource _token;
 
@@ -32,15 +31,18 @@ public class ButtonSelectMove {
     /// コンストラクタ
     /// </summary>
     public ButtonSelectMove(Button[] setButtonList) {
-        buttonList = setButtonList;
+        _centerPos = new Vector3(0, -55, -200);
+        _upPos = new Vector3(0, 45, 0);
+        _downPos = new Vector3(0, -155, 0);
+        _buttonList = setButtonList;
     }
     /// <summary>
     /// 準備前処理
     /// </summary>
     public void Setup() {
-        if (buttonList != null && buttonList.Length > 0) {
-            currentButton = buttonList[0];
-            ApplyLayoutInstant(currentButton);
+        if (_buttonList != null && _buttonList.Length > 0) {
+            _currentButton = _buttonList[0];
+            ApplyLayoutInstant(_currentButton);
 
             // アニメーションループ開始
             _token = new CancellationTokenSource();
@@ -51,9 +53,9 @@ public class ButtonSelectMove {
     /// 選択ボタン変更
     /// </summary>
     public void Execute(Button selectButton) {
-        if (selectButton == null || selectButton == currentButton)return;
+        if (selectButton == null || selectButton == _currentButton)return;
 
-        currentButton = selectButton;
+        _currentButton = selectButton;
     }
     /// <summary>
     /// 終了処理
@@ -69,22 +71,22 @@ public class ButtonSelectMove {
     /// <returns></returns>
     private async UniTask AnimateLoop(CancellationToken token) {
         while (!token.IsCancellationRequested) {
-            if (currentButton == null)break;
+            if (_currentButton == null)break;
 
-            int centerIndex = GetButtonIndex(currentButton);
+            int centerIndex = GetButtonIndex(_currentButton);
 
-            for (int i = 0; i < buttonList.Length; i++) {
+            for (int i = 0; i < _buttonList.Length; i++) {
 
-                if (buttonList[i] == null)continue;
+                if (_buttonList[i] == null)continue;
 
                 Vector3 targetPos = GetPosFor(i - centerIndex);
                 float targetScale = GetScaleFor(i - centerIndex);
 
-                buttonList[i].transform.localPosition =
-                    Vector3.Lerp(buttonList[i].transform.localPosition, targetPos, animationSpeed);
+                _buttonList[i].transform.localPosition =
+                    Vector3.Lerp(_buttonList[i].transform.localPosition, targetPos, _ANIM_SPEED);
 
-                buttonList[i].transform.localScale =
-                    Vector3.Lerp(buttonList[i].transform.localScale, Vector3.one * targetScale, animationSpeed);
+                _buttonList[i].transform.localScale =
+                    Vector3.Lerp(_buttonList[i].transform.localScale, Vector3.one * targetScale, _ANIM_SPEED);
             }
 
             await UniTask.DelayFrame(1, PlayerLoopTiming.Update, cancellationToken: token);
@@ -98,10 +100,10 @@ public class ButtonSelectMove {
         if (center == null)return;
 
         int centerIndex = GetButtonIndex(center);
-        for (int i = 0; i < buttonList.Length; i++) {
-            if (buttonList[i] == null)　continue;
-            buttonList[i].transform.localPosition = GetPosFor(i - centerIndex);
-            buttonList[i].transform.localScale = Vector3.one * GetScaleFor(i - centerIndex);
+        for (int i = 0; i < _buttonList.Length; i++) {
+            if (_buttonList[i] == null)　continue;
+            _buttonList[i].transform.localPosition = GetPosFor(i - centerIndex);
+            _buttonList[i].transform.localScale = Vector3.one * GetScaleFor(i - centerIndex);
         }
     }
     /// <summary>
@@ -111,12 +113,12 @@ public class ButtonSelectMove {
     /// <returns></returns>
     private Vector3 GetPosFor(int offset) {
         if (offset == 0)
-            return centerPos;
+            return _centerPos;
         if (offset == 1 || offset == -2)
-            return downPos;
+            return _downPos;
         if (offset == -1 || offset == 2)
-            return upPos;
-        return centerPos;
+            return _upPos;
+        return _centerPos;
     }
     /// <summary>
     /// ボタンの位置に応じた拡大率の取得
@@ -125,10 +127,10 @@ public class ButtonSelectMove {
     /// <returns></returns>
     private float GetScaleFor(int offset) {
         if (offset == 0) {
-            return centerScale;
+            return _CENTER_SCALE;
         } 
 
-        return elseScale;
+        return _ELSE_SCALE;
     }
     /// <summary>
     /// ボタンの取得
@@ -137,8 +139,8 @@ public class ButtonSelectMove {
     /// <returns></returns>
     private int GetButtonIndex(Button button) {
         if (button == null)return 0;
-        for (int i = 0; i < buttonList.Length; i++) {
-            if (buttonList[i] == button)
+        for (int i = 0; i < _buttonList.Length; i++) {
+            if (_buttonList[i] == button)
                 return i;
         }
         return 0;
