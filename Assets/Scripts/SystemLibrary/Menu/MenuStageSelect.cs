@@ -33,7 +33,7 @@ public class MenuStageSelect : MenuBase {
     private Transform _moveButtonPos = null;
     
     // ステージ番号
-    public eStageStage stageNum { get; private set; } = eStageStage.Invalid;
+    public eStageType stageNum { get; private set; } = eStageType.Invalid;
 
     // ボタン操作入力処理
     private AcceptMenuButtonInput _buttonInput = null;
@@ -66,7 +66,7 @@ public class MenuStageSelect : MenuBase {
     /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
-        stageNum = eStageStage.Invalid;
+        stageNum = eStageType.Invalid;
         await FadeManager.instance.FadeIn();
         await _buttonInput.Setup(_initSelectButton);
         _buttonMove.Setup();
@@ -76,15 +76,17 @@ public class MenuStageSelect : MenuBase {
         // 実行開始
         UniTask moonMoveTask = _moon.Execute();
         UniTask cloudMoveTask = _cloud.Execute();
-        while (stageNum == eStageStage.Invalid) {
+        while (stageNum == eStageType.Invalid) {
             await _buttonInput.AcceptInput();
             _buttonMove.Execute(_buttonInput.GetCurrentButton());
             await UniTask.DelayFrame(1);
         }
-        await _buttonInput.Teardown();
+        if(stageNum != eStageType.Max) {
+            await MoveSelectButton(0.8f);
+            await ShowStageImage();
+        }
         await SetPushButtonState(_buttonList, false);
-        await MoveSelectButton(0.5f);
-        await ShowStageImage();
+        await _buttonInput.Teardown();
         await FadeManager.instance.FadeOut();
         await Close();
     }
@@ -125,6 +127,7 @@ public class MenuStageSelect : MenuBase {
     /// <param name="duration"></param>
     /// <returns></returns>
     public async UniTask ShowStageImage(float duration = 1.0f) {
+        UniTask task = SoundManager.instance.PlaySE(10);
         float elapsedTime = 0.0f;
         float imageAlpha = _stageImage.color.a;
         Color targetColor = _stageImage.color;
@@ -143,7 +146,7 @@ public class MenuStageSelect : MenuBase {
     /// </summary>
     public void SelectTutorialStage() {
         UniTask task = SoundManager.instance.PlaySE(1);
-        stageNum = eStageStage.Tutorial;
+        stageNum = eStageType.Tutorial;
         _stageImage.sprite = _spriteList[0];
     }
     /// <summary>
@@ -151,7 +154,7 @@ public class MenuStageSelect : MenuBase {
     /// </summary>
     public void SelectStage1() {
         UniTask task = SoundManager.instance.PlaySE(1);
-        stageNum = eStageStage.Stage1;
+        stageNum = eStageType.Stage1;
         _stageImage.sprite = _spriteList[1];
     }
     /// <summary>
@@ -159,7 +162,7 @@ public class MenuStageSelect : MenuBase {
     /// </summary>
     public void SelectStage2() {
         UniTask task = SoundManager.instance.PlaySE(1);
-        stageNum = eStageStage.Stage2;
+        stageNum = eStageType.Stage2;
         _stageImage.sprite = _spriteList[2];
     }
     /// <summary>
@@ -167,7 +170,7 @@ public class MenuStageSelect : MenuBase {
     /// </summary>
     public void SelectStage3() {
         UniTask task = SoundManager.instance.PlaySE(1);
-        stageNum = eStageStage.Stage3;
+        stageNum = eStageType.Stage3;
         _stageImage.sprite = _spriteList[3];
     }
     /// <summary>
@@ -175,6 +178,6 @@ public class MenuStageSelect : MenuBase {
     /// </summary>
     public void ReturnTitle() {
         UniTask task = SoundManager.instance.PlaySE(1);
-        stageNum = eStageStage.Max;
+        stageNum = eStageType.Max;
     }
 }

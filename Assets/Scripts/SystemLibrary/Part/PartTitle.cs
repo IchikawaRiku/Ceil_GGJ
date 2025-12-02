@@ -31,8 +31,8 @@ public class PartTitle : PartBase {
         if (!MenuGameClear.isTitleSkip) await MenuManager.instance.Get<MenuTitle>().Open();
         await MenuManager.instance.Get<MenuStageSelect>().Open();
         // ƒp[ƒg‘JˆÚ
-        eStageStage stage = MenuManager.instance.Get<MenuStageSelect>().stageNum;
-        if (stage == eStageStage.Max) {
+        eStageType stage = MenuManager.instance.Get<MenuStageSelect>().stageNum;
+        if (stage == eStageType.Max) {
             UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
         } else {
             await StageManager.instance.TransitionStage(stage);

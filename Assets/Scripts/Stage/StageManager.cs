@@ -28,7 +28,7 @@ public class StageManager : MonoBehaviour {
     /// <returns></returns>
     public async UniTask Initialize() {
         instance = this;
-        int stageMax = (int)eStageStage.Max;
+        int stageMax = (int)eStageType.Max;
         _stageList = new StageBase[stageMax];
 
         List<UniTask> taskList = new List<UniTask>(stageMax);
@@ -43,7 +43,7 @@ public class StageManager : MonoBehaviour {
     /// </summary>
     /// <param name="nextStage"></param>
     /// <returns></returns>
-    public async UniTask TransitionStage(eStageStage nextStage) {
+    public async UniTask TransitionStage(eStageType nextStage) {
         // 現在のステージの片付け
         if (_currentStage != null) await _currentStage.Teardown();
         // ステージの切り替え

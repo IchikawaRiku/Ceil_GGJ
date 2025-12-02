@@ -11,18 +11,18 @@ using System.Threading;
 using UnityEngine;
 
 public class MoonMove : MonoBehaviour {
-    private float _rotationMultiplier = 500f;  // 回転速度の倍率
-    private AudioSource _bgmAudio;             // 音量を取る
+    private float _bgmVolume;                  // BGM音量
 
     private bool _isClose = false;             // 開閉フラグ
 
     private CancellationToken _token;
 
+    private const float _ROTATION_MUL = 500f;  // 回転速度の倍率
     /// <summary>
     /// 初期化処理
     /// </summary>
     public void Initialize() {
-        _bgmAudio = SoundManager.instance.GetBGMSource();
+        _bgmVolume = SoundManager.instance.GetBGMVolume();
     }
     /// <summary>
     /// 準備前処理
@@ -40,11 +40,10 @@ public class MoonMove : MonoBehaviour {
 
         while (!_isClose) {
             // 音量(0〜1)を取得
-            float volume = 0f;
-            if (_bgmAudio != null) volume = _bgmAudio.volume;
+            float volume = SoundManager.instance.GetBGMVolume();
 
             // 回転速度 = 音量 * 任意の倍率
-            float speed = volume * _rotationMultiplier;
+            float speed = volume * _ROTATION_MUL;
 
             // ローカル座標の Z 軸回転を変更
             transform.localRotation *= Quaternion.Euler(0, 0, -speed * Time.deltaTime);

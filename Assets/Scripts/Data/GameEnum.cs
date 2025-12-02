@@ -30,7 +30,7 @@ public enum eFadeState {
 /// <summary>
 /// ステージ列挙体
 /// </summary>
-public enum eStageStage {
+public enum eStageType {
     Invalid = -1,
     Tutorial,
     Stage1,

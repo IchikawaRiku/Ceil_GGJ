@@ -28,6 +28,9 @@ public class SoundManager : SystemObject {
     [SerializeField]
     private SEAssign _seAssign = null;
 
+    private float _bgmSoundVolume = 0.0f;
+    private float _seSoundVolume = 0.0f;
+
     // 入力受付タスク中断用トークン
     private CancellationToken _token;
 
@@ -61,10 +64,11 @@ public class SoundManager : SystemObject {
     /// <param name="setValue"></param>
     public void SetBGMVolume(float setValue) {
         if(setValue <= 0) {
-            _bgmAudioSource.volume = 0;
+            _bgmSoundVolume = 0;
         } else {
-            _bgmAudioSource.volume = setValue / _DEVIDE_TEN_VOLUME;
+            _bgmSoundVolume = setValue / _DEVIDE_TEN_VOLUME;
         }
+        _bgmAudioSource.volume = _bgmSoundVolume;
     }
     /// <summary>
     /// SEの再生
@@ -93,14 +97,25 @@ public class SoundManager : SystemObject {
     public void SetSEVolume(float setValue) {
         for (int i = 0, max = _seAudioSource.Length; i < max; i++) {
             if(setValue <= 0) {
-                _seAudioSource[i].volume = 0;
+                _seSoundVolume = 0;
             } else {
-                _seAudioSource[i].volume = setValue / _DEVIDE_TEN_VOLUME;
+                _seSoundVolume = setValue / _DEVIDE_TEN_VOLUME;
             }
+            _seAudioSource[i].volume = _seSoundVolume;
         }
     }
-
-    public AudioSource GetBGMSource() {
-        return _bgmAudioSource;
+    /// <summary>
+    /// BGM音源の取得
+    /// </summary>
+    /// <returns></returns>
+    public float GetBGMVolume() {
+        return _bgmSoundVolume;
+    }
+    /// <summary>
+    /// SE音量の取得
+    /// </summary>
+    /// <returns></returns>
+    public float GetSEVolume() {
+        return _seSoundVolume;
     }
 }

@@ -12,26 +12,30 @@ using UnityEngine;
 
 public class CloudMove : MonoBehaviour {
     [SerializeField]
-    private Vector3 _currentPos;
+    private Vector3 _startPos;
     [SerializeField]
     private Vector3 _targetPos;
 
+    private float _seVolume = 0.0f;
     private bool _isClose = false;
 
     private CancellationToken _token;
+
+    private const float _BASE_SPEED = 2.0f;
 
     /// <summary>
     /// èâä˙âªèàóù
     /// </summary>
     public void Initialize() {
-        _currentPos = Vector3.zero;
+        _startPos = Vector3.zero;
         _targetPos = new Vector3(0, 30, 0);
+        _seVolume = SoundManager.instance.GetSEVolume();
     }
     /// <summary>
     /// èÄîıëOèàóù
     /// </summary>
     public void Setup() {
-        transform.localPosition = _currentPos;
+        transform.localPosition = _startPos;
         _isClose = false;
     }
     /// <summary>
@@ -40,17 +44,27 @@ public class CloudMove : MonoBehaviour {
     /// <returns></returns>
     public async UniTask Execute() {
         _token = this.GetCancellationTokenOnDestroy();
-        float duration = 3.0f;
+
+        float speed = 1.0f;
         float elapsedTime = 0.0f;
+        int dir = 1; // 1: 0Å®1 , -1: 1Å®0
 
         while (!_isClose) {
-            elapsedTime += Time.deltaTime;
+            _seVolume = SoundManager.instance.GetSEVolume();
 
-            // 0->1->0 ÇÃâùïúÇçÏÇÈ
-            float t = Mathf.PingPong(elapsedTime / duration, 1f);
+            // âπó ÇÃã≠í≤èàóù
+            float v = Mathf.Pow(_seVolume, 0.3f);
 
-            // Slerp Ç≈ï‚ä‘
-            transform.localPosition = Vector3.Lerp(_currentPos, _targetPos, t);
+            // ë¨ìxÇ…îΩâf
+            speed = Mathf.Lerp(0.1f, _BASE_SPEED, v);
+
+            elapsedTime += (speed * Time.deltaTime) * dir;
+
+            // í[Ç≈îΩì]
+            if (elapsedTime > 1f) { elapsedTime = 1f; dir = -1; }
+            if (elapsedTime < 0f) { elapsedTime = 0f; dir = 1; }
+
+            transform.localPosition = Vector3.Lerp(_startPos, _targetPos, elapsedTime);
 
             await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
         }
@@ -60,7 +74,6 @@ public class CloudMove : MonoBehaviour {
     /// </summary>
     public void Teardown() {
         _isClose = true;
-        transform.localPosition = _currentPos;
+        transform.localPosition = _startPos;
     }
-
 }
