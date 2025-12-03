@@ -30,3 +30,11 @@ public interface IVisibleToggleable {
     // 出現
     void ToggleVisibility();
 }
+
+/// <summary>
+/// 連動した破壊オブジェクトのインターフェース
+/// </summary>
+public interface IBreakReceiver {
+    // フラグを通知する
+    void OnBreak();
+}

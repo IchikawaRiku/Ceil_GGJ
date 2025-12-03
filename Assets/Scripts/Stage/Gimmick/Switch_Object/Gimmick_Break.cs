@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gimmick_Break : GimmickBase, IDestroyable {
+    [SerializeField] private GameObject relatedObj = null;
+
     /// <summary>
     /// 初期化
     /// </summary>
@@ -36,6 +38,18 @@ public class Gimmick_Break : GimmickBase, IDestroyable {
     /// </summary>
     /// <exception cref="System.NotImplementedException"></exception>
     public void DestroyGimmick() {
+        // 連携するオブジェクトが設定されていたら
+        if (relatedObj != null) {
+            // フラグを渡す先のコンポーネントを取得
+            IBreakReceiver receiver = relatedObj.GetComponent<IBreakReceiver>();
+
+            // 連携されていればフラグをTrueにする
+            if (receiver != null) {
+                // 通知を送る
+                receiver.OnBreak();
+            }
+        }
+
         var pos = transform.position;
         pos.z -= 2f;
         // エフェクトを再生

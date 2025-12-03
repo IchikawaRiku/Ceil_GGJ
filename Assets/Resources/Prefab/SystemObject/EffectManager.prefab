@@ -59,6 +59,6 @@ MonoBehaviour:
     autoReturnTime: -1
   - id: 4
     prefab: {fileID: 3463826606329399400, guid: 6a70cee58c0b32e4db52e51167eaa878, type: 3}
-    initialPoolSize: 3
+    initialPoolSize: 8
     autoReturnTime: -1
   poolRoot: {fileID: 0}

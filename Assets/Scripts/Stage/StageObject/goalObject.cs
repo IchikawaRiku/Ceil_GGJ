@@ -35,6 +35,7 @@ public class goalObject : GimmickBase {
     /// <param name="collision"></param>
     private void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.layer == 6) {
+
             isGoal = true;
             UniTask task = SoundManager.instance.PlaySE(7);
             EffectManager.Instance.Play(EffectID._GOAL, transform.position);
