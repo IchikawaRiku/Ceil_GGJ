@@ -94,9 +94,15 @@ public class MenuStageSelect : MenuBase {
             await _buttonInput.AcceptInput();
             Button currentButton = _buttonInput.GetCurrentButton();
             _buttonMove.Execute(currentButton);
-            if (prevButton != currentButton && IsEffectButton(currentButton)) {
-                StartSelectEffect(currentButton).Forget();
-            }
+            if (prevButton != currentButton) {
+                if (IsEffectButton(currentButton)) {
+                    StartSelectEffect(currentButton).Forget();
+                } else {
+                    // 演出タスクをキャンセルして初期化
+                    _changeEffectToken?.Cancel();
+                    ResetEffect();
+                }
+            } 
             await UniTask.DelayFrame(1);
         }
         await SetPushButtonState(_buttonList, false);
