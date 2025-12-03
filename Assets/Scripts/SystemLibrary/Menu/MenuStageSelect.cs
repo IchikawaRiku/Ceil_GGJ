@@ -7,7 +7,9 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuStageSelect : MenuBase {
@@ -41,6 +43,10 @@ public class MenuStageSelect : MenuBase {
     private ButtonSelectMove _buttonMove = null;
     // ステージ画像の色
     private Color _stageImageColor;
+    private CancellationTokenSource _selectPreviewToken;
+    private CancellationTokenSource _changeEffectToken;
+    private Button _previewCurrentButton;
+
 
     private const float _MOVE_POS_X = -235;
 
@@ -70,23 +76,30 @@ public class MenuStageSelect : MenuBase {
         _buttonMove.Setup();
         await FadeManager.instance.FadeIn();
         await SetPushButtonState(_buttonList, true);
+        // ボタン入力管理クラスの準備前処理
         await _buttonInput.Setup(_initSelectButton);
         _moon?.Setup();
         _cloud?.Setup();
         // 実行開始
         UniTask moonMoveTask = _moon.Execute();
         UniTask cloudMoveTask = _cloud.Execute();
+        // 初期選択ボタンのEventSystem反映
+        EventSystem.current.SetSelectedGameObject(_initSelectButton.gameObject);
+        // 最初の演出（対象ボタンのみ）
+        StartChangeSelectEffect(_initSelectButton).Forget();
+        // ボタンが押されるまでループ
         while (stageNum == eStageType.Invalid) {
+            Button prevButton = _buttonInput.GetPrevButton();
             await _buttonInput.AcceptInput();
-            _buttonMove.Execute(_buttonInput.GetCurrentButton());
+            Button currentButton = _buttonInput.GetCurrentButton();
+            _buttonMove.Execute(currentButton);
+            if (prevButton != currentButton) {
+                StartChangeSelectEffect(currentButton).Forget();
+            }
             await UniTask.DelayFrame(1);
         }
         await SetPushButtonState(_buttonList, false);
         await _buttonInput.Teardown();
-        if(stageNum != eStageType.Max) {
-            await MoveSelectButton(0.8f);
-            await ShowStageImage();
-        }
         await FadeManager.instance.FadeOut();
         await Close();
     }
@@ -100,6 +113,28 @@ public class MenuStageSelect : MenuBase {
         _cloud?.Teardown();
         _stageImage.color = _stageImageColor;
         _moveButtonPos.localPosition = Vector3.zero;
+    }
+    private async UniTask StartChangeSelectEffect(Button button) {
+        _changeEffectToken?.Cancel();
+        _changeEffectToken = new CancellationTokenSource();
+        var token = _changeEffectToken.Token;
+
+        try {
+            // 1. 画像を切り替え
+            SetStageSprite(button);
+
+            // 2. アルファ値をリセット
+            var color = _stageImage.color;
+            color.a = 0f;
+            _stageImage.color = color;
+
+            // 3. Move とフェードを並列実行
+            await MoveSelectButton(0.8f).AttachExternalCancellation(token);
+            await ShowStageImage(0.3f).AttachExternalCancellation(token);
+
+        } catch {
+            // キャンセル時は何もしない
+        }
     }
     /// <summary>
     /// ボタン移動演出
@@ -129,18 +164,38 @@ public class MenuStageSelect : MenuBase {
     public async UniTask ShowStageImage(float duration = 1.0f) {
         UniTask task = SoundManager.instance.PlaySE(10);
         float elapsedTime = 0.0f;
-        float imageAlpha = _stageImage.color.a;
         Color targetColor = _stageImage.color;
+        targetColor.a = 0.0f;
+        _stageImage.color = targetColor;
         while (elapsedTime < duration) {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / duration;
-            targetColor.a = Mathf.Lerp(imageAlpha, 1.0f, t);
+            targetColor.a = Mathf.Lerp(0.0f, 1.0f, t);
             _stageImage.color = targetColor;
             await UniTask.DelayFrame(1);
         }
         _stageImage.color = targetColor;
     }
-
+    /// <summary>
+    /// ボタンに応じてスプライトを変更
+    /// </summary>
+    /// <param name="button"></param>
+    private void SetStageSprite(Button button) {
+        if (button == _buttonList[2])
+            _stageImage.sprite = _spriteList[1];
+        if (button == _buttonList[3])
+            _stageImage.sprite = _spriteList[2];
+        if (button == _buttonList[4])
+            _stageImage.sprite = _spriteList[3];
+    }
+    /// <summary>
+    /// 演出可能なボタンか判定
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    private bool IsEffectButton(Button button) {
+        return button == _buttonList[2] || button == _buttonList[3] || button == _buttonList[4];
+    }
     /// <summary>
     /// チュートリアルステージ選択
     /// </summary>

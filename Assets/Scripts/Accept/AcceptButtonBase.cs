@@ -41,6 +41,14 @@ public abstract class AcceptButtonBase {
             currentButton = prevButton;
         }
     }
-
+    /// <summary>
+    /// 現在の選択されているボタンの取得
+    /// </summary>
+    /// <returns></returns>
     public Button GetCurrentButton() { return currentButton; }
+    /// <summary>
+    /// 一つ前に選択されていたボタンの取得
+    /// </summary>
+    /// <returns></returns>
+    public Button GetPrevButton() { return prevButton; }
 }
