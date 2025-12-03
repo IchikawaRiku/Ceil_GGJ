@@ -5,6 +5,7 @@
  *  @date   2025/8/1
  */
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -86,15 +87,15 @@ public class MenuStageSelect : MenuBase {
         // 初期選択ボタンのEventSystem反映
         EventSystem.current.SetSelectedGameObject(_initSelectButton.gameObject);
         // 最初の演出（対象ボタンのみ）
-        StartChangeSelectEffect(_initSelectButton).Forget();
+        StartSelectEffect(_initSelectButton).Forget();
         // ボタンが押されるまでループ
         while (stageNum == eStageType.Invalid) {
             Button prevButton = _buttonInput.GetPrevButton();
             await _buttonInput.AcceptInput();
             Button currentButton = _buttonInput.GetCurrentButton();
             _buttonMove.Execute(currentButton);
-            if (prevButton != currentButton) {
-                StartChangeSelectEffect(currentButton).Forget();
+            if (prevButton != currentButton && IsEffectButton(currentButton)) {
+                StartSelectEffect(currentButton).Forget();
             }
             await UniTask.DelayFrame(1);
         }
@@ -114,26 +115,41 @@ public class MenuStageSelect : MenuBase {
         _stageImage.color = _stageImageColor;
         _moveButtonPos.localPosition = Vector3.zero;
     }
-    private async UniTask StartChangeSelectEffect(Button button) {
+    /// <summary>
+    /// 状態の初期化
+    /// </summary>
+    public void ResetEffect() {
+        // 移動の初期化
+        _moveButtonPos.localPosition = Vector3.zero;
+        // 画像の初期化
+        _stageImageColor = _stageImage.color;
+        _stageImageColor.a = 0.0f;
+        _stageImage.color = _stageImageColor;
+    }
+    /// <summary>
+    /// ボタン演出開始処理
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    private async UniTask StartSelectEffect(Button button) {
+        if (!IsEffectButton(button))
+            return;
+
+        // 前の演出をキャンセル
         _changeEffectToken?.Cancel();
         _changeEffectToken = new CancellationTokenSource();
         var token = _changeEffectToken.Token;
 
+        // 初期化
+        ResetEffect();
+
         try {
-            // 1. 画像を切り替え
+            // 画像のセット
             SetStageSprite(button);
-
-            // 2. アルファ値をリセット
-            var color = _stageImage.color;
-            color.a = 0f;
-            _stageImage.color = color;
-
-            // 3. Move とフェードを並列実行
-            await MoveSelectButton(0.8f).AttachExternalCancellation(token);
-            await ShowStageImage(0.3f).AttachExternalCancellation(token);
-
-        } catch {
-            // キャンセル時は何もしない
+            await MoveSelectButton(0.8f, token);
+            await ShowStageImage(0.3f, token);
+        } catch (OperationCanceledException) {
+            ResetEffect();
         }
     }
     /// <summary>
@@ -141,40 +157,44 @@ public class MenuStageSelect : MenuBase {
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    public async UniTask MoveSelectButton(float duration = 1.0f) {
-        float elapsedTime = 0.0f;
-        float startPosX = 0.0f;
+    public async UniTask MoveSelectButton(float duration, CancellationToken token) {
+        float elapsedTime = 0f;
+        float startPosX = 0f;
         float goalPosX = _MOVE_POS_X;
-        Vector3 movePos = _moveButtonPos.localPosition;
+        Vector3 movePos = Vector3.zero;
+
         while (elapsedTime < duration) {
+            token.ThrowIfCancellationRequested(); // ここでキャンセル判定
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
+            float t = Mathf.Clamp01(elapsedTime / duration);
             movePos.x = Mathf.Lerp(startPosX, goalPosX, t);
             _moveButtonPos.localPosition = movePos;
-            await UniTask.DelayFrame(1);
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
+
         _moveButtonPos.localPosition = movePos;
-        await UniTask.CompletedTask;
     }
     /// <summary>
     /// ステージイメージの表示演出
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    public async UniTask ShowStageImage(float duration = 1.0f) {
+    public async UniTask ShowStageImage(float duration, CancellationToken token) {
         UniTask task = SoundManager.instance.PlaySE(10);
-        float elapsedTime = 0.0f;
-        Color targetColor = _stageImage.color;
-        targetColor.a = 0.0f;
-        _stageImage.color = targetColor;
+        float elapsedTime = 0f;
+        Color color = _stageImage.color;
+        color.a = 0f;
+        _stageImage.color = color;
+
         while (elapsedTime < duration) {
+            token.ThrowIfCancellationRequested(); // ここでキャンセル判定
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
-            targetColor.a = Mathf.Lerp(0.0f, 1.0f, t);
-            _stageImage.color = targetColor;
-            await UniTask.DelayFrame(1);
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            color.a = Mathf.Lerp(0f, 1f, t);
+            _stageImage.color = color;
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
-        _stageImage.color = targetColor;
+        _stageImage.color = color;
     }
     /// <summary>
     /// ボタンに応じてスプライトを変更
