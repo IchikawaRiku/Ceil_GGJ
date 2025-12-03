@@ -44,10 +44,8 @@ public class MenuStageSelect : MenuBase {
     private ButtonSelectMove _buttonMove = null;
     // ステージ画像の色
     private Color _stageImageColor;
-    private CancellationTokenSource _selectPreviewToken;
+    private Button[] _effectButtonList;
     private CancellationTokenSource _changeEffectToken;
-    private Button _previewCurrentButton;
-
 
     private const float _MOVE_POS_X = -235;
 
@@ -59,7 +57,11 @@ public class MenuStageSelect : MenuBase {
         await base.Initialize();
         // 各クラスの初期化
         _buttonInput = new AcceptMenuButtonInput();
-        _buttonMove = new ButtonSelectMove(new Button[] { _buttonList[2], _buttonList[3], _buttonList[4] });
+        _buttonMove = new ButtonSelectMove(new Button[] { 
+            _buttonList[(int)eStageType.Stage1],
+            _buttonList[(int)eStageType.Stage2],
+            _buttonList[(int)eStageType.Stage3] 
+        });
         _moon?.Initialize();
         _cloud?.Initialize();
         // 画像アルファ値の設定
@@ -207,12 +209,12 @@ public class MenuStageSelect : MenuBase {
     /// </summary>
     /// <param name="button"></param>
     private void SetStageSprite(Button button) {
-        if (button == _buttonList[2])
+        if (button == _buttonList[(int)eStageType.Stage1])
+            _stageImage.sprite = _spriteList[0];
+        if (button == _buttonList[(int)eStageType.Stage2])
             _stageImage.sprite = _spriteList[1];
-        if (button == _buttonList[3])
+        if (button == _buttonList[(int)eStageType.Stage3])
             _stageImage.sprite = _spriteList[2];
-        if (button == _buttonList[4])
-            _stageImage.sprite = _spriteList[3];
     }
     /// <summary>
     /// 演出可能なボタンか判定
@@ -220,7 +222,9 @@ public class MenuStageSelect : MenuBase {
     /// <param name="button"></param>
     /// <returns></returns>
     private bool IsEffectButton(Button button) {
-        return button == _buttonList[2] || button == _buttonList[3] || button == _buttonList[4];
+        return button == _buttonList[(int)eStageType.Stage1] || 
+            button == _buttonList[(int)eStageType.Stage2] || 
+            button == _buttonList[(int)eStageType.Stage3];
     }
     /// <summary>
     /// チュートリアルステージ選択
@@ -228,7 +232,6 @@ public class MenuStageSelect : MenuBase {
     public void SelectTutorialStage() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Tutorial;
-        _stageImage.sprite = _spriteList[0];
     }
     /// <summary>
     /// ステージ1選択
@@ -236,7 +239,7 @@ public class MenuStageSelect : MenuBase {
     public void SelectStage1() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Stage1;
-        _stageImage.sprite = _spriteList[1];
+        _stageImage.sprite = _spriteList[0];
     }
     /// <summary>
     /// ステージ2選択
@@ -244,7 +247,7 @@ public class MenuStageSelect : MenuBase {
     public void SelectStage2() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Stage2;
-        _stageImage.sprite = _spriteList[2];
+        _stageImage.sprite = _spriteList[1];
     }
     /// <summary>
     /// ステージ3選択
@@ -252,7 +255,7 @@ public class MenuStageSelect : MenuBase {
     public void SelectStage3() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Stage3;
-        _stageImage.sprite = _spriteList[3];
+        _stageImage.sprite = _spriteList[2];
     }
     /// <summary>
     /// タイトル画面へ戻る

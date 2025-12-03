@@ -122,16 +122,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _menuRoot: {fileID: 8456498512667494862}
   _buttonList:
-  - {fileID: 8207019902075958717}
   - {fileID: 3038577362158549753}
   - {fileID: 6180231864150414180}
   - {fileID: 5218886799980333636}
   - {fileID: 3354409853916746017}
+  - {fileID: 8207019902075958717}
   _initSelectButton: {fileID: 6180231864150414180}
   _moon: {fileID: 2485681458786221199}
   _cloud: {fileID: 3571642377867975233}
   _spriteList:
-  - {fileID: 21300000, guid: 4f27cd0d7f4d31d4b9e7e5948c9f8c15, type: 3}
   - {fileID: 21300000, guid: 4cb5bdb81b7deff40a760f845327e428, type: 3}
   - {fileID: 21300000, guid: 45c5857dcab7c1746925b87406e8d5e3, type: 3}
   - {fileID: 21300000, guid: cb512007c776e914ca779c8b38eb4aba, type: 3}
@@ -655,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38cd30a86d766d498af91b662e0ff22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentPos: {x: 0, y: 0, z: 0}
+  _startPos: {x: 0, y: 0, z: 0}
   _targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &2737052334216704989
 GameObject:
