@@ -5,9 +5,12 @@
  *  @date   2025/8/1
  */
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuStageSelect : MenuBase {
@@ -41,6 +44,8 @@ public class MenuStageSelect : MenuBase {
     private ButtonSelectMove _buttonMove = null;
     // ステージ画像の色
     private Color _stageImageColor;
+    private Button[] _effectButtonList;
+    private CancellationTokenSource _changeEffectToken;
 
     private const float _MOVE_POS_X = -235;
 
@@ -52,7 +57,11 @@ public class MenuStageSelect : MenuBase {
         await base.Initialize();
         // 各クラスの初期化
         _buttonInput = new AcceptMenuButtonInput();
-        _buttonMove = new ButtonSelectMove(new Button[] { _buttonList[2], _buttonList[3], _buttonList[4] });
+        _buttonMove = new ButtonSelectMove(new Button[] { 
+            _buttonList[(int)eStageType.Stage1],
+            _buttonList[(int)eStageType.Stage2],
+            _buttonList[(int)eStageType.Stage3] 
+        });
         _moon?.Initialize();
         _cloud?.Initialize();
         // 画像アルファ値の設定
@@ -70,23 +79,36 @@ public class MenuStageSelect : MenuBase {
         _buttonMove.Setup();
         await FadeManager.instance.FadeIn();
         await SetPushButtonState(_buttonList, true);
+        // ボタン入力管理クラスの準備前処理
         await _buttonInput.Setup(_initSelectButton);
         _moon?.Setup();
         _cloud?.Setup();
         // 実行開始
         UniTask moonMoveTask = _moon.Execute();
         UniTask cloudMoveTask = _cloud.Execute();
+        // 初期選択ボタンのEventSystem反映
+        EventSystem.current.SetSelectedGameObject(_initSelectButton.gameObject);
+        // 最初の演出（対象ボタンのみ）
+        StartSelectEffect(_initSelectButton).Forget();
+        // ボタンが押されるまでループ
         while (stageNum == eStageType.Invalid) {
+            Button prevButton = _buttonInput.GetPrevButton();
             await _buttonInput.AcceptInput();
-            _buttonMove.Execute(_buttonInput.GetCurrentButton());
+            Button currentButton = _buttonInput.GetCurrentButton();
+            _buttonMove.Execute(currentButton);
+            if (prevButton != currentButton) {
+                if (IsEffectButton(currentButton)) {
+                    StartSelectEffect(currentButton).Forget();
+                } else {
+                    // 演出タスクをキャンセルして初期化
+                    _changeEffectToken?.Cancel();
+                    ResetEffect();
+                }
+            } 
             await UniTask.DelayFrame(1);
         }
         await SetPushButtonState(_buttonList, false);
         await _buttonInput.Teardown();
-        if(stageNum != eStageType.Max) {
-            await MoveSelectButton(0.8f);
-            await ShowStageImage();
-        }
         await FadeManager.instance.FadeOut();
         await Close();
     }
@@ -102,52 +124,114 @@ public class MenuStageSelect : MenuBase {
         _moveButtonPos.localPosition = Vector3.zero;
     }
     /// <summary>
+    /// 状態の初期化
+    /// </summary>
+    public void ResetEffect() {
+        // 移動の初期化
+        _moveButtonPos.localPosition = Vector3.zero;
+        // 画像の初期化
+        _stageImageColor = _stageImage.color;
+        _stageImageColor.a = 0.0f;
+        _stageImage.color = _stageImageColor;
+    }
+    /// <summary>
+    /// ボタン演出開始処理
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    private async UniTask StartSelectEffect(Button button) {
+        if (!IsEffectButton(button))
+            return;
+
+        // 前の演出をキャンセル
+        _changeEffectToken?.Cancel();
+        _changeEffectToken = new CancellationTokenSource();
+        var token = _changeEffectToken.Token;
+
+        // 初期化
+        ResetEffect();
+
+        try {
+            // 画像のセット
+            SetStageSprite(button);
+            await MoveSelectButton(0.8f, token);
+            await ShowStageImage(0.3f, token);
+        } catch (OperationCanceledException) {
+            ResetEffect();
+        }
+    }
+    /// <summary>
     /// ボタン移動演出
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    public async UniTask MoveSelectButton(float duration = 1.0f) {
-        float elapsedTime = 0.0f;
-        float startPosX = 0.0f;
+    public async UniTask MoveSelectButton(float duration, CancellationToken token) {
+        float elapsedTime = 0f;
+        float startPosX = 0f;
         float goalPosX = _MOVE_POS_X;
-        Vector3 movePos = _moveButtonPos.localPosition;
+        Vector3 movePos = Vector3.zero;
+
         while (elapsedTime < duration) {
+            token.ThrowIfCancellationRequested(); // ここでキャンセル判定
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
+            float t = Mathf.Clamp01(elapsedTime / duration);
             movePos.x = Mathf.Lerp(startPosX, goalPosX, t);
             _moveButtonPos.localPosition = movePos;
-            await UniTask.DelayFrame(1);
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
+
         _moveButtonPos.localPosition = movePos;
-        await UniTask.CompletedTask;
     }
     /// <summary>
     /// ステージイメージの表示演出
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
-    public async UniTask ShowStageImage(float duration = 1.0f) {
+    public async UniTask ShowStageImage(float duration, CancellationToken token) {
         UniTask task = SoundManager.instance.PlaySE(10);
-        float elapsedTime = 0.0f;
-        float imageAlpha = _stageImage.color.a;
-        Color targetColor = _stageImage.color;
-        while (elapsedTime < duration) {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
-            targetColor.a = Mathf.Lerp(imageAlpha, 1.0f, t);
-            _stageImage.color = targetColor;
-            await UniTask.DelayFrame(1);
-        }
-        _stageImage.color = targetColor;
-    }
+        float elapsedTime = 0f;
+        Color color = _stageImage.color;
+        color.a = 0f;
+        _stageImage.color = color;
 
+        while (elapsedTime < duration) {
+            token.ThrowIfCancellationRequested(); // ここでキャンセル判定
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            color.a = Mathf.Lerp(0f, 1f, t);
+            _stageImage.color = color;
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
+        }
+        _stageImage.color = color;
+    }
+    /// <summary>
+    /// ボタンに応じてスプライトを変更
+    /// </summary>
+    /// <param name="button"></param>
+    private void SetStageSprite(Button button) {
+        if (button == _buttonList[(int)eStageType.Stage1])
+            _stageImage.sprite = _spriteList[0];
+        if (button == _buttonList[(int)eStageType.Stage2])
+            _stageImage.sprite = _spriteList[1];
+        if (button == _buttonList[(int)eStageType.Stage3])
+            _stageImage.sprite = _spriteList[2];
+    }
+    /// <summary>
+    /// 演出可能なボタンか判定
+    /// </summary>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    private bool IsEffectButton(Button button) {
+        return button == _buttonList[(int)eStageType.Stage1] || 
+            button == _buttonList[(int)eStageType.Stage2] || 
+            button == _buttonList[(int)eStageType.Stage3];
+    }
     /// <summary>
     /// チュートリアルステージ選択
     /// </summary>
     public void SelectTutorialStage() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Tutorial;
-        _stageImage.sprite = _spriteList[0];
     }
     /// <summary>
     /// ステージ1選択
@@ -155,7 +239,7 @@ public class MenuStageSelect : MenuBase {
     public void SelectStage1() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Stage1;
-        _stageImage.sprite = _spriteList[1];
+        _stageImage.sprite = _spriteList[0];
     }
     /// <summary>
     /// ステージ2選択
@@ -163,7 +247,7 @@ public class MenuStageSelect : MenuBase {
     public void SelectStage2() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Stage2;
-        _stageImage.sprite = _spriteList[2];
+        _stageImage.sprite = _spriteList[1];
     }
     /// <summary>
     /// ステージ3選択
@@ -171,7 +255,7 @@ public class MenuStageSelect : MenuBase {
     public void SelectStage3() {
         UniTask task = SoundManager.instance.PlaySE(1);
         stageNum = eStageType.Stage3;
-        _stageImage.sprite = _spriteList[3];
+        _stageImage.sprite = _spriteList[2];
     }
     /// <summary>
     /// タイトル画面へ戻る
