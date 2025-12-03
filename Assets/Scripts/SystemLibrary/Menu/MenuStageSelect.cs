@@ -67,10 +67,10 @@ public class MenuStageSelect : MenuBase {
     public override async UniTask Open() {
         await base.Open();
         stageNum = eStageType.Invalid;
-        await FadeManager.instance.FadeIn();
-        await _buttonInput.Setup(_initSelectButton);
         _buttonMove.Setup();
+        await FadeManager.instance.FadeIn();
         await SetPushButtonState(_buttonList, true);
+        await _buttonInput.Setup(_initSelectButton);
         _moon?.Setup();
         _cloud?.Setup();
         // é¿çsäJén
@@ -81,12 +81,12 @@ public class MenuStageSelect : MenuBase {
             _buttonMove.Execute(_buttonInput.GetCurrentButton());
             await UniTask.DelayFrame(1);
         }
+        await SetPushButtonState(_buttonList, false);
+        await _buttonInput.Teardown();
         if(stageNum != eStageType.Max) {
             await MoveSelectButton(0.8f);
             await ShowStageImage();
         }
-        await SetPushButtonState(_buttonList, false);
-        await _buttonInput.Teardown();
         await FadeManager.instance.FadeOut();
         await Close();
     }
