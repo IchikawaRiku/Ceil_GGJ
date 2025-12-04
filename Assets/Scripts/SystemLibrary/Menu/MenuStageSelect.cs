@@ -46,6 +46,7 @@ public class MenuStageSelect : MenuBase {
     private Color _stageImageColor;
     private Button[] _effectButtonList;
     private CancellationTokenSource _changeEffectToken;
+    private CancellationTokenSource _delayToken;
 
     private const float _MOVE_POS_X = -235;
 
@@ -97,14 +98,16 @@ public class MenuStageSelect : MenuBase {
             Button currentButton = _buttonInput.GetCurrentButton();
             _buttonMove.Execute(currentButton);
             if (prevButton != currentButton) {
+                // どのボタンに移っても、まず既存の演出はキャンセルして初期化する
+                _changeEffectToken?.Cancel();
+                _delayToken?.Cancel();
+                ResetEffect();
+
+                // 演出対象なら演出開始（内部でディレイ/確定判定を行う）
                 if (IsEffectButton(currentButton)) {
                     StartSelectEffect(currentButton).Forget();
-                } else {
-                    // 演出タスクをキャンセルして初期化
-                    _changeEffectToken?.Cancel();
-                    ResetEffect();
                 }
-            } 
+            }
             await UniTask.DelayFrame(1);
         }
         await SetPushButtonState(_buttonList, false);
@@ -143,19 +146,36 @@ public class MenuStageSelect : MenuBase {
         if (!IsEffectButton(button))
             return;
 
-        // 前の演出をキャンセル
+        // 既存の演出は中止（演出中のトークンを止める）
         _changeEffectToken?.Cancel();
+
+        // --- 遅延はキャンセル可能にする ---
+        _delayToken?.Cancel();
+        _delayToken = new CancellationTokenSource();
+        var delayToken = _delayToken.Token;
+
+        try {
+            // 確定待ち（例: 200ms）。500ms は長すぎるようなら短くしてください。
+            await UniTask.Delay(500, cancellationToken: delayToken);
+        } catch (OperationCanceledException) {
+            return;
+        }
+
+        if (_buttonInput.GetCurrentButton() != button) {
+            ResetEffect();
+            return;
+        }
+
+        // 実際の演出トークンを生成
         _changeEffectToken = new CancellationTokenSource();
         var token = _changeEffectToken.Token;
-
-        // 初期化
-        ResetEffect();
 
         try {
             // 画像のセット
             SetStageSprite(button);
+            // 演出
             await MoveSelectButton(0.8f, token);
-            await ShowStageImage(0.3f, token);
+            await ShowStageImage(0.5f, token);
         } catch (OperationCanceledException) {
             ResetEffect();
         }
@@ -176,10 +196,9 @@ public class MenuStageSelect : MenuBase {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
             movePos.x = Mathf.Lerp(startPosX, goalPosX, t);
-            _moveButtonPos.localPosition = movePos;
+            if (_moveButtonPos)_moveButtonPos.localPosition = movePos;
             await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
-
         _moveButtonPos.localPosition = movePos;
     }
     /// <summary>
@@ -199,7 +218,7 @@ public class MenuStageSelect : MenuBase {
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
             color.a = Mathf.Lerp(0f, 1f, t);
-            _stageImage.color = color;
+            if(_stageImage)_stageImage.color = color;
             await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
         _stageImage.color = color;
