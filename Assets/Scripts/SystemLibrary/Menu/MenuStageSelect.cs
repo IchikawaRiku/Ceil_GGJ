@@ -143,19 +143,17 @@ public class MenuStageSelect : MenuBase {
     /// <param name="button"></param>
     /// <returns></returns>
     private async UniTask StartSelectEffect(Button button) {
-        if (!IsEffectButton(button))
-            return;
+        if (!IsEffectButton(button)) return;
 
         // 既存の演出は中止（演出中のトークンを止める）
         _changeEffectToken?.Cancel();
 
-        // --- 遅延はキャンセル可能にする ---
         _delayToken?.Cancel();
         _delayToken = new CancellationTokenSource();
         var delayToken = _delayToken.Token;
 
         try {
-            // 確定待ち（例: 200ms）。500ms は長すぎるようなら短くしてください。
+            // 待機
             await UniTask.Delay(500, cancellationToken: delayToken);
         } catch (OperationCanceledException) {
             return;
