@@ -32,6 +32,10 @@ public class MenuStageSelect : MenuBase {
     // ステージ画像
     [SerializeField]
     private Image _stageImage = null;
+    // ステージ背景画像
+    [SerializeField]
+    private Image _stageBGImage = null;
+    // 移動ボタンオブジェクト
     [SerializeField]
     private Transform _moveButtonPos = null;
     
@@ -69,6 +73,7 @@ public class MenuStageSelect : MenuBase {
         _stageImageColor = _stageImage.color;
         _stageImageColor.a = 0.0f;
         _stageImage.color = _stageImageColor;
+        _stageBGImage.color = _stageImageColor;
     }
     /// <summary>
     /// 開く
@@ -136,6 +141,7 @@ public class MenuStageSelect : MenuBase {
         _stageImageColor = _stageImage.color;
         _stageImageColor.a = 0.0f;
         _stageImage.color = _stageImageColor;
+        _stageBGImage.color = _stageImageColor;
     }
     /// <summary>
     /// ボタン演出開始処理
@@ -210,6 +216,7 @@ public class MenuStageSelect : MenuBase {
         Color color = _stageImage.color;
         color.a = 0f;
         _stageImage.color = color;
+        _stageBGImage.color = color;
 
         while (elapsedTime < duration) {
             token.ThrowIfCancellationRequested(); // ここでキャンセル判定
@@ -217,9 +224,11 @@ public class MenuStageSelect : MenuBase {
             float t = Mathf.Clamp01(elapsedTime / duration);
             color.a = Mathf.Lerp(0f, 1f, t);
             if(_stageImage)_stageImage.color = color;
+            if( _stageBGImage) _stageBGImage.color = color;
             await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
         _stageImage.color = color;
+        _stageBGImage.color = color;
     }
     /// <summary>
     /// ボタンに応じてスプライトを変更
