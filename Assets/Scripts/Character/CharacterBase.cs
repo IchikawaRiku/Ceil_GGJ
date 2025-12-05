@@ -29,6 +29,8 @@ public class CharacterBase : MonoBehaviour {
 	protected InputAction action = null;
 	// 幽体離脱中の動き
 	public bool changeMove = false;
+	// キャラクターが右向きか左向きか(右->false)
+	protected bool charaDir = false;
 
 	// 移動速度の最大
 	protected const float MOVE_SPEED_MAX = 5f;
@@ -45,6 +47,9 @@ public class CharacterBase : MonoBehaviour {
 	public virtual async UniTask Initialize() {
 		rig = GetComponent<Rigidbody>();
 		input = GetComponent<PlayerInput>();
+		Vector3 rotation = transform.eulerAngles;
+		rotation.y = _DIRECTION_ANGLE;
+		transform.eulerAngles = rotation;
 		//input.actions = Instantiate(input.actions);
 		await UniTask.CompletedTask;
 	}
@@ -106,8 +111,14 @@ public class CharacterBase : MonoBehaviour {
 	/// </summary>
 	protected void ChangeAngle() {
 		Vector3 rotation = transform.eulerAngles;
-		if (moveInput.x > 0) rotation.y = _DIRECTION_ANGLE;
-		else if (moveInput.x < 0) rotation.y = -_DIRECTION_ANGLE;
+		if (moveInput.x > 0) {
+			rotation.y = _DIRECTION_ANGLE;
+			charaDir = false;
+		}
+		else if (moveInput.x < 0) {
+			rotation.y = -_DIRECTION_ANGLE;
+			charaDir = true;
+		}
 		transform.eulerAngles = rotation;
     }
 
