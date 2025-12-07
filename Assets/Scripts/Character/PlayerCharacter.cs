@@ -23,6 +23,8 @@ public class PlayerCharacter : CharacterBase {
 
 	// オブジェクトのレイヤー
 	private LayerMask _objectLayer;
+	// 箱のレイヤー
+	private LayerMask _boxLayer;
 	// ジャンプ力
 	private float _jumpPower = 5f;
 	// 地面判定用の半径
@@ -32,7 +34,8 @@ public class PlayerCharacter : CharacterBase {
 
 	public override async UniTask Initialize() {
 		await base.Initialize();
-		_objectLayer = LayerMask.GetMask("Jump");
+		_objectLayer = LayerMask.GetMask("Jump", "Box");
+		_boxLayer = LayerMask.GetMask("Box");
 		//animator = GetComponent<Animator>();
 	}
 
@@ -92,7 +95,7 @@ public class PlayerCharacter : CharacterBase {
 		else position.x -= 0.4f;
 		position.y += 0.7f;
 
-		return Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _objectLayer);
+		return Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _boxLayer);
 	}
 
 	/// <summary>
