@@ -27,7 +27,7 @@ public class MainGameProcessor {
     /// <returns></returns>
     public async UniTask<eEndReason> Execute() {
         CameraManager.instance.SetPosition(GetPlayerPosition());
-        await CharacterManager.instance.controlCharacter.Initialize();
+        await CharacterManager.instance.CharaInitialize();
         await FadeManager.instance.FadeIn();
 		CharacterManager.instance.controlCharacter.EnableInput();
 		// “ü—ÍŽó•t

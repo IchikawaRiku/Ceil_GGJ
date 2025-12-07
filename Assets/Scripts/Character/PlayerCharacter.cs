@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 using static MainGameProcessor;
@@ -63,7 +64,7 @@ public class PlayerCharacter : CharacterBase {
 	
 	private void OnDrawGizmos() {
 		Vector3 position = transform.position;
-		if (transform.eulerAngles.y == 90) position.x += 0.4f;
+		if (!charaDir) position.x += 0.4f;
 		else position.x -= 0.4f;
 		position.y += 0.7f;
 		bool hit = Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _objectLayer);
@@ -85,10 +86,12 @@ public class PlayerCharacter : CharacterBase {
 	/// ï«êGÇÍîªíË
 	/// </summary>
 	private bool GetTouchWall() {
+		// îªíËÇÃíÜêSì_å`ê¨
 		Vector3 position = transform.position;
-		if (transform.eulerAngles.y == 90) position.x += 0.4f;
+		if (!charaDir) position.x += 0.4f;
 		else position.x -= 0.4f;
 		position.y += 0.7f;
+
 		return Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _objectLayer);
 	}
 

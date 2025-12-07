@@ -46,11 +46,17 @@ public class CharacterManager : MonoBehaviour {
         //プレイヤーの生成
         _unusePlayer = Instantiate(_playerOrigin, _unuseRoot);
         _unuseSpirit = Instantiate(_spiritOrigin, _unuseRoot);
-        await _unuseSpirit.Initialize();
-        await _unusePlayer.Initialize();
+        await CharaInitialize();
         
 		await UniTask.CompletedTask;
     }
+
+    public async UniTask CharaInitialize() {
+        if (_useSpirit) await _useSpirit.Initialize();
+        else await _unuseSpirit.Initialize();
+        if (_usePlayer) await _usePlayer.Initialize();
+		else await _unusePlayer.Initialize();
+	}
 
     /// <summary>
     /// 実行処理
