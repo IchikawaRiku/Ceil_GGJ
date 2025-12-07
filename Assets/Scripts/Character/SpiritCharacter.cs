@@ -25,7 +25,11 @@ public class SpiritCharacter : CharacterBase {
 	// フェードイン中
 	private bool fadeIn = false;
 	// 振り向き移動量
-	float angleMoveValue = 0.0f;
+	private float angleMoveValue = 0.0f;
+	// 戻りカウント
+	private float returnCount = 0;
+	// 戻りカウントの最大
+	private const float _RETURN_COUNT_MAX = 360;
 	// スピードの倍率
 	private const float _SPEED_LATE = 1.9f;
 	// 戻ってくる時の補間比率
@@ -65,8 +69,10 @@ public class SpiritCharacter : CharacterBase {
 		transform.position += moveValue;
 		if (changeMove) {
 			ReturnPosition();
-			if (Vector3.Distance(transform.position, CharacterManager.instance.GetPlayerPosition()) < _PLAYER_CHANGE_DISTANCE)
+			if (Vector3.Distance(transform.position, CharacterManager.instance.GetPlayerPosition()) < _PLAYER_CHANGE_DISTANCE) {
 				changeMove = false;
+				returnCount = 0;
+			}
 		}
 	}
 
@@ -98,7 +104,8 @@ public class SpiritCharacter : CharacterBase {
 	/// 元の位置に戻る
 	/// </summary>
 	public void ReturnPosition() {
-		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), _RETURN_LATE);
+		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), returnCount / _RETURN_COUNT_MAX);
+		returnCount++;
 	}
 
 	/// <summary>
