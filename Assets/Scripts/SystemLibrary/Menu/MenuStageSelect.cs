@@ -82,6 +82,7 @@ public class MenuStageSelect : MenuBase {
     public override async UniTask Open() {
         await base.Open();
         stageNum = eStageType.Invalid;
+        ResetEffect();
         _buttonMove.Setup();
         await FadeManager.instance.FadeIn();
         await SetPushButtonState(_buttonList, true);
@@ -108,7 +109,7 @@ public class MenuStageSelect : MenuBase {
                 _delayToken?.Cancel();
                 ResetEffect();
 
-                // 演出対象なら演出開始（内部でディレイ/確定判定を行う）
+                // 演出対象なら演出開始
                 if (IsEffectButton(currentButton)) {
                     StartSelectEffect(currentButton).Forget();
                 }
@@ -152,7 +153,7 @@ public class MenuStageSelect : MenuBase {
     private async UniTask StartSelectEffect(Button button) {
         if (!IsEffectButton(button)) return;
 
-        // 既存の演出は中止（演出中のトークンを止める）
+        // 既存の演出は中止
         _changeEffectToken?.Cancel();
 
         _delayToken?.Cancel();
