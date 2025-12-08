@@ -27,6 +27,7 @@ public class MainGameProcessor {
     /// <returns></returns>
     public async UniTask<eEndReason> Execute() {
         CameraManager.instance.SetPosition(GetPlayerPosition());
+        await CharacterManager.instance.CharaInitialize();
         await FadeManager.instance.FadeIn();
 		CharacterManager.instance.controlCharacter.EnableInput();
 		// “ü—ÍŽó•t
@@ -41,7 +42,8 @@ public class MainGameProcessor {
 
             await UniTask.DelayFrame(1);
         }
-        await FadeManager.instance.FadeOut();
+		CharacterManager.instance.controlCharacter.DisableInput();
+		await FadeManager.instance.FadeOut();
         return _eEndReason;
     }
     public void Teardown() {

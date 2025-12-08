@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3158846165225326004}
   - component: {fileID: 7658551941057218606}
   - component: {fileID: -3654390417257541342}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: pushBox
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
