@@ -129,6 +129,7 @@ public class MenuStageSelect : MenuBase {
         _moon?.Teardown();
         _cloud?.Teardown();
         _stageImage.color = _stageImageColor;
+        _stageBGImage.color = _stageImageColor;
         _moveButtonPos.localPosition = Vector3.zero;
     }
     /// <summary>
