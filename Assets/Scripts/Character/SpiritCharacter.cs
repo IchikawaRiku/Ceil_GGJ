@@ -208,7 +208,7 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	/// <param name="context"></param>
 	public async void OnSwitch(InputAction.CallbackContext context) {
-		if (!canOnSwitch) return;
+		if (!canOnSwitch || switchAnim) return;
 		switchAnim = true;
 		// U‚èŒü‚­‚Ü‚Å‘Ò‚Â
 		await TurnToSwitch();
