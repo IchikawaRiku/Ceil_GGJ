@@ -24,6 +24,12 @@ public class SpiritCharacter : CharacterBase {
 	private bool switchAnim = false;
 	// フェードイン中
 	private bool fadeIn = false;
+	// 振り向き移動量
+	private float angleMoveValue = 0.0f;
+	// 戻りカウント
+	private float returnCount = 0;
+	// 戻りカウントの最大
+	private const float _RETURN_COUNT_MAX = 360;
 	// スピードの倍率
 	private const float _SPEED_LATE = 1.9f;
 	// 戻ってくる時の補間比率
@@ -40,8 +46,6 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Initialize() {
 		await base.Initialize();
-		moveSpeed = MOVE_SPEED_MAX * _SPEED_LATE;
-		
 		// 最初は透明にしておく
 		Color color = material.color;
 		color.a = 0;
@@ -53,8 +57,10 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	public override async UniTask Execute() {
 		await base.Execute();
-        // アニメーション中とフェード中はスキップ
-        if (switchAnim || fadeIn) return;
+		// アニメーション中とフェード中はスキップ
+		if (switchAnim || fadeIn) return;
+		// 幽霊はスピードが速い
+		moveSpeed = MOVE_SPEED_MAX * _SPEED_LATE;
 		// 向き変更
 		ChangeAngle();
 		moveValue = new Vector3(moveInput.x, moveInput.y, 0f) * moveSpeed * Time.deltaTime;
@@ -63,8 +69,10 @@ public class SpiritCharacter : CharacterBase {
 		transform.position += moveValue;
 		if (changeMove) {
 			ReturnPosition();
-			if (Vector3.Distance(transform.position, CharacterManager.instance.GetPlayerPosition()) < _PLAYER_CHANGE_DISTANCE)
-				changeMove = false; 
+			if (Vector3.Distance(transform.position, CharacterManager.instance.GetPlayerPosition()) < _PLAYER_CHANGE_DISTANCE) {
+				changeMove = false;
+				returnCount = 0;
+			}
 		}
 	}
 
@@ -96,7 +104,8 @@ public class SpiritCharacter : CharacterBase {
 	/// 元の位置に戻る
 	/// </summary>
 	public void ReturnPosition() {
-		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), _RETURN_LATE);
+		transform.position = Vector3.Lerp(transform.position, CharacterManager.instance.GetPlayerPosition(), returnCount / _RETURN_COUNT_MAX);
+		returnCount++;
 	}
 
 	/// <summary>
@@ -139,8 +148,8 @@ public class SpiritCharacter : CharacterBase {
 		if (GetGameReason() != eEndReason.Invalid) return;
 		if (other.CompareTag(_SWITCH_TAG)) canOnSwitch = true;
 		if (other.CompareTag(BULLET_TAG) && !changeMove) {
-            UniTask task = SoundManager.instance.PlaySE(8);
-            anim.Play("ghost_dissolve");
+			UniTask task = SoundManager.instance.PlaySE(8);
+			anim.Play("ghost_dissolve");
 			EndGameReason(eEndReason.Dead);
 			DisableInput();
 		}
@@ -190,8 +199,8 @@ public class SpiritCharacter : CharacterBase {
 	/// <param name="context"></param>
 	public override void OnChangeSpirit(InputAction.CallbackContext context) {
 		if (fadeIn) return;
-        UniTask task = SoundManager.instance.PlaySE(5);
-        base.OnChangeSpirit(context);
+		UniTask task = SoundManager.instance.PlaySE(5);
+		base.OnChangeSpirit(context);
 	}
 
 	/// <summary>
@@ -203,7 +212,7 @@ public class SpiritCharacter : CharacterBase {
 		switchAnim = true;
 		// 振り向くまで待つ
 		await TurnToSwitch();
-        UniTask task = SoundManager.instance.PlaySE(3);
+		UniTask task = SoundManager.instance.PlaySE(3);
 		anim.SetBool("switch", true);
 		SwitchUtility.Press();
 	}
@@ -213,13 +222,25 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	private async UniTask TurnToSwitch() {
 		Vector3 rotation = transform.eulerAngles;
-		while (rotation.y > 0.1f || rotation.y < -0.1f) {
-			rotation.y *= 0.8f;
-			transform.eulerAngles = rotation;
-			await UniTask.DelayFrame(1);
+		// 左向き
+		if (charaDir) {
+			while (rotation.y <= 360) {
+				angleMoveValue += 0.2f;
+				rotation.y += angleMoveValue;
+				transform.eulerAngles = rotation;
+				await UniTask.Yield();
+			}
 		}
-		//rotation.y = 0;
-		//transform.eulerAngles = rotation;
+		// 右向き
+		else {
+			while (rotation.y >= 0) {
+				angleMoveValue -= 0.2f;
+				rotation.y += angleMoveValue;
+				transform.eulerAngles = rotation;
+				await UniTask.Yield();
+			}
+		}
+		angleMoveValue = 0.0f;
 	}
 
 	/// <summary>
@@ -227,16 +248,30 @@ public class SpiritCharacter : CharacterBase {
 	/// </summary>
 	/// <returns></returns>
 	private async UniTask TurnBack() {
-        Vector3 rotation = transform.eulerAngles;
-        while (rotation.y < 90 && rotation.y > -90) {
-            rotation.y *= 1.2f;
-            transform.eulerAngles = rotation;
-            await UniTask.DelayFrame(1);
-        }
-        //rotation.y = 0;
-        //transform.eulerAngles = rotation;
-        switchAnim = false;
-    }
+		Vector3 rotation = transform.eulerAngles;
+		// 左向き
+		if (charaDir) {
+			rotation.y = 359;
+			while (rotation.y >= 270) {
+				angleMoveValue -= 0.2f;
+				rotation.y += angleMoveValue;
+				transform.eulerAngles = rotation;
+				await UniTask.DelayFrame(1);
+			}
+		}
+		// 右向き
+		else {
+			rotation.y = 0;
+			while (rotation.y <= 90) {
+				angleMoveValue += 0.2f;
+				rotation.y += angleMoveValue;
+				transform.eulerAngles = rotation;
+				await UniTask.DelayFrame(1);
+			}
+		}
+		angleMoveValue = 0.0f;
+		switchAnim = false;
+	}
 	/// <summary>
 	/// スイッチアニメーションの終わり
 	/// </summary>

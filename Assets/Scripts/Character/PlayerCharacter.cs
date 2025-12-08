@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 using static MainGameProcessor;
@@ -22,6 +23,8 @@ public class PlayerCharacter : CharacterBase {
 
 	// オブジェクトのレイヤー
 	private LayerMask _objectLayer;
+	// 箱のレイヤー
+	private LayerMask _boxLayer;
 	// ジャンプ力
 	private float _jumpPower = 5f;
 	// 地面判定用の半径
@@ -31,7 +34,8 @@ public class PlayerCharacter : CharacterBase {
 
 	public override async UniTask Initialize() {
 		await base.Initialize();
-		_objectLayer = LayerMask.GetMask("Jump");
+		_objectLayer = LayerMask.GetMask("Jump", "Box");
+		_boxLayer = LayerMask.GetMask("Box");
 		//animator = GetComponent<Animator>();
 	}
 
@@ -63,7 +67,7 @@ public class PlayerCharacter : CharacterBase {
 	
 	private void OnDrawGizmos() {
 		Vector3 position = transform.position;
-		if (transform.eulerAngles.y == 90) position.x += 0.4f;
+		if (!charaDir) position.x += 0.4f;
 		else position.x -= 0.4f;
 		position.y += 0.7f;
 		bool hit = Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _objectLayer);
@@ -85,11 +89,13 @@ public class PlayerCharacter : CharacterBase {
 	/// 壁触れ判定
 	/// </summary>
 	private bool GetTouchWall() {
+		// 判定の中心点形成
 		Vector3 position = transform.position;
-		if (transform.eulerAngles.y == 90) position.x += 0.4f;
+		if (!charaDir) position.x += 0.4f;
 		else position.x -= 0.4f;
 		position.y += 0.7f;
-		return Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _objectLayer);
+
+		return Physics.CheckBox(position, _WALL_SIZE, Quaternion.identity, _boxLayer);
 	}
 
 	/// <summary>
