@@ -58,6 +58,10 @@ public class MenuTitle : MenuBase {
         _isClose = false;
         _isGameEnd = false;
         _isSelect = false;
+        // UI演出準備前処理
+        _ghost?.Setup();
+        _moon?.Setup();
+        _cloud?.Setup();
         await FadeManager.instance.FadeIn();
         // ボタンの状態を設定
         await _buttonInput.Setup(_initSelectButton);

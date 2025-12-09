@@ -72,14 +72,14 @@ public class MenuSetting : MenuBase {
     /// <returns></returns>
     public override async UniTask Open() {
         await base.Open();
+        // UI演出の準備前処理
+        _moon?.Setup();
+        _cloud?.Setup();
         await FadeManager.instance.FadeIn();
         _inputAction.Player.Pause.Enable();
         // ボタン状態の設定
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
-        // UI演出の準備前処理
-        _moon?.Setup();
-        _cloud?.Setup();
         // UI演出の実行
         UniTask moonMoveTask = _moon.Execute();
         UniTask cloudMoveTask = _cloud.Execute();
