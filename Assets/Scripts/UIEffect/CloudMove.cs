@@ -5,22 +5,23 @@
  *  @date   2025/11/27
  */
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
 public class CloudMove : MonoBehaviour {
-    [SerializeField]
+    // 開始位置
     private Vector3 _startPos;
-    [SerializeField]
+    // 向かう位置
     private Vector3 _targetPos;
 
+    // SEの音量倍率(0.0f～1.0f)
     private float _seVolume = 0.0f;
+    // 終了フラグ
     private bool _isClose = false;
 
     private CancellationToken _token;
 
+    // 通常スピード
     private const float _BASE_SPEED = 2.0f;
 
     /// <summary>
@@ -44,28 +45,16 @@ public class CloudMove : MonoBehaviour {
     /// <returns></returns>
     public async UniTask Execute() {
         _token = this.GetCancellationTokenOnDestroy();
-
         float speed = 1.0f;
         float elapsedTime = 0.0f;
-        int dir = 1; // 1: 0→1 , -1: 1→0
+        float duration = 2.0f;
 
         while (!_isClose) {
             _seVolume = SoundManager.instance.GetSEVolume();
-
-            // 音量の強調処理
-            float v = Mathf.Pow(_seVolume, 0.3f);
-
-            // 速度に反映
-            speed = Mathf.Lerp(0.1f, _BASE_SPEED, v);
-
-            elapsedTime += (speed * Time.deltaTime) * dir;
-
-            // 端で反転
-            if (elapsedTime > 1f) { elapsedTime = 1f; dir = -1; }
-            if (elapsedTime < 0f) { elapsedTime = 0f; dir = 1; }
-
-            transform.localPosition = Vector3.Lerp(_startPos, _targetPos, elapsedTime);
-
+            speed = Mathf.Lerp(0.1f, _BASE_SPEED, _seVolume);
+            elapsedTime += speed * Time.deltaTime;
+            float t = Mathf.PingPong(elapsedTime / duration, 1.0f);
+            transform.localPosition = Vector3.Lerp(_startPos, _targetPos, t);
             await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
         }
     }

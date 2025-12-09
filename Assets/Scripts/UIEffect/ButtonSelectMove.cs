@@ -12,18 +12,20 @@ using UnityEngine.UI;
 using System.Threading;
 
 public class ButtonSelectMove {
+    // ボタンリスト
     private Button[] _buttonList;
+    // 現在のボタン
     private Button _currentButton;
 
     // 固定座標
     private Vector3 _centerPos;
     private Vector3 _upPos;
     private Vector3 _downPos;
-
+    // 固定スケール
     private float _CENTER_SCALE = 1.1f;
     private float _ELSE_SCALE = 0.8f;
-
-    private float _ANIM_SPEED = 0.2f; // 補間係数
+    // 補間係数
+    private float _ANIM_SPEED = 0.2f;
 
     private CancellationTokenSource _token;
 
@@ -58,7 +60,7 @@ public class ButtonSelectMove {
         _currentButton = selectButton;
     }
     /// <summary>
-    /// 終了処理
+    /// 片付け処理
     /// </summary>
     public void Teardown() {
         _token?.Cancel();
@@ -76,19 +78,17 @@ public class ButtonSelectMove {
             int centerIndex = GetButtonIndex(_currentButton);
 
             for (int i = 0; i < _buttonList.Length; i++) {
-
                 if (_buttonList[i] == null)continue;
 
                 Vector3 targetPos = GetPosFor(i - centerIndex);
                 float targetScale = GetScaleFor(i - centerIndex);
-
+                // 移動アニメーション
                 _buttonList[i].transform.localPosition =
                     Vector3.Lerp(_buttonList[i].transform.localPosition, targetPos, _ANIM_SPEED);
-
+                // スケール移動
                 _buttonList[i].transform.localScale =
                     Vector3.Lerp(_buttonList[i].transform.localScale, Vector3.one * targetScale, _ANIM_SPEED);
             }
-
             await UniTask.DelayFrame(1, PlayerLoopTiming.Update, cancellationToken: token);
         }
     }
@@ -112,12 +112,10 @@ public class ButtonSelectMove {
     /// <param name="offset"></param>
     /// <returns></returns>
     private Vector3 GetPosFor(int offset) {
-        if (offset == 0)
-            return _centerPos;
-        if (offset == 1 || offset == -2)
-            return _downPos;
-        if (offset == -1 || offset == 2)
-            return _upPos;
+        if (offset == 0) return _centerPos;
+        if (offset == 1 || offset == -2) return _downPos;
+        if (offset == -1 || offset == 2) return _upPos;
+
         return _centerPos;
     }
     /// <summary>

@@ -27,7 +27,6 @@ public class MenuCredit : MenuBase {
     // 最終到達座標
     private int maxMove = 1410;
 
-    //ログ移動のタスクを中断するためのトークン
     private CancellationToken _token;
 
     /// <summary>

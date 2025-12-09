@@ -27,11 +27,12 @@ public class PartTitle : PartBase {
     /// <returns></returns>
     public override async UniTask Execute() {
         SoundManager.instance.PlayBGM(0);
-        // タイトルメニュー表示]
+        // タイトルメニュー表示
         if (!MenuGameClear.isTitleSkip) await MenuManager.instance.Get<MenuTitle>().Open();
         await MenuManager.instance.Get<MenuStageSelect>().Open();
-        // パート遷移
+        // ステージセレクト
         eStageType stage = MenuManager.instance.Get<MenuStageSelect>().stageNum;
+        // パート遷移
         if (stage == eStageType.Max) {
             UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
         } else {

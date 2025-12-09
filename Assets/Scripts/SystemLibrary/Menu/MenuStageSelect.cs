@@ -6,8 +6,6 @@
  */
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -48,10 +46,11 @@ public class MenuStageSelect : MenuBase {
     private ButtonSelectMove _buttonMove = null;
     // ステージ画像の色
     private Color _stageImageColor;
-    private Button[] _effectButtonList;
+    // タスク中断用トークン
     private CancellationTokenSource _changeEffectToken;
     private CancellationTokenSource _delayToken;
 
+    // 移動先のX座標
     private const float _MOVE_POS_X = -235;
 
     /// <summary>
@@ -62,11 +61,13 @@ public class MenuStageSelect : MenuBase {
         await base.Initialize();
         // 各クラスの初期化
         _buttonInput = new AcceptMenuButtonInput();
+        // ボタン移動演出の初期化
         _buttonMove = new ButtonSelectMove(new Button[] { 
             _buttonList[(int)eStageType.Stage1],
             _buttonList[(int)eStageType.Stage2],
             _buttonList[(int)eStageType.Stage3] 
         });
+        // UIの初期化
         _moon?.Initialize();
         _cloud?.Initialize();
         // 画像アルファ値の設定
@@ -82,12 +83,13 @@ public class MenuStageSelect : MenuBase {
     public override async UniTask Open() {
         await base.Open();
         stageNum = eStageType.Invalid;
-        ResetEffect();
         _buttonMove.Setup();
+        ResetEffect();
         await FadeManager.instance.FadeIn();
+        // ボタン情報の設定
         await SetPushButtonState(_buttonList, true);
-        // ボタン入力管理クラスの準備前処理
         await _buttonInput.Setup(_initSelectButton);
+        // UI演出の準備前処理
         _moon?.Setup();
         _cloud?.Setup();
         // 実行開始
@@ -107,6 +109,7 @@ public class MenuStageSelect : MenuBase {
                 // どのボタンに移っても、まず既存の演出はキャンセルして初期化する
                 _changeEffectToken?.Cancel();
                 _delayToken?.Cancel();
+                // 演出の初期化
                 ResetEffect();
 
                 // 演出対象なら演出開始
@@ -116,8 +119,10 @@ public class MenuStageSelect : MenuBase {
             }
             await UniTask.DelayFrame(1);
         }
-        await SetPushButtonState(_buttonList, false);
+        // ボタンの片付け処理
         await _buttonInput.Teardown();
+        // ボタンの状態をリセットする
+        await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
         await Close();
     }
@@ -127,6 +132,7 @@ public class MenuStageSelect : MenuBase {
     /// <returns></returns>
     public override async UniTask Close() {
         await base.Close();
+        // UI演出のリセット
         _moon?.Teardown();
         _cloud?.Teardown();
         _stageImage.color = _stageImageColor;
@@ -152,36 +158,31 @@ public class MenuStageSelect : MenuBase {
     /// <returns></returns>
     private async UniTask StartSelectEffect(Button button) {
         if (!IsEffectButton(button)) return;
-
-        // 既存の演出は中止
+        // 既存の演出中止
         _changeEffectToken?.Cancel();
-
         _delayToken?.Cancel();
-        _delayToken = new CancellationTokenSource();
-        var delayToken = _delayToken.Token;
 
+        _delayToken = new CancellationTokenSource();
         try {
             // 待機
-            await UniTask.Delay(500, cancellationToken: delayToken);
+            await UniTask.Delay(500, cancellationToken: _delayToken.Token);
         } catch (OperationCanceledException) {
             return;
         }
-
         if (_buttonInput.GetCurrentButton() != button) {
             ResetEffect();
             return;
         }
 
-        // 実際の演出トークンを生成
+        // 演出トークンを生成
         _changeEffectToken = new CancellationTokenSource();
-        var token = _changeEffectToken.Token;
-
+        // 演出
         try {
             // 画像のセット
             SetStageSprite(button);
             // 演出
-            await MoveSelectButton(0.8f, token);
-            await ShowStageImage(0.5f, token);
+            await MoveSelectButton(0.8f, _changeEffectToken.Token);
+            await ShowStageImage(0.5f, _changeEffectToken.Token);
         } catch (OperationCanceledException) {
             ResetEffect();
         }
@@ -190,6 +191,7 @@ public class MenuStageSelect : MenuBase {
     /// ボタン移動演出
     /// </summary>
     /// <param name="duration"></param>
+    /// <param name="token"></param>
     /// <returns></returns>
     public async UniTask MoveSelectButton(float duration, CancellationToken token) {
         float elapsedTime = 0f;
@@ -211,6 +213,7 @@ public class MenuStageSelect : MenuBase {
     /// ステージイメージの表示演出
     /// </summary>
     /// <param name="duration"></param>
+    /// <param name="token"></param>
     /// <returns></returns>
     public async UniTask ShowStageImage(float duration, CancellationToken token) {
         UniTask task = SoundManager.instance.PlaySE(10);

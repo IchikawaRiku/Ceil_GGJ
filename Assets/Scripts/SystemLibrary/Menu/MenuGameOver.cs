@@ -42,16 +42,22 @@ public class MenuGameOver : MenuBase {
         _isClose = false;
         _isRetryStage = false;
         await FadeManager.instance.FadeIn();
+        // ボタン状態の設定
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
         while (!_isClose) {
             await _buttonInput.AcceptInput();
             await UniTask.DelayFrame(1);
         }
+        // ボタンの片付け処理
         await _buttonInput.Teardown();
+        // ボタンの状態をリセットする
         await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
         await Close();
+    }
+    public override async UniTask Close() {
+        await base.Close();
         if (_isRetryStage) {
             await StageManager.instance.RetryCurrentStage();
             UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);

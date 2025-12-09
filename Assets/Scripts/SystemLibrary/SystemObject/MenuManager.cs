@@ -13,9 +13,14 @@ public class MenuManager : SystemObject {
     public static MenuManager instance { get; private set; } = null;
     // 管理しているメニューリスト
     private List<MenuBase> _menuList = null;
+
     // 初期化時のメニューの要素数
     private const int _INIT_MENU_NUM = 256;
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Initialize() {
         instance = this;
         _menuList = new List<MenuBase>(_INIT_MENU_NUM);

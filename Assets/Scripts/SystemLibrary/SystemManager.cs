@@ -13,6 +13,7 @@ public class SystemManager : MonoBehaviour {
     // システムオブジェクトリスト
     [SerializeField]
     private SystemObject[] _systemObjectList = null;
+
     // 固定フレームレート
     private const int _FPS = 60;
 
