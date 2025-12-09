@@ -136,11 +136,11 @@ public class ButtonSelectMove {
     /// <param name="button"></param>
     /// <returns></returns>
     private int GetButtonIndex(Button button) {
-        if (button == null)return 0;
+        if (button == null)return -1;
         for (int i = 0; i < _buttonList.Length; i++) {
             if (_buttonList[i] == button)
                 return i;
         }
-        return 0;
+        return -1;
     }
 }

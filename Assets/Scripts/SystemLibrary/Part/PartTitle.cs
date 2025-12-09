@@ -19,7 +19,6 @@ public class PartTitle : PartBase {
         await MenuManager.instance.Get<MenuTitle>("Prefab/Menu/CanvasTitle").Initialize();
         await MenuManager.instance.Get<MenuStageSelect>("Prefab/Menu/CanvasStageSelect").Initialize();
         await MenuManager.instance.Get<MenuSetting>("Prefab/Menu/CanvasSettings").Initialize();
-        await MenuManager.instance.Get<MenuCredit>("Prefab/Menu/CanvasCredit").Initialize();
     }
     /// <summary>
     /// Àsˆ—
