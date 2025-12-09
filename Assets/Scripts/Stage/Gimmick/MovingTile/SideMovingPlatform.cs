@@ -14,7 +14,6 @@ using UnityEngine;
 /// </summary>
 public class SideMovingPlatform : GimmickBase, IBreakReceiver {
 
-    [SerializeField] private float moveDistance = 0;            // ˆÚ“®‹——£
     [SerializeField] private Vector3 moveSpeed = Vector3.zero;  // ˆÚ“®‘¬“x
     [SerializeField] private GameObject targetPos = null;       // ˆÚ“®æ‚ÌÀ•W
     [SerializeField] private Rigidbody rigidBody = null;        // ©g‚ÌRigitBody
