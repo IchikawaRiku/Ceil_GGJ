@@ -56,6 +56,10 @@ public class MenuGameOver : MenuBase {
         await FadeManager.instance.FadeOut();
         await Close();
     }
+    /// <summary>
+    /// •Â‚¶‚é
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Close() {
         await base.Close();
         if (_isRetryStage) {
