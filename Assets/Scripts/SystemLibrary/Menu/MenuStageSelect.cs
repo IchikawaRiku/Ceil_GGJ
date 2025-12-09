@@ -85,13 +85,13 @@ public class MenuStageSelect : MenuBase {
         stageNum = eStageType.Invalid;
         _buttonMove.Setup();
         ResetEffect();
+        // UI演出の準備前処理
+        _moon?.Setup();
+        _cloud?.Setup();
         await FadeManager.instance.FadeIn();
         // ボタン情報の設定
         await SetPushButtonState(_buttonList, true);
         await _buttonInput.Setup(_initSelectButton);
-        // UI演出の準備前処理
-        _moon?.Setup();
-        _cloud?.Setup();
         // 実行開始
         UniTask moonMoveTask = _moon.Execute();
         UniTask cloudMoveTask = _cloud.Execute();
