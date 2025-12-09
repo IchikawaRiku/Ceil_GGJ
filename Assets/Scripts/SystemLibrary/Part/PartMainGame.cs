@@ -26,7 +26,6 @@ public class PartMainGame : PartBase {
     public override async UniTask Initialize() {
         await base.Initialize();
         await MenuManager.instance.Get<MenuInGameMenu>("Prefab/Menu/CanvasInGameMenu").Initialize();
-        _mainProcessor = new MainGameProcessor();
         await _characterManager.Initialize();
         await _stageManager.Initialize();
         _mainProcessor = new MainGameProcessor();
@@ -46,7 +45,9 @@ public class PartMainGame : PartBase {
     /// <returns></returns>
     public override async UniTask Execute() {
         SoundManager.instance.PlayBGM(1);
+        // ƒƒCƒ“ƒ‹[ƒv
         eEndReason endReason = await _mainProcessor.Execute();
+        // •ªŠò
         switch (endReason) {
             case eEndReason.Dead:
                 UniTask task = PartManager.instance.TransitionPart(eGamePart.GameOver);

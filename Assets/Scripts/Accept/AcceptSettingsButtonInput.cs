@@ -24,6 +24,9 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
     // InputAction
     private MyInput _inputAction = null;
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public AcceptSettingsButtonInput() {
         _inputAction = MyInputManager.inputAction;
     }
@@ -32,9 +35,7 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
     /// </summary>
     /// <param name="setInitButton"></param>
     public override async UniTask Setup(Button setInitButton) {
-        // 最初にSelectが外れたときの対策
-        prevButton = setInitButton;
-        EventSystem.current.SetSelectedGameObject(setInitButton.gameObject);
+        await base.Setup(setInitButton);
         _inputAction.UI.Enable();
         await UniTask.DelayFrame(1);
     }
@@ -63,6 +64,10 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
         //入力、ボタンの更新
         UpdateInputState(currentInputDir);
     }
+    /// <summary>
+    /// 片付け処理
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask Teardown() {
         _inputAction.UI.Disable();
         await UniTask.CompletedTask;
@@ -93,15 +98,14 @@ public class AcceptSettingsButtonInput : AcceptButtonBase{
             _isFirstPress = false;
             return false;
         }
-        int dir = (int)Mathf.Sign(currentDir.x); // -1 = 左, 1 = 右
-
+        // -1 = 左, 1 = 右
+        int dir = (int)Mathf.Sign(currentDir.x); 
         // 方向が変わったら初回無視フラグをリセット
         if (dir != _horizontalDir) {
             _horizontalDir = dir;
             _isFirstPress = false;
             return false;
         }
-
         // 同じ方向なら初回だけ無視
         if (!_isFirstPress) {
             _isFirstPress = true;

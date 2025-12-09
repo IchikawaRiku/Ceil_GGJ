@@ -44,6 +44,7 @@ public class MenuGameClear : MenuBase {
         isTitleSkip = false;
         _isRetryStage = false;
         await FadeManager.instance.FadeIn();
+        // ボタン状態の設定
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
         //ボタン入力処理

@@ -14,7 +14,7 @@ public class GhostMove : MonoBehaviour {
     private Vector3 _startPos;
     // 目標位置
     private Vector3 _targetPos;
-    // 開閉フラグ
+    // 終了フラグ
     private bool _isClose = false;
 
     private CancellationToken _token;
@@ -44,33 +44,12 @@ public class GhostMove : MonoBehaviour {
 
         while (!_isClose) {
             elapsedTime += Time.deltaTime;
-
-            float t = Mathf.PingPong(elapsedTime / duration, 1f);
-
+            float t = Mathf.PingPong(elapsedTime / duration, 1.0f);
             transform.localPosition = Vector3.Slerp(_startPos, _targetPos, t);
-
             await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
         }
         transform.localPosition = _targetPos;
     }
-    /// <summary>
-    /// 幽霊移動演出
-    /// </summary>
-    /// <param name="duration"></param>
-    /// <returns></returns>
-    public async UniTask ShowGhostMove(float duration = 1.0f) {
-        float elapsedTime = 0.0f;
-
-        while (elapsedTime < duration) {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / duration;
-            transform.localPosition = Vector3.Slerp(_startPos, _targetPos, t);
-
-            await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
-        }
-        transform.localPosition = _targetPos;
-    }
-
     /// <summary>
     /// 片付け処理
     /// </summary>

@@ -5,8 +5,6 @@
  *  @date   2025/7/29
  */
 using Cysharp.Threading.Tasks;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,35 +58,48 @@ public class MenuTitle : MenuBase {
         _isClose = false;
         _isGameEnd = false;
         _isSelect = false;
-        _ghost?.Setup();
-        _moon?.Setup();
-        _cloud?.Setup();
         await FadeManager.instance.FadeIn();
+        // ボタンの状態を設定
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
+        // UI演出
         UniTask ghostMoveTask = _ghost.Execute();
         UniTask moonMoveTask = _moon.Execute();
         UniTask cloudMoveTask = _cloud.Execute();
         while (!_isClose) {
             await _buttonInput.AcceptInput();
             if (_isSelect) {
-                await SetPushButtonState(_buttonList, false);
-                await FadeManager.instance.FadeOut();
-                await MenuManager.instance.Get<MenuSetting>().Open();
-                await FadeManager.instance.FadeIn();
-                await _buttonInput.Setup(_initSelectButton);
-                _isSelect = false;
-                await SetPushButtonState(_buttonList, true);
+                await OpenMenuSettings();
             }
             await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
         }
+        // ボタンの片付け処理
+        await _buttonInput.Teardown();
+        // ボタンの状態をリセットする
         await SetPushButtonState(_buttonList, false);
-        if (_isGameEnd) QuitApp();
         await FadeManager.instance.FadeOut();
+        await Close();
+    }
+    /// <summary>
+    /// 閉じる
+    /// </summary>
+    /// <returns></returns>
+    public override async UniTask Close() {
+        await base.Close();
+        // UI演出の片付け
         _ghost?.Teardown();
         _moon?.Teardown();
         _cloud?.Teardown();
-        await Close();
+        // ゲーム終了処理
+        if (_isGameEnd) QuitApp();
+    }
+    /// <summary>
+    /// UI演出の準備前処理
+    /// </summary>
+    public void SetupUIEffect() {
+        _ghost?.Setup();
+        _moon?.Setup();
+        _cloud?.Setup();
     }
     /// <summary>
     /// メニュー開閉フラグの変更
@@ -103,6 +114,22 @@ public class MenuTitle : MenuBase {
     public void ToMenuSetting() {
         UniTask task = SoundManager.instance.PlaySE(1);
         _isSelect = true;
+    }
+    /// <summary>
+    /// 設定メニューを開く
+    /// </summary>
+    /// <returns></returns>
+    public async UniTask OpenMenuSettings() {
+        // ボタンの状態を設定
+        await SetPushButtonState(_buttonList, false);
+        // 設定を開く
+        await FadeManager.instance.FadeOut();
+        await MenuManager.instance.Get<MenuSetting>().Open();
+        await FadeManager.instance.FadeIn();
+        // ボタンの状態を設定
+        await _buttonInput.Setup(_initSelectButton);
+        await SetPushButtonState(_buttonList, true);
+        _isSelect = false;
     }
     /// <summary>
     /// ゲーム終了処理

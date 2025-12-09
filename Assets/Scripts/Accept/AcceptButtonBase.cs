@@ -11,6 +11,11 @@ public abstract class AcceptButtonBase {
     //一つ前の選択ボタン
     protected Button prevButton = null;
 
+    /// <summary>
+    /// 準備前処理
+    /// </summary>
+    /// <param name="setInitButton"></param>
+    /// <returns></returns>
     public virtual async UniTask Setup(Button setInitButton) {
         // UIが表示されたとき、最初に設定されるボタンを受け取っておく
         EventSystem.current.SetSelectedGameObject(setInitButton.gameObject);
@@ -18,7 +23,15 @@ public abstract class AcceptButtonBase {
         prevButton = setInitButton;
         await UniTask.DelayFrame(1);
     }
+    /// <summary>
+    /// 入力受付
+    /// </summary>
+    /// <returns></returns>
     public abstract UniTask AcceptInput();
+    /// <summary>
+    /// 片付け処理
+    /// </summary>
+    /// <returns></returns>
     public virtual async UniTask Teardown() {
         await UniTask.CompletedTask;
     }

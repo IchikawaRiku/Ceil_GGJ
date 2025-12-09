@@ -35,25 +35,40 @@ public class MenuInGameMenu : MenuBase {
         await base.Open();
         _menuSelect = eMenuSelect.Invalid;
         _inputAction.Player.Pause.Enable();
+        // ボタン状態の設定
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
         while (_menuSelect == eMenuSelect.Invalid) {
             //Escapeで閉じる
             if (_inputAction.Player.Pause.WasPressedThisFrame()) break;
-            //ボタン入力処理
             await _buttonInput.AcceptInput();
-            //SettingフラグでSetting画面へ遷移
+
             await UniTask.DelayFrame(1);
         }
         _inputAction.Player.Pause.Disable();
+        // ボタンの片付け処理
         await _buttonInput.Teardown();
-        await SetPushButtonState(_buttonList, true);
+        // ボタンの状態をリセットする
+        await SetPushButtonState(_buttonList, false);
         await Close();
-        if (_menuSelect == eMenuSelect.Settings) {
-            await FadeManager.instance.FadeOut();
-            await MenuManager.instance.Get<MenuSetting>().Open();
-            await FadeManager.instance.FadeIn();
-        }
+    }
+    /// <summary>
+    /// 閉じる
+    /// </summary>
+    /// <returns></returns>
+    public override async UniTask Close() {
+        await base.Close();
+        // 設定メニューを開く
+        if (_menuSelect == eMenuSelect.Settings) await OpenSettingMenu();
+    }
+    /// <summary>
+    /// 設定メニューを開く
+    /// </summary>
+    /// <returns></returns>
+    public async UniTask OpenSettingMenu() {
+        await FadeManager.instance.FadeOut();
+        await MenuManager.instance.Get<MenuSetting>().Open();
+        await FadeManager.instance.FadeIn();
     }
     /// <summary>
     /// メニュー開閉フラグの変更

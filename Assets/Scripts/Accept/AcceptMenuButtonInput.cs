@@ -12,13 +12,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class AcceptMenuButtonInput : AcceptButtonBase{
-    public override async UniTask Setup(Button setInitButton) {
-        // UIが表示されたとき、最初に設定されるボタンを受け取っておく
-        EventSystem.current.SetSelectedGameObject(setInitButton.gameObject);
-        // 最初にSelectが外れたときの対策として、prevに受け取ったボタンを最初に入れておく
-        prevButton = setInitButton;
-        await UniTask.DelayFrame(1);
-    }
+    /// <summary>
+    /// 入力受付
+    /// </summary>
+    /// <returns></returns>
     public override async UniTask AcceptInput() {
         // EventSystemの現在の選択オブジェクトを取得
         UpdateCurrentButton();

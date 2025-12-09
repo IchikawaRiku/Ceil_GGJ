@@ -53,6 +53,7 @@ public class MenuSetting : MenuBase {
         _moon?.Initialize();
         _cloud?.Initialize();
         _isClose = false;
+        // データの設定
         SetupData();
     }
     /// <summary>
@@ -73,10 +74,13 @@ public class MenuSetting : MenuBase {
         await base.Open();
         await FadeManager.instance.FadeIn();
         _inputAction.Player.Pause.Enable();
+        // ボタン状態の設定
         await _buttonInput.Setup(_initSelectButton);
         await SetPushButtonState(_buttonList, true);
+        // UI演出の準備前処理
         _moon?.Setup();
         _cloud?.Setup();
+        // UI演出の実行
         UniTask moonMoveTask = _moon.Execute();
         UniTask cloudMoveTask = _cloud.Execute();
         while (true) {
@@ -87,12 +91,21 @@ public class MenuSetting : MenuBase {
         }
         _isClose = false;
         _inputAction.Player.Pause.Disable();
+        // ボタンの片付け処理
         await _buttonInput.Teardown();
+        // ボタンの状態をリセットする
         await SetPushButtonState(_buttonList, false);
         await FadeManager.instance.FadeOut();
+        await Close();
+    }
+    /// <summary>
+    /// 閉じる
+    /// </summary>
+    /// <returns></returns>
+    public override async UniTask Close() {
+        await base.Close();
         _moon?.Teardown();
         _cloud?.Teardown();
-        await Close();
     }
     /// <summary>
     /// メニュー開閉フラグの変更

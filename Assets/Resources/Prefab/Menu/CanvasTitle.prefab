@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: StartGame
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 955a859bc184dc94cb26ec4e3ce539b3, type: 2}
+  m_sharedMaterial: {fileID: -1724279526847719205, guid: 955a859bc184dc94cb26ec4e3ce539b3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -276,8 +276,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: EndGame
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 955a859bc184dc94cb26ec4e3ce539b3, type: 2}
+  m_sharedMaterial: {fileID: -1724279526847719205, guid: 955a859bc184dc94cb26ec4e3ce539b3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -431,8 +431,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecb7b70423b8fb40a89d6105c11186b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentPos: {x: 0, y: 0, z: 0}
-  _targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1623563356873891517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1193,8 +1191,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Setting
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 955a859bc184dc94cb26ec4e3ce539b3, type: 2}
+  m_sharedMaterial: {fileID: -1724279526847719205, guid: 955a859bc184dc94cb26ec4e3ce539b3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1348,5 +1346,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38cd30a86d766d498af91b662e0ff22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentPos: {x: 0, y: 0, z: 0}
-  _targetPos: {x: 0, y: 0, z: 0}

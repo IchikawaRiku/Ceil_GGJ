@@ -27,8 +27,9 @@ public class SoundManager : SystemObject {
     // SEのリスト
     [SerializeField]
     private SEAssign _seAssign = null;
-
+    // BGMボリューム(0.0f～1.0f)
     private float _bgmSoundVolume = 0.0f;
+    // SEボリューム(0.0f～1.0f)
     private float _seSoundVolume = 0.0f;
 
     // 入力受付タスク中断用トークン
